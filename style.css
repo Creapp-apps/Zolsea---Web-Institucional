@@ -262,6 +262,7 @@ ul { list-style: none; }
   left: 0;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   z-index: 1;
   overflow: hidden;
   display: flex;
@@ -299,7 +300,9 @@ ul { list-style: none; }
   top: 0;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   margin-top: -100vh; /* Ajustar posición para que comience con el canvas */
+  margin-top: -100dvh;
   z-index: 3;
   pointer-events: none;
 }
@@ -891,12 +894,34 @@ ul { list-style: none; }
   .navbar-links .navbar-cta { font-size: 1.1rem; padding: 14px 32px; }
   .menu-toggle { display: flex; z-index: 1001; }
 
-  .hero-scrolly-container { height: auto; }
-  .scrolly-sticky { position: relative; height: 60vh; }
-  .scrolly-scroll-content { position: relative; height: auto; margin-top: 0; }
-  .scrolly-panel { position: relative; height: auto; padding: 60px 6%; justify-content: center; opacity: 1 !important; transform: none !important; }
-  .scrolly-panel .panel-card { width: 100%; padding: 30px 20px; transform: none !important; }
-  .scrolly-panel .hero-content { text-align: center; padding: 0 4%; }
+  /* Habilitamos Scrollytelling interactivo en móvil con diseño premium */
+  .scrolly-panel {
+    padding: 0 6% !important;
+    justify-content: center !important;
+  }
+  
+  .scrolly-panel .hero-content {
+    max-width: 100% !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+  
+  .scrolly-panel .panel-card {
+    width: 100% !important;
+    max-width: 440px !important;
+    padding: 24px 20px !important;
+    margin: 0 auto !important;
+    max-height: 72vh !important;
+    overflow-y: auto !important;
+    transition: background 0.3s ease, border-color 0.3s ease !important;
+  }
+
+  .scrolly-overlay {
+    height: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    background: linear-gradient(to bottom, #0A0A0A 12%, transparent 35%, transparent 65%, #0A0A0A 88%) !important;
+  }
   .hero-title { font-size: clamp(2.2rem, 10vw, 3.5rem); }
   .hero-actions { flex-direction: column; }
   .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
@@ -916,3 +941,429 @@ ul { list-style: none; }
   .brand-item { min-width: 160px; padding: 16px 28px; }
   .brand-item .brand-name { font-size: 0.9rem; }
 }
+
+/* ============================================
+   PRODUCT DETAIL MODAL TOAST & DUAL CTA
+   ============================================ */
+
+/* Rediseño de Botones en la Tarjeta de Producto */
+.product-actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  margin-top: auto;
+}
+
+.product-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.78rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  justify-content: center;
+  cursor: pointer;
+  flex: 1;
+  font-family: inherit;
+}
+
+.product-action-btn.btn-details {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.product-action-btn.btn-details:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.product-action-btn.btn-whatsapp {
+  border-color: rgba(37, 211, 102, 0.35);
+  color: #fff;
+}
+
+.product-action-btn.btn-whatsapp:hover {
+  border-color: var(--color-whatsapp);
+  color: var(--color-whatsapp);
+  background: rgba(37, 211, 102, 0.08);
+}
+
+.product-action-btn svg {
+  width: 14px;
+  height: 14px;
+  transition: transform var(--transition-fast);
+}
+
+.product-action-btn:hover svg {
+  transform: scale(1.18);
+}
+
+/* Modal Overlay Blur */
+.product-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Centered Glassmorphic Modal Dialog (Apple-style) */
+.product-modal-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -46%) scale(0.96);
+  width: 980px;
+  max-width: 92vw;
+  height: auto;
+  max-height: 88vh;
+  background: rgba(13, 13, 13, 0.88);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.95);
+  z-index: 10001;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+              visibility 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-modal-toast.active {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Botón de Cierre con Contraste Elevado */
+.modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  transition: all var(--transition-fast);
+}
+
+.modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--color-accent);
+  transform: rotate(90deg);
+  color: var(--color-accent);
+}
+
+/* Cuerpo del Modal con Soporte Dual Column */
+.modal-body {
+  flex: 1;
+  min-height: 0; /* Previene la expansión desmedida en flexbox */
+  overflow-y: auto;
+  padding: 30px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.modal-left-column,
+.modal-right-column {
+  min-width: 0; /* Evita que el carrusel o tablas estiren las columnas del grid */
+}
+
+@media (min-width: 769px) {
+  .modal-body {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 40px;
+    padding: 45px;
+  }
+  
+  .modal-left-column {
+    position: sticky;
+    top: 0;
+    align-self: start;
+  }
+
+  .modal-carousel {
+    height: 400px !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+/* Estilos Premium del Carrusel */
+.modal-carousel {
+  position: relative;
+  width: 100%;
+  height: 270px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #080808;
+  margin-bottom: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.carousel-slides {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.carousel-slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Botones de Navegación */
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  z-index: 5;
+}
+
+.carousel-nav-btn:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #000;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.carousel-nav-btn.prev { left: 14px; }
+.carousel-nav-btn.next { right: 14px; }
+
+.carousel-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+}
+
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.carousel-dot.active {
+  width: 18px;
+  border-radius: 3px;
+  background: var(--color-accent);
+}
+
+/* Información de Encabezado */
+.modal-header-info {
+  margin-bottom: 24px;
+}
+
+.modal-brand-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--radius-full);
+  margin-bottom: 8px;
+}
+
+.modal-product-title {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.modal-section-title {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  margin-bottom: 14px;
+  border-left: 2px solid var(--color-accent);
+  padding-left: 10px;
+}
+
+.modal-description {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin-bottom: 30px;
+}
+
+/* Grilla de Ficha Técnica */
+.modal-specs-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-bottom: 35px;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 16px;
+  background: rgba(255, 255, 255, 0.015);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.spec-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.spec-label {
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.spec-value {
+  font-size: 0.84rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Botón CTA Primario */
+.modal-action-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 30px;
+  background: var(--color-whatsapp);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.88rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  width: 100%;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.2);
+  font-family: inherit;
+}
+
+.modal-action-cta:hover {
+  background: #1ebe56;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.35);
+}
+
+/* Responsividad para Móviles (Modal Centrado) */
+@media (max-width: 768px) {
+  .product-modal-toast {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    width: 92%;
+    max-width: 480px;
+    height: auto;
+    max-height: 88vh;
+    border-radius: var(--radius-md);
+    transform: translate(-50%, -46%) scale(0.96);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+  }
+  
+  .product-modal-toast.active {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  
+  .modal-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .modal-carousel {
+    height: 220px;
+    margin-bottom: 4px;
+  }
+
+  .modal-close-btn {
+    top: 15px;
+    right: 15px;
+    width: 34px;
+    height: 34px;
+  }
+}
+

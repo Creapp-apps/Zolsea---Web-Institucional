@@ -21,6 +21,7 @@ const PRODUCTS = [
   {
     name: 'Soldadora MIG 200A',
     brand: 'Gladiator PRO',
+    category: 'welding',
     desc: 'Soldadora inverter MIG 200A. Uso con GAS o SIN GAS. Ideal para trabajos profesionales e industriales.',
     image: '/images/soldadora-mig.png',
     blueprints: [
@@ -40,6 +41,7 @@ const PRODUCTS = [
   {
     name: 'Kit Inalámbrico 21v',
     brand: 'KTO',
+    category: 'battery',
     desc: 'Kit de poda completo: motosierra + extensores + sopladora brushless. Batería de litio 21v incluida.',
     image: '/images/kit-inalambrico.png',
     blueprints: [
@@ -59,6 +61,7 @@ const PRODUCTS = [
   {
     name: 'Cortadora de Pasto 220v',
     brand: 'KTO',
+    category: 'electric',
     desc: 'Kit de jardín: cortadora de pasto + bordeadora + sopladora 21v. Todo lo que necesitás para tu jardín.',
     image: '/images/cortadora-pasto.png',
     blueprints: [
@@ -78,6 +81,7 @@ const PRODUCTS = [
   {
     name: 'Motosierra Eléctrica 2000w',
     brand: 'Gladiator PRO',
+    category: 'electric',
     desc: 'Motosierra eléctrica de 2000w con espada de 16 pulgadas. Potencia profesional con cable.',
     image: '/images/motosierra-electrica.png',
     blueprints: [
@@ -97,6 +101,7 @@ const PRODUCTS = [
   {
     name: 'Mini Motosierra 21v',
     brand: 'KTO',
+    category: 'battery',
     desc: 'Mini motosierra inalámbrica 21v con maletín y extensores. Compacta, liviana y potente.',
     image: '/images/mini-motosierra.png',
     blueprints: [
@@ -116,6 +121,7 @@ const PRODUCTS = [
   {
     name: 'Set de Herramientas Profesional',
     brand: 'KTO',
+    category: 'accessories',
     desc: 'Maletín profesional con llaves, tubos, destornilladores y más. Acero cromo vanadio de alta resistencia.',
     image: '/images/set-herramientas.png',
     blueprints: [
@@ -131,248 +137,344 @@ const PRODUCTS = [
       'Garantía de Resistencia': 'Garantía Limitada de por Vida'
     },
     longDesc: 'Este maletín de herramientas KTO es un taller mecánico portátil. Fabricado íntegramente en acero Cromo Vanadio forjado y templado, ofrece una resistencia a la torsión que supera ampliamente las normas internacionales DIN. Las llaves crique de 72 dientes permiten trabajar en ángulos reducidos de tan solo 5°, y su práctico maletín de alto impacto mantiene cada pieza firmemente organizada.'
+  },
+  {
+    name: 'Soldadora Inverter MMA 160A',
+    brand: 'Gladiator PRO',
+    category: 'welding',
+    desc: 'Soldadora inverter compacta 160A. Tecnología IGBT de alta estabilidad. Ultra liviana.',
+    image: '/images/soldadora-mig.png',
+    blueprints: [
+      { title: 'Pantalla Digital', subtitle: 'Monitoreo en Tiempo Real', type: 'dial' },
+      { title: 'Hot Start & Arc Force', subtitle: 'Cebado Inteligente IGBT', type: 'igbt' }
+    ],
+    specs: {
+      'Rango de Amperaje': '20 - 160A',
+      'Voltaje': '220V ~ 50-60Hz',
+      'Electrodos Aptos': '1.6mm a 4.0mm',
+      'Ciclo de Trabajo': '45% a 160A',
+      'Tecnología': 'IGBT Inverter',
+      'Peso Neto': '4.2 kg'
+    },
+    longDesc: 'La soldadora Gladiator Inverter MMA 160A es una herramienta compacta pero sumamente potente, ideal para soldadores aficionados y profesionales que requieren máxima portabilidad. Equipada con las funciones automáticas de Hot Start (cebado fácil del arco) y Arc Force (estabilidad de soldadura en posiciones difíciles), garantiza costuras de soldadura de calidad industrial en electrodos celulósicos y básicos.'
+  },
+  {
+    name: 'Set de Puntas y Mechas Pro',
+    brand: 'Gladiator PRO',
+    category: 'accessories',
+    desc: 'Set profesional de mechas y puntas en estuche reforzado. Acero HSS Titanio de alta durabilidad.',
+    image: '/images/set-herramientas.png',
+    blueprints: [
+      { title: 'Nitruro de Titanio', subtitle: 'Dureza Extrema HSS', type: 'blade' },
+      { title: 'Geometría Split Point', subtitle: 'Ángulo autocentrado 135°', type: 'cutting' }
+    ],
+    specs: {
+      'Cantidad de Piezas': '40 piezas',
+      'Material de Mechas': 'Acero HSS con recubrimiento de Titanio',
+      'Material de Puntas': 'Acero S2 endurecido de alta torsión',
+      'Estuche': 'Termoplástico reforzado con visor transparente',
+      'Tipo de Encastre': 'Hexagonal de 1/4" de cambio rápido',
+      'Compatibilidad': 'Taladros, atornilladores y llaves de impacto'
+    },
+    longDesc: 'El Set de Puntas y Mechas Gladiator PRO de 40 piezas ofrece la máxima versatilidad y resistencia para trabajos de perforación y atornillado en metal, concreto y madera. Las mechas HSS están recubiertas con Nitruro de Titanio, reduciendo la fricción y el calentamiento para prolongar su vida útil hasta 3 veces más. Las puntas de atornillado de acero S2 garantizan un acople perfecto, evitando el desgaste de las cabezas de los tornillos.'
   }
 ];
 
 // ── WhatsApp SVG icon ─────────────────────────
 const WA_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
 
-// ── Init ──────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  initScrollytelling();
+  initHeroEditorial();
   initBrandsCarousel();
   initProductsGrid();
+  initSplitTextReveal(); // Divide los títulos antes de observar el scroll
   initScrollReveal();
   initNavbar();
   initWhatsApp();
   initProductModalEvents();
+  
+  // Inicialización de Interactividades Premium de Alta Gama
+  initMagneticButtons();
+  initButtonGlowTracker();
+  init3DCardTilt();
 });
 
-// ── 3D Canvas Scrollytelling ──────────────────
-function initScrollytelling() {
-  const canvas = document.getElementById('scrollyCanvas');
-  if (!canvas) return;
+// ── Hero Editorial Tipográfico & Parallax Multicapa ──
+function initHeroEditorial() {
+  const viewport = document.getElementById('heroViewport');
+  if (!viewport) return;
 
-  const ctx = canvas.getContext('2d');
-  const loader = document.getElementById('scrollyLoader');
-  const loaderBarFill = document.getElementById('loaderBarFill');
-  const loaderPercent = document.getElementById('loaderPercent');
+  const glow = document.getElementById('heroGlow');
+  const bgWrapper = document.getElementById('heroBgTextWrapper');
+  const prodWrapper = document.getElementById('heroProductRenderWrapper');
+  const slideViewport = document.querySelector('.showcase-slides-viewport');
 
-  const frameCount = 192;
-  const images = [];
-  let loadedCount = 0;
+  const bgTexts = document.querySelectorAll('.hero-bg-text');
+  const productImages = document.querySelectorAll('.hero-product-image');
+  const tabButtons = document.querySelectorAll('.showcase-tab');
+  const slides = document.querySelectorAll('.showcase-slide');
+  const prevBtn = document.getElementById('showcasePrev');
+  const nextBtn = document.getElementById('showcaseNext');
+  const pagerCurrent = document.getElementById('pagerCurrent');
+
+  let currentSlide = 0;
+  const slideCount = 6;
+  let autoPlayInterval = null;
+  let userInteracted = false;
+  let isTransitioning = false;
 
   // Registrar plugins de GSAP
   gsap.registerPlugin(ScrollTrigger);
 
-  // Desactivar scroll del body mientras carga la experiencia
-  document.body.style.overflow = 'hidden';
+  // Parallax interactivo del mouse (solo en escritorio)
+  if (window.innerWidth > 768) {
+    viewport.addEventListener('mousemove', (e) => {
+      const rect = viewport.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-  // Precargar cuadros
-  for (let i = 0; i < frameCount; i++) {
-    const img = new Image();
-    const formattedIndex = String(i).padStart(4, '0');
-    // Servido directamente desde la raíz gracias a la carpeta assets configurada en Vite
-    img.src = `/frames/frame_${formattedIndex}.webp`;
-    
-    img.onload = () => {
-      loadedCount++;
-      updateLoader(loadedCount);
-    };
-    img.onerror = () => {
-      // Continuar cargando de forma resiliente si hay algún error
-      loadedCount++;
-      updateLoader(loadedCount);
-    };
-    images.push(img);
-  }
+      // Glow sigue al cursor
+      gsap.to(glow, {
+        left: `${x}px`,
+        top: `${y}px`,
+        duration: 0.6,
+        ease: "power2.out"
+      });
 
-  function updateLoader(count) {
-    const percent = Math.floor((count / frameCount) * 100);
-    if (loaderBarFill) loaderBarFill.style.width = `${percent}%`;
-    if (loaderPercent) loaderPercent.innerText = `${percent}%`;
+      // Cálculo de offsets
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const deltaX = (e.clientX - (rect.left + centerX)) / centerX;
+      const deltaY = (e.clientY - (rect.top + centerY)) / centerY;
 
-    if (count === frameCount) {
-      setTimeout(() => {
-        if (loader) {
-          loader.classList.add('fade-out');
-        }
-        document.body.style.overflow = '';
-        startScrollTrigger();
-      }, 600);
-    }
-  }
+      // Capas de parallax unificadas en la misma dirección para profundidad tridimensional sin repulsión
+      gsap.to(bgWrapper, {
+        x: deltaX * 5,
+        y: deltaY * 5,
+        duration: 0.8,
+        ease: "power2.out"
+      });
 
-  function startScrollTrigger() {
-    // Redimensionar Canvas fluido manteniendo proporciones reales en CSS
-    function resizeCanvas() {
-      // Ajustar tamaño del canvas a su tamaño real de visualización en el layout
-      canvas.width = canvas.clientWidth;
-      canvas.height = canvas.clientHeight;
-      renderFrame(state.frame);
-    }
+      gsap.to(slideViewport, {
+        x: deltaX * 8,
+        y: deltaY * 8,
+        duration: 0.8,
+        ease: "power2.out"
+      });
 
-    window.addEventListener('resize', resizeCanvas);
-
-    const state = { frame: 0 };
-
-    // Pintar cuadro actual
-    function renderFrame(index) {
-      const img = images[Math.floor(index)];
-      if (img && img.complete) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Ajuste proporcional de alto para video vertical 9:16 con desplazamiento vertical (evita superposición con navbar)
-        const offsetY = window.innerWidth >= 769 ? 90 : 50;
-        const scaledHeight = canvas.height - offsetY;
-        const scaledWidth = (img.width / img.height) * scaledHeight;
-        const offsetX = (canvas.width - scaledWidth) / 2;
-        
-        // 1. Dibujar el cuadro del video desplazado verticalmente
-        ctx.drawImage(img, offsetX, offsetY, scaledWidth, scaledHeight);
-        
-        // 2. Aplicar Máscara Horizontal (Destination-In) para suavizar los bordes laterales del video
-        const horizGrad = ctx.createLinearGradient(offsetX, 0, offsetX + scaledWidth, 0);
-        horizGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
-        horizGrad.addColorStop(0.12, 'rgba(0, 0, 0, 1)');
-        horizGrad.addColorStop(0.88, 'rgba(0, 0, 0, 1)');
-        horizGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        
-        ctx.globalCompositeOperation = 'destination-in';
-        ctx.fillStyle = horizGrad;
-        ctx.fillRect(offsetX, offsetY, scaledWidth, scaledHeight);
-        
-        // 3. Aplicar Máscara Vertical (Destination-In) para suavizar la base inferior
-        const vertGrad = ctx.createLinearGradient(0, offsetY, 0, offsetY + scaledHeight);
-        vertGrad.addColorStop(0, 'rgba(0, 0, 0, 1)');
-        vertGrad.addColorStop(0.88, 'rgba(0, 0, 0, 1)');
-        vertGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        
-        ctx.fillStyle = vertGrad;
-        ctx.fillRect(offsetX, offsetY, scaledWidth, scaledHeight);
-        
-        // 4. Restaurar modo por defecto para siguientes renders
-        ctx.globalCompositeOperation = 'source-over';
-      }
-    }
-
-    // Inicializar tamaños
-    resizeCanvas();
-
-    // GSAP ScrollTrigger para controlar el cuadro del taladro 3D según scroll
-    gsap.to(state, {
-      frame: frameCount - 1,
-      snap: "frame",
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".hero-scrolly-container",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.1, // Suave amortiguación líquida para scroll continuo
-        onUpdate: () => {
-          renderFrame(state.frame);
-        }
-      }
+      gsap.to(prodWrapper, {
+        x: deltaX * 15,
+        y: deltaY * 15,
+        duration: 0.8,
+        ease: "power2.out"
+      });
     });
 
-    // Controlar el desvanecimiento y entrada de textos sincronizado con scroll (Unified Master Timeline - Apple-style)
-    const panels = gsap.utils.toArray('.scrolly-panel');
-    
-    // Asegurar que el primer panel empiece activo
-    if (panels[0]) panels[0].classList.add('active');
-
-    const masterTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".hero-scrolly-container",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.1, // Amortiguación líquida para sincronización perfecta
-      }
+    viewport.addEventListener('mouseleave', () => {
+      gsap.to([bgWrapper, prodWrapper, slideViewport], {
+        x: 0,
+        y: 0,
+        duration: 1.2,
+        ease: "power2.out"
+      });
+      gsap.to(glow, {
+        left: '50%',
+        top: '50%',
+        duration: 1.2,
+        ease: "power2.out"
+      });
     });
+  }
 
-    panels.forEach((panel, i) => {
-      const badge = panel.querySelector('.panel-badge') || panel.querySelector('.hero-badge');
-      const title = panel.querySelector('h2') || panel.querySelector('.hero-title');
-      const desc = panel.querySelector('p') || panel.querySelector('.hero-subtitle');
-      const card = panel.querySelector('.panel-card');
-      const actions = panel.querySelector('.hero-actions');
+  function goToSlide(slideIndex, isUserAction = false) {
+    if (isTransitioning && !isUserAction) return;
+    if (slideIndex < 0) slideIndex = slideCount - 1;
+    if (slideIndex >= slideCount) slideIndex = 0;
 
-      if (i === 0) {
-        // El primer panel (Hero Cover) está activo al inicio y se desvanece de manera escalonada (Apple-style)
-        masterTl.to(panel, { 
-          opacity: 0, 
-          duration: 0.15,
-          onStart: () => panel.classList.add('active'),
-          onComplete: () => panel.classList.remove('active'),
-          onReverseStart: () => panel.classList.add('active'),
-          onReverseComplete: () => panel.classList.add('active')
-        }, 0);
-        
-        if (badge) masterTl.to(badge, { opacity: 0, y: -20, duration: 0.1 }, 0.02);
-        if (title) masterTl.to(title, { opacity: 0, y: -30, duration: 0.12 }, 0.04);
-        if (desc) masterTl.to(desc, { opacity: 0, y: -40, duration: 0.12 }, 0.06);
-        if (actions) masterTl.to(actions, { opacity: 0, y: -45, duration: 0.12 }, 0.08);
+    if (isUserAction) {
+      userInteracted = true;
+      stopAutoPlay();
+    }
+
+    isTransitioning = true;
+    const prevSlide = currentSlide;
+    currentSlide = slideIndex;
+
+    // 1. Actualizar Tabs y Pager
+    tabButtons.forEach((tab, index) => {
+      if (index === currentSlide) {
+        tab.classList.add('active');
+        // Desplazar horizontalmente el contenedor de pestañas sólo en móviles sin propagar al body/window
+        const tabsContainer = document.getElementById('showcaseTabs');
+        if (tabsContainer && window.innerWidth <= 768) {
+          const containerWidth = tabsContainer.clientWidth;
+          const tabOffsetLeft = tab.offsetLeft;
+          const tabWidth = tab.clientWidth;
+          const targetScrollLeft = tabOffsetLeft - (containerWidth / 2) + (tabWidth / 2);
+          tabsContainer.scrollTo({
+            left: targetScrollLeft,
+            behavior: 'smooth'
+          });
+        }
       } else {
-        // Los paneles intermedios entran y salen en tramos equitativos del scroll total de forma súper escalonada
-        const totalSteps = panels.length - 1; // 5 paneles dinámicos
-        const stepSize = 1.0 / totalSteps; // 0.2 (20% del scroll total por tramo)
-        
-        // Matemáticas de distribución equitativa (0.0 a 1.0)
-        const start = (i - 0.75) * stepSize;
-        const peakStart = (i - 0.15) * stepSize;
-        const peakEnd = (i + 0.15) * stepSize;
-        const end = (i + 0.75) * stepSize;
-
-        const durationIn = peakStart - start;
-        const durationOut = end - peakEnd;
-
-        // 1. Fase de Entrada (Fades & staggered translations)
-        masterTl.fromTo(panel, { opacity: 0 }, { 
-          opacity: 1, 
-          duration: durationIn,
-          onStart: () => panel.classList.add('active'),
-          onReverseComplete: () => panel.classList.remove('active')
-        }, start);
-
-        if (card) {
-          masterTl.fromTo(card, { scale: 0.93 }, { scale: 1, duration: durationIn, ease: "power2.out" }, start);
-        }
-        if (badge) {
-          masterTl.fromTo(badge, { opacity: 0, y: 35 }, { opacity: 1, y: 0, duration: durationIn, ease: "power2.out" }, start + 0.02);
-        }
-        if (title) {
-          masterTl.fromTo(title, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: durationIn, ease: "power2.out" }, start + 0.04);
-        }
-        if (desc) {
-          masterTl.fromTo(desc, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: durationIn, ease: "power2.out" }, start + 0.06);
-        }
-
-        // 2. Fase de Salida (Fades & staggered translations towards top)
-        if (i < panels.length - 1) {
-          // El último panel persiste al final del scroll para transición suave
-          masterTl.to(panel, { 
-            opacity: 0, 
-            duration: durationOut,
-            onComplete: () => panel.classList.remove('active'),
-            onReverseStart: () => panel.classList.add('active')
-          }, peakEnd);
-
-          if (card) {
-            masterTl.to(card, { scale: 0.95, duration: durationOut, ease: "power2.in" }, peakEnd);
-          }
-          if (badge) {
-            masterTl.to(badge, { opacity: 0, y: -25, duration: durationOut }, peakEnd);
-          }
-          if (title) {
-            masterTl.to(title, { opacity: 0, y: -30, duration: durationOut }, peakEnd + 0.02);
-          }
-          if (desc) {
-            masterTl.to(desc, { opacity: 0, y: -35, duration: durationOut }, peakEnd + 0.04);
-          }
-        }
+        tab.classList.remove('active');
       }
     });
+
+    if (pagerCurrent) {
+      pagerCurrent.innerText = String(currentSlide + 1).padStart(2, '0');
+    }
+
+    // 2. Transición de la Tipografía de Fondo Monumental
+    const activeText = bgTexts[currentSlide];
+    const prevText = bgTexts[prevSlide];
+
+    if (prevText && prevSlide !== currentSlide) {
+      prevText.classList.remove('active');
+      gsap.to(prevText, {
+        opacity: 0,
+        scale: 1.08,
+        duration: 0.6,
+        ease: "power2.inOut"
+      });
+    }
+
+    activeText.classList.add('active');
+    gsap.fromTo(activeText, 
+      { opacity: 0, scale: 1.08 },
+      { opacity: 1, scale: 1, duration: 0.8, ease: "power3.out" }
+    );
+
+    // 3. Transición de la Imagen del Producto
+    const activeProd = productImages[currentSlide];
+    const prevProd = productImages[prevSlide];
+
+    if (prevProd && prevSlide !== currentSlide) {
+      prevProd.classList.remove('active');
+      gsap.to(prevProd, {
+        opacity: 0,
+        scale: 0.9,
+        y: 20,
+        duration: 0.6,
+        ease: "power2.inOut"
+      });
+    }
+
+    if (activeProd) {
+      activeProd.classList.add('active');
+      gsap.fromTo(activeProd,
+        { opacity: 0, scale: 0.9, y: 20 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "power3.out" }
+      );
+    }
+
+    // 4. Transición de las Tarjetas de Información Frente (Staggered)
+    const activeSlideEl = slides[currentSlide];
+    const prevSlideEl = slides[prevSlide];
+
+    if (prevSlideEl && prevSlide !== currentSlide) {
+      const prevCard = prevSlideEl.querySelector('.panel-card') || prevSlideEl.querySelector('.hero-content');
+      const prevItems = prevSlideEl.querySelectorAll('.panel-badge, .hero-badge, h2, .hero-title, p, .hero-subtitle, .hero-actions');
+      
+      gsap.killTweensOf([prevSlideEl, prevCard, prevItems]);
+      
+      const tlOut = gsap.timeline({
+        onComplete: () => {
+          prevSlideEl.classList.remove('active');
+        }
+      });
+
+      tlOut.to(prevItems, { opacity: 0, y: -15, duration: 0.25, stagger: 0.04, ease: "power2.in" });
+      tlOut.to(prevCard, { scale: 0.95, opacity: 0, duration: 0.25, ease: "power2.in" }, 0);
+    }
+
+    activeSlideEl.classList.add('active');
+    const activeCard = activeSlideEl.querySelector('.panel-card') || activeSlideEl.querySelector('.hero-content');
+    const activeItems = activeSlideEl.querySelectorAll('.panel-badge, .hero-badge, h2, .hero-title, p, .hero-subtitle, .hero-actions');
+
+    gsap.killTweensOf([activeSlideEl, activeCard, activeItems]);
+    
+    gsap.set(activeItems, { opacity: 0, y: 15 });
+    gsap.set(activeCard, { scale: 0.95, opacity: 0 });
+
+    const tlIn = gsap.timeline({
+      onComplete: () => {
+        isTransitioning = false;
+      }
+    });
+    tlIn.to(activeCard, { scale: 1, opacity: 1, duration: 0.5, ease: "power2.out" });
+    tlIn.to(activeItems, { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power2.out" }, 0.1);
   }
+
+  // Configurar Eventos para Solapas / Pestañas
+  tabButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      const slideIndex = parseInt(e.currentTarget.getAttribute('data-slide'));
+      goToSlide(slideIndex, true);
+    });
+  });
+
+  // Configurar Eventos para Flechas de Navegación
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      goToSlide(currentSlide - 1, true);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      goToSlide(currentSlide + 1, true);
+    });
+  }
+
+  // Soporte de Gestos Touch (Swipe Horizontal) para celulares
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  viewport.addEventListener('touchstart', (e) => {
+    if (e.target.closest('.showcase-tabs') || e.target.closest('.showcase-controls-panel') || e.target.closest('.btn-primary') || e.target.closest('.btn-secondary') || e.target.closest('a')) {
+      return;
+    }
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  viewport.addEventListener('touchend', (e) => {
+    if (e.target.closest('.showcase-tabs') || e.target.closest('.showcase-controls-panel') || e.target.closest('.btn-primary') || e.target.closest('.btn-secondary') || e.target.closest('a')) {
+      return;
+    }
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, { passive: true });
+
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    if (touchEndX < touchStartX - swipeThreshold) {
+      goToSlide(currentSlide + 1, true);
+    } else if (touchEndX > touchStartX + swipeThreshold) {
+      goToSlide(currentSlide - 1, true);
+    }
+  }
+
+  // Auto-Play inteligente
+  function startAutoPlay() {
+    if (autoPlayInterval) clearInterval(autoPlayInterval);
+    autoPlayInterval = setInterval(() => {
+      if (!userInteracted) {
+        goToSlide(currentSlide + 1);
+      }
+    }, 6000);
+  }
+
+  function stopAutoPlay() {
+    if (autoPlayInterval) {
+      clearInterval(autoPlayInterval);
+      autoPlayInterval = null;
+    }
+  }
+
+  // Inicializar primer slide y auto-play
+  goToSlide(0);
+  startAutoPlay();
 }
 
 /**
@@ -428,12 +530,13 @@ function initBrandsCarousel() {
 }
 
 // ── Products Grid ─────────────────────────────
+// ── Products Grid ─────────────────────────────
 function initProductsGrid() {
   const grid = document.getElementById('productsGrid');
   if (!grid) return;
 
   grid.innerHTML = PRODUCTS.map((p, i) => `
-    <article class="product-card reveal reveal-delay-${(i % 3) + 1}">
+    <article class="product-card reveal reveal-delay-${(i % 3) + 1}" data-category="${p.category}">
       <div class="product-image-wrapper">
         <img src="${p.image}" alt="${p.name}" loading="lazy" />
         <span class="product-badge">${p.brand}</span>
@@ -471,6 +574,84 @@ function initProductsGrid() {
       const index = parseInt(btn.dataset.index);
       openProductModal(index);
     });
+  });
+
+  // --- Category Tabs Logic ---
+  const tabsContainer = document.getElementById('productsTabs');
+  const indicator = document.getElementById('tabIndicator');
+  
+  if (tabsContainer && indicator) {
+    const tabs = tabsContainer.querySelectorAll('.tab-btn');
+    
+    const updateIndicator = (activeTab) => {
+      if (!activeTab || window.innerWidth <= 992) return;
+      indicator.style.width = `${activeTab.offsetWidth}px`;
+      indicator.style.left = `${activeTab.offsetLeft}px`;
+    };
+
+    // Position initial indicator with a tiny delay to ensure stylesheet is fully rendered
+    const initialActive = tabsContainer.querySelector('.tab-btn.active');
+    setTimeout(() => updateIndicator(initialActive), 150);
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        updateIndicator(tab);
+
+        const category = tab.dataset.category;
+        filterProducts(category);
+      });
+    });
+
+    window.addEventListener('resize', () => {
+      const activeTab = tabsContainer.querySelector('.tab-btn.active');
+      updateIndicator(activeTab);
+    });
+  }
+}
+
+// ── Products Category Filtering (GSAP-powered) ──
+function filterProducts(category) {
+  const cards = document.querySelectorAll('.product-card');
+  if (!cards.length) return;
+
+  // Stagger out currently visible cards
+  gsap.to(cards, {
+    opacity: 0,
+    scale: 0.92,
+    y: 20,
+    duration: 0.25,
+    stagger: 0.03,
+    ease: 'power2.in',
+    onComplete: () => {
+      // Toggle display
+      cards.forEach(card => {
+        const cardCat = card.dataset.category;
+        if (category === 'all' || cardCat === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Filter visible cards and stagger them back in beautifully!
+      const visibleCards = Array.from(cards).filter(card => card.style.display !== 'none');
+      
+      gsap.fromTo(visibleCards, {
+        opacity: 0,
+        scale: 0.92,
+        y: 20
+      }, {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 0.45,
+        stagger: 0.05,
+        ease: 'power3.out',
+        clearProps: 'transform,opacity' // Clear animation style props to avoid collision with CSS hovers
+      });
+    }
   });
 }
 
@@ -545,68 +726,93 @@ function initWhatsApp() {
 }
 
 // ── SVG Technical Blueprint Generator ─────────
+// ── SVG Technical Blueprint Generator ─────────
 function generateBlueprintSVG(title, subtitle, type) {
   let iconPath = '';
   let specs = [];
   
   if (type === 'dial') {
-    iconPath = 'M 270 110 A 30 30 0 1 1 330 110 M 300 80 V 110 M 260 150 H 340';
+    iconPath = 'M 270 120 A 30 30 0 1 1 330 120 M 300 90 V 120 M 260 160 H 340';
     specs = ['Panel Analógico Inteligente', 'Regulación de Amperaje Fina', 'Ajuste de Velocidad de Alambre'];
   } else if (type === 'igbt') {
-    iconPath = 'M 200 120 C 220 50, 240 190, 260 120 C 280 50, 300 190, 320 120 C 340 50, 360 190, 380 120 C 400 50, 420 190, 440 120';
+    iconPath = 'M 200 130 C 220 60, 240 200, 260 130 C 280 60, 300 200, 320 130 C 340 60, 360 200, 380 130 C 400 60, 420 200, 440 130';
     specs = ['Onda de Transición IGBT', 'Estabilidad del Arco Eléctrico', 'Frecuencia de Conmutación 20kHz'];
   } else if (type === 'battery') {
-    iconPath = 'M 260 105 H 340 V 135 H 260 Z M 340 115 H 345 V 125 H 340 M 280 120 H 290 M 300 120 H 310 M 320 120 H 330';
+    iconPath = 'M 260 115 H 340 V 145 H 260 Z M 340 125 H 345 V 135 H 340 M 280 130 H 290 M 300 130 H 310 M 320 130 H 330';
     specs = ['Celdas de Litio Premium 21V', 'Indicador de Carga LED Integrado', 'Sistema de Protección Térmica'];
   } else if (type === 'motor') {
-    iconPath = 'M 300 75 A 35 35 0 1 1 299.9 75 M 275 105 L 325 125 M 325 105 L 275 125 M 300 85 V 145';
+    iconPath = 'M 300 85 A 35 35 0 1 1 299.9 85 M 275 115 L 325 135 M 325 115 L 275 135 M 300 95 V 155';
     specs = ['Motor Brushless sin Carbones', 'Eficiencia Energética +45%', 'Reducción de Fricción y Calor'];
   } else if (type === 'blade') {
-    iconPath = 'M 230 105 H 340 A 18 18 0 0 1 340 141 H 230 Z M 250 123 H 320';
+    iconPath = 'M 230 115 H 340 A 18 18 0 0 1 340 151 H 230 Z M 250 133 H 320';
     specs = ['Espada de Acero Laminado', 'Canal de Lubricación Automático', 'Paso de Cadena Optimizado 3/8"'];
   } else if (type === 'gears') {
-    iconPath = 'M 300 80 L 330 100 V 130 L 300 150 L 270 130 V 100 Z M 300 80 V 150 M 270 100 L 330 130 M 270 130 L 330 100';
+    iconPath = 'M 300 90 L 330 110 V 140 L 300 160 L 270 140 V 110 Z M 300 90 V 160 M 270 110 L 330 140 M 270 140 L 330 110';
     specs = ['Tratamiento Térmico Cromo Vanadio', 'Estructura de Red Atómica Híbrida', 'Máxima Resistencia a la Torsión'];
   } else if (type === 'cutting') {
-    iconPath = 'M 280 110 A 25 25 0 1 1 320 110 A 25 25 0 1 1 280 110';
+    iconPath = 'M 280 120 A 25 25 0 1 1 320 120 A 25 25 0 1 1 280 120';
     specs = ['Cuchillas de Acero de Carbono', 'Corte Rotativo de Alta Velocidad', 'Regulación de Altura Centralizada'];
   } else if (type === 'height') {
-    iconPath = 'M 220 130 H 380 M 250 130 V 100 M 290 130 V 90 M 330 130 V 80 M 370 130 V 70';
+    iconPath = 'M 220 140 H 380 M 250 140 V 110 M 290 140 V 100 M 330 140 V 90 M 370 140 V 80';
     specs = ['Posiciones de Corte Regulables', 'Chasis Reforzado Anti-Impacto', 'Manillar Ergonómico Plegable'];
   } else if (type === 'ratchet') {
-    iconPath = 'M 250 115 A 15 15 0 1 1 280 115 H 370 M 265 115 L 255 125';
+    iconPath = 'M 250 125 A 15 15 0 1 1 280 125 H 370 M 265 125 L 255 135';
     specs = ['Mecanismo de 72 Dientes', 'Ángulo de Recuperación de 5°', 'Inversión de Giro Quick-Release'];
   } else {
-    iconPath = 'M 300 70 A 40 40 0 1 1 299.9 70 M 270 110 H 330';
+    iconPath = 'M 300 80 A 40 40 0 1 1 299.9 80 M 270 120 H 330';
     specs = ['Esquema Técnico Detallado', 'Componentes Calibrados', 'Certificación de Calidad Oficial'];
   }
 
+  // Generate clean spec bullet points spaced at the bottom
   const specText = specs.map((s, idx) => 
-    `<text x="300" y="${195 + idx * 22}" fill="%23888888" font-family="sans-serif" font-size="11" font-weight="500" text-anchor="middle">${s}</text>`
+    `<text x="300" y="${220 + idx * 18}" fill="%238c92a0" font-family="monospace" font-size="10" font-weight="500" text-anchor="middle" letter-spacing="1">▪ ${s.toUpperCase()}</text>`
   ).join('');
 
   return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
-    <rect width="100%" height="100%" fill="%230F0F0F"/>
+    <!-- Dark Space Surface Background -->
+    <rect width="100%" height="100%" fill="%23080808"/>
     
-    <!-- Technical Grid -->
-    <path d="M 0 30 L 600 30 M 0 60 L 600 60 M 0 90 L 600 90 M 0 120 L 600 120 M 0 150 L 600 150 M 0 180 L 600 180 M 0 210 L 600 210 M 0 240 L 600 240 M 0 270 L 600 270" stroke="%23181818" stroke-width="1"/>
-    <path d="M 60 0 L 60 300 M 120 0 L 120 300 M 180 0 L 180 300 M 240 0 L 240 300 M 300 0 L 300 300 M 360 0 L 360 300 M 420 0 L 420 300 M 480 0 L 480 300 M 540 0 L 540 300" stroke="%23181818" stroke-width="1"/>
+    <defs>
+      <linearGradient id="neonOrangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="%23ff6b35" />
+        <stop offset="100%" stop-color="%23f59e0b" />
+      </linearGradient>
+      <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="4" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- Technical Digital Grid -->
+    <path d="M 0 25 L 600 25 M 0 50 L 600 50 M 0 75 L 600 75 M 0 100 L 600 100 M 0 125 L 600 125 M 0 150 L 600 150 M 0 175 L 600 175 M 0 200 L 600 200" stroke="%23121212" stroke-width="1"/>
+    <path d="M 50 0 L 50 300 M 100 0 L 100 300 M 150 0 L 150 300 M 200 0 L 200 300 M 250 0 L 250 300 M 300 0 L 300 300 M 350 0 L 350 300 M 400 0 L 400 300 M 450 0 L 450 300 M 500 0 L 500 300 M 550 0 L 550 300" stroke="%23121212" stroke-width="1"/>
     
-    <!-- Outer Border -->
-    <rect x="15" y="15" width="570" height="270" rx="6" fill="none" stroke="%23262626" stroke-width="1.5"/>
+    <!-- Precision Crosshairs in Corners -->
+    <path d="M 30 20 H 45 M 35 15 V 30" stroke="%23333" stroke-width="1"/>
+    <path d="M 555 20 H 570 M 565 15 V 30" stroke="%23333" stroke-width="1"/>
+    <path d="M 30 280 H 45 M 35 270 V 285" stroke="%23333" stroke-width="1"/>
+    <path d="M 555 280 H 570 M 565 270 V 285" stroke="%23333" stroke-width="1"/>
+
+    <!-- Outer Technical Border -->
+    <rect x="15" y="15" width="570" height="270" rx="6" fill="none" stroke="%23222" stroke-width="1" stroke-dasharray="10, 5"/>
+    <rect x="20" y="20" width="560" height="260" rx="4" fill="none" stroke="%23181818" stroke-width="1.5"/>
+
+    <!-- Blueprint circles with glow -->
+    <circle cx="300" cy="120" r="55" stroke="url(%23neonOrangeGrad)" stroke-dasharray="6,5" stroke-width="1.2" stroke-opacity="0.35" fill="none" filter="url(%23neonGlow)"/>
+    <circle cx="300" cy="120" r="68" stroke="url(%23neonOrangeGrad)" stroke-width="0.8" stroke-opacity="0.18" fill="none"/>
     
-    <!-- Blueprint circles -->
-    <circle cx="300" cy="110" r="50" stroke="%23f59e0b" stroke-dasharray="6,4" stroke-width="1" stroke-opacity="0.3" fill="none"/>
-    <circle cx="300" cy="110" r="60" stroke="%23f59e0b" stroke-width="0.5" stroke-opacity="0.15" fill="none"/>
+    <!-- Core Technical Icon -->
+    <path d="${iconPath}" stroke="url(%23neonOrangeGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(%23neonGlow)"/>
     
-    <!-- Icon path -->
-    <path d="${iconPath}" stroke="%23f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    
-    <!-- Title and Subtitle -->
-    <text x="300" y="225" fill="%23ffffff" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" letter-spacing="3">${title.toUpperCase()}</text>
-    <text x="300" y="248" fill="%23f59e0b" font-family="monospace" font-size="10" text-anchor="middle" letter-spacing="1.5">${subtitle.toUpperCase()}</text>
-    
-    <!-- Specifications text -->
+    <!-- Header Labels at the top -->
+    <text x="300" y="48" fill="%23ffffff" font-family="sans-serif" font-size="12" font-weight="900" text-anchor="middle" letter-spacing="4.5">${title.toUpperCase()}</text>
+    <text x="300" y="66" fill="%23f59e0b" font-family="monospace" font-size="8.5" font-weight="bold" text-anchor="middle" letter-spacing="2">${subtitle.toUpperCase()}</text>
+    <line x1="200" y1="78" x2="400" y2="78" stroke="%23ff6b35" stroke-width="1.5" stroke-opacity="0.5"/>
+
+    <!-- Specifications at the bottom -->
     ${specText}
   </svg>`;
 }
@@ -775,6 +981,162 @@ function initProductModalEvents() {
     if (e.key === 'Escape') {
       closeProductModal();
     }
+  });
+}
+
+// ── INTERACTIVIDADES PREMIUM DE ALTA GAMA ─────────────────────────────
+
+// 1. Botones Magnéticos (Desktop)
+function initMagneticButtons() {
+  if (window.innerWidth <= 768) return;
+
+  const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, #whatsappBtn');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+
+      // Desplazamiento magnético suave con GSAP
+      gsap.to(btn, {
+        x: x * 0.35,
+        y: y * 0.35,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    });
+
+    btn.addEventListener('mouseleave', () => {
+      // Regreso elástico orgánico
+      gsap.to(btn, {
+        x: 0,
+        y: 0,
+        duration: 0.6,
+        ease: "elastic.out(1.1, 0.4)"
+      });
+    });
+  });
+}
+
+// 2. Rastreador de Luz Líquida (Cursor Glow Tracker)
+function initButtonGlowTracker() {
+  // Delegación de eventos global para abarcar botones dinámicos y estáticos
+  document.addEventListener('mousemove', (e) => {
+    const btn = e.target.closest('.btn-primary, .btn-secondary, #whatsappBtn, .product-action-btn');
+    if (!btn) return;
+
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    btn.style.setProperty('--x', `${x}px`);
+    btn.style.setProperty('--y', `${y}px`);
+  });
+}
+
+// 3. Tarjetas con Inclinación 3D y Reflejo Holográfico (Dynamic Delegation)
+function init3DCardTilt() {
+  if (window.innerWidth <= 768) return;
+
+  const grid = document.getElementById('productsGrid');
+  if (!grid) return;
+
+  grid.addEventListener('mousemove', (e) => {
+    const card = e.target.closest('.product-card');
+    if (!card) return;
+
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Desviación relativa (-1 a 1)
+    const deltaX = (x - rect.width / 2) / (rect.width / 2);
+    const deltaY = (y - rect.height / 2) / (rect.height / 2);
+
+    // Inclinación 3D fluida
+    gsap.to(card, {
+      rotateY: deltaX * 8,
+      rotateX: deltaY * -8,
+      transformPerspective: 800,
+      scale: 1.02,
+      boxShadow: "0 25px 50px rgba(0,0,0,0.55), 0 0 30px rgba(255,107,53,0.08)",
+      duration: 0.3,
+      ease: "power2.out"
+    });
+
+    // Capa de brillo reflectiva dinámica
+    let shine = card.querySelector('.card-shine');
+    if (!shine) {
+      shine = document.createElement('div');
+      shine.className = 'card-shine';
+      card.appendChild(shine);
+    }
+    gsap.to(shine, {
+      opacity: 0.15,
+      background: `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.4) 0%, transparent 60%)`,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  });
+
+  grid.addEventListener('mouseleave', (e) => {
+    const card = e.target.closest('.product-card');
+    if (!card) return;
+
+    // Restauración inercial suave
+    gsap.to(card, {
+      rotateY: 0,
+      rotateX: 0,
+      scale: 1,
+      boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+      duration: 0.6,
+      ease: "power3.out"
+    });
+
+    const shine = card.querySelector('.card-shine');
+    if (shine) {
+      gsap.to(shine, {
+        opacity: 0,
+        duration: 0.5
+      });
+    }
+  }, true);
+}
+
+// 4. Revelado "Split-Text" Líquido de Títulos al Scroll
+function initSplitTextReveal() {
+  const targets = document.querySelectorAll('.section-title.reveal');
+  targets.forEach(target => {
+    if (target.querySelector('.split-word')) return;
+
+    const text = target.textContent.trim();
+    target.innerHTML = '';
+    target.style.display = 'inline-block';
+    target.style.overflow = 'hidden';
+
+    // Separación por palabras
+    const words = text.split(' ');
+    words.forEach((word, index) => {
+      const wordSpan = document.createElement('span');
+      wordSpan.style.display = 'inline-block';
+      wordSpan.style.overflow = 'hidden';
+      wordSpan.style.verticalAlign = 'bottom';
+
+      const innerSpan = document.createElement('span');
+      innerSpan.className = 'split-word';
+      innerSpan.textContent = word;
+      innerSpan.style.display = 'inline-block';
+      innerSpan.style.transform = 'translateY(110%)';
+      innerSpan.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+      innerSpan.style.transitionDelay = `${index * 0.08}s`;
+
+      wordSpan.appendChild(innerSpan);
+      target.appendChild(wordSpan);
+
+      if (index < words.length - 1) {
+        target.appendChild(document.createTextNode(' '));
+      }
+    });
   });
 }
 

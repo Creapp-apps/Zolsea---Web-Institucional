@@ -61,11 +61,53 @@
         <p class="section-label">Nuestras Marcas</p>
         <h2 class="section-title">MARCAS QUE RESPALDAMOS</h2>
         <p>Trabajamos con las marcas líderes del mercado</p>
+        <p class="brands-intro-text">Somos una empresa dedicada a la distribución mayorista de herramientas y accesorios. Entregamos en todo el país (GBA e interior) con camiones propios y tercerizados, estamos preparados para brindar el mejor servicio de asesoramiento, venta y postventa del mercado.</p>
       </div>
-    </div>
-    <div class="brands-track-wrapper">
-      <div class="brands-track" id="brandsTrack">
-        <!-- Populated by JS — duplicated for infinite scroll -->
+      <div class="brands-row">
+        <!-- Brand 1: Gladiator PRO -->
+        <div class="brand-card brand-gladiator reveal reveal-delay-1" data-brand="gladiator">
+          <div class="brand-glow"></div>
+          <div class="brand-card-content">
+            <h3 class="brand-title">Gladiator PRO</h3>
+          </div>
+          <div class="brand-accent-line"></div>
+        </div>
+
+        <!-- Brand 2: KTO -->
+        <div class="brand-card brand-kto reveal reveal-delay-2" data-brand="kto">
+          <div class="brand-glow"></div>
+          <div class="brand-card-content">
+            <h3 class="brand-title">KTO</h3>
+          </div>
+          <div class="brand-accent-line"></div>
+        </div>
+
+        <!-- Brand 3: Bosch -->
+        <div class="brand-card brand-bosch reveal reveal-delay-3" data-brand="bosch">
+          <div class="brand-glow"></div>
+          <div class="brand-card-content">
+            <h3 class="brand-title">Bosch</h3>
+          </div>
+          <div class="brand-accent-line"></div>
+        </div>
+
+        <!-- Brand 4: Makita -->
+        <div class="brand-card brand-makita reveal reveal-delay-4" data-brand="makita">
+          <div class="brand-glow"></div>
+          <div class="brand-card-content">
+            <h3 class="brand-title">Makita</h3>
+          </div>
+          <div class="brand-accent-line"></div>
+        </div>
+
+        <!-- Brand 5: DeWalt -->
+        <div class="brand-card brand-dewalt reveal reveal-delay-5" data-brand="dewalt">
+          <div class="brand-glow"></div>
+          <div class="brand-card-content">
+            <h3 class="brand-title">DeWalt</h3>
+          </div>
+          <div class="brand-accent-line"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -118,14 +160,14 @@
       <!-- Capa 4: Showcase Interfaces & Panels (Frente) -->
       <div class="showcase-interface-wrapper">
         <!-- Upper Navigation Pill Tabs -->
-        <div class="showcase-tabs-container">
+        <div class="showcase-tabs-container" style="display: none !important;">
           <div class="showcase-tabs" id="showcaseTabs">
             <button class="showcase-tab active" data-slide="0">ZolSea Pro</button>
-            <button class="showcase-tab" data-slide="1">Motor Brushless</button>
-            <button class="showcase-tab" data-slide="2">Amoladora 21v</button>
-            <button class="showcase-tab" data-slide="3">Sierra Circular</button>
-            <button class="showcase-tab" data-slide="4">Unisystem</button>
-            <button class="showcase-tab" data-slide="5">Garantía Real</button>
+            <button class="showcase-tab" data-slide="1" style="display: none;">Motor Brushless</button>
+            <button class="showcase-tab" data-slide="2" style="display: none;">Amoladora 21v</button>
+            <button class="showcase-tab" data-slide="3" style="display: none;">Sierra Circular</button>
+            <button class="showcase-tab" data-slide="4">Ecosistema ZolSea</button>
+            <button class="showcase-tab" data-slide="5" style="display: none;">Garantía Real</button>
           </div>
         </div>
 
@@ -214,7 +256,7 @@
         </div>
 
         <!-- Lower Controls Dashboard (Arrows + Numeric Pager) -->
-        <div class="showcase-controls-panel">
+        <div class="showcase-controls-panel" style="display: none !important;">
           <button class="showcase-nav-btn prev-btn" id="showcasePrev" aria-label="Slide anterior">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
           </button>

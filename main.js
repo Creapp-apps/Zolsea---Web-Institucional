@@ -6,17 +6,6 @@
 // ── Data ──────────────────────────────────────
 const WHATSAPP_NUMBER = '5491100000000'; // TODO: Replace with real number
 
-const BRANDS = [
-  'Gladiator PRO',
-  'KTO',
-  'Black+Decker',
-  'Bosch',
-  'Makita',
-  'DeWalt',
-  'Stanley',
-  'Truper',
-];
-
 const PRODUCTS = [
   {
     name: 'Soldadora MIG 200A',
@@ -185,7 +174,6 @@ const WA_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentCo
 
 document.addEventListener('DOMContentLoaded', () => {
   initHeroEditorial();
-  initBrandsCarousel();
   initProductsGrid();
   initSplitTextReveal(); // Divide los títulos antes de observar el scroll
   initScrollReveal();
@@ -194,9 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initProductModalEvents();
   
   // Inicialización de Interactividades Premium de Alta Gama
-  initMagneticButtons();
+  // initMagneticButtons();   // DISABLED — investigating freeze
   initButtonGlowTracker();
-  init3DCardTilt();
+  // init3DCardTilt();        // DISABLED — investigating freeze
+  // initBrandCardTilt();     // DISABLED — investigating freeze
 });
 
 // ── Hero Editorial Tipográfico & Parallax Multicapa ──
@@ -217,8 +206,10 @@ function initHeroEditorial() {
   const nextBtn = document.getElementById('showcaseNext');
   const pagerCurrent = document.getElementById('pagerCurrent');
 
-  let currentSlide = 0;
-  const slideCount = 6;
+  const activeSlides = [0];
+  let currentActiveIndex = 0;
+  let currentSlide = activeSlides[currentActiveIndex];
+  const slideCount = activeSlides.length;
   let autoPlayInterval = null;
   let userInteracted = false;
   let isTransitioning = false;
@@ -286,10 +277,10 @@ function initHeroEditorial() {
     });
   }
 
-  function goToSlide(slideIndex, isUserAction = false) {
+  function goToSlide(activeIndex, isUserAction = false) {
     if (isTransitioning && !isUserAction) return;
-    if (slideIndex < 0) slideIndex = slideCount - 1;
-    if (slideIndex >= slideCount) slideIndex = 0;
+    if (activeIndex < 0) activeIndex = slideCount - 1;
+    if (activeIndex >= slideCount) activeIndex = 0;
 
     if (isUserAction) {
       userInteracted = true;
@@ -297,12 +288,15 @@ function initHeroEditorial() {
     }
 
     isTransitioning = true;
-    const prevSlide = currentSlide;
-    currentSlide = slideIndex;
+    const prevActiveIndex = currentActiveIndex;
+    currentActiveIndex = activeIndex;
+    const prevSlide = activeSlides[prevActiveIndex];
+    currentSlide = activeSlides[currentActiveIndex];
 
     // 1. Actualizar Tabs y Pager
     tabButtons.forEach((tab, index) => {
-      if (index === currentSlide) {
+      const tabSlide = parseInt(tab.getAttribute('data-slide'));
+      if (tabSlide === currentSlide) {
         tab.classList.add('active');
         // Desplazar horizontalmente el contenedor de pestañas sólo en móviles sin propagar al body/window
         const tabsContainer = document.getElementById('showcaseTabs');
@@ -322,7 +316,7 @@ function initHeroEditorial() {
     });
 
     if (pagerCurrent) {
-      pagerCurrent.innerText = String(currentSlide + 1).padStart(2, '0');
+      pagerCurrent.innerText = String(currentActiveIndex + 1).padStart(2, '0');
     }
 
     // 2. Transición de la Tipografía de Fondo Monumental
@@ -339,11 +333,13 @@ function initHeroEditorial() {
       });
     }
 
-    activeText.classList.add('active');
-    gsap.fromTo(activeText, 
-      { opacity: 0, scale: 1.08 },
-      { opacity: 1, scale: 1, duration: 0.8, ease: "power3.out" }
-    );
+    if (activeText) {
+      activeText.classList.add('active');
+      gsap.fromTo(activeText, 
+        { opacity: 0, scale: 1.08 },
+        { opacity: 1, scale: 1, duration: 0.8, ease: "power3.out" }
+      );
+    }
 
     // 3. Transición de la Imagen del Producto
     const activeProd = productImages[currentSlide];
@@ -410,20 +406,23 @@ function initHeroEditorial() {
   tabButtons.forEach(button => {
     button.addEventListener('click', (e) => {
       const slideIndex = parseInt(e.currentTarget.getAttribute('data-slide'));
-      goToSlide(slideIndex, true);
+      const activeIdx = activeSlides.indexOf(slideIndex);
+      if (activeIdx !== -1) {
+        goToSlide(activeIdx, true);
+      }
     });
   });
 
   // Configurar Eventos para Flechas de Navegación
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {
-      goToSlide(currentSlide - 1, true);
+      goToSlide(currentActiveIndex - 1, true);
     });
   }
 
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
-      goToSlide(currentSlide + 1, true);
+      goToSlide(currentActiveIndex + 1, true);
     });
   }
 
@@ -447,20 +446,22 @@ function initHeroEditorial() {
   }, { passive: true });
 
   function handleSwipe() {
+    if (slideCount <= 1) return;
     const swipeThreshold = 50;
     if (touchEndX < touchStartX - swipeThreshold) {
-      goToSlide(currentSlide + 1, true);
+      goToSlide(currentActiveIndex + 1, true);
     } else if (touchEndX > touchStartX + swipeThreshold) {
-      goToSlide(currentSlide - 1, true);
+      goToSlide(currentActiveIndex - 1, true);
     }
   }
 
   // Auto-Play inteligente
   function startAutoPlay() {
+    if (slideCount <= 1) return;
     if (autoPlayInterval) clearInterval(autoPlayInterval);
     autoPlayInterval = setInterval(() => {
       if (!userInteracted) {
-        goToSlide(currentSlide + 1);
+        goToSlide(currentActiveIndex + 1);
       }
     }, 6000);
   }
@@ -516,18 +517,7 @@ function drawImageProp(ctx, img, x, y, w, h, offsetX = 0.5, offsetY = 0.5) {
   ctx.drawImage(img, cx, cy, cw, ch, x, y, w, h);
 }
 
-// ── Brands Carousel ───────────────────────────
-function initBrandsCarousel() {
-  const track = document.getElementById('brandsTrack');
-  if (!track) return;
-
-  // Create items (duplicated 3x for seamless loop)
-  const createItems = () => BRANDS.map((b) =>
-    `<div class="brand-item"><span class="brand-name">${b}</span></div>`
-  ).join('');
-
-  track.innerHTML = createItems() + createItems() + createItems();
-}
+// El carrusel infinito de marcas ha sido reemplazado por la grilla Bento interactiva.
 
 // ── Products Grid ─────────────────────────────
 // ── Products Grid ─────────────────────────────
@@ -539,7 +529,6 @@ function initProductsGrid() {
     <article class="product-card reveal reveal-delay-${(i % 3) + 1}" data-category="${p.category}">
       <div class="product-image-wrapper">
         <img src="${p.image}" alt="${p.name}" loading="lazy" />
-        <span class="product-badge">${p.brand}</span>
       </div>
       <div class="product-info">
         <h3 class="product-name">${p.name}</h3>
@@ -1064,16 +1053,16 @@ function init3DCardTilt() {
       ease: "power2.out"
     });
 
-    // Capa de brillo reflectiva dinámica
+    // Capa de brillo reflectiva dinámica — gradiente se asigna directo (no GSAP)
     let shine = card.querySelector('.card-shine');
     if (!shine) {
       shine = document.createElement('div');
       shine.className = 'card-shine';
       card.appendChild(shine);
     }
+    shine.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.4) 0%, transparent 60%)`;
     gsap.to(shine, {
       opacity: 0.15,
-      background: `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.4) 0%, transparent 60%)`,
       duration: 0.3,
       ease: "power2.out"
     });
@@ -1137,6 +1126,95 @@ function initSplitTextReveal() {
         target.appendChild(document.createTextNode(' '));
       }
     });
+  });
+}
+
+// ── Brand Bento Card 3D Tilt & Magnetic Glow ──
+function initBrandCardTilt() {
+  if (window.innerWidth <= 768) return;
+
+  const bentoGrid = document.querySelector('.brands-row');
+  if (!bentoGrid) return;
+
+  bentoGrid.addEventListener('mousemove', (e) => {
+    const card = e.target.closest('.brand-card');
+    if (!card) return;
+
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Desviación relativa (-1 a 1)
+    const deltaX = (x - rect.width / 2) / (rect.width / 2);
+    const deltaY = (y - rect.height / 2) / (rect.height / 2);
+
+    // Inclinación 3D fluida
+    gsap.to(card, {
+      rotateY: deltaX * 8,
+      rotateX: deltaY * -8,
+      transformPerspective: 1000,
+      scale: 1.02,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+
+    // Mover el glow siguiendo al cursor — gradiente se asigna directo (no GSAP)
+    const glow = card.querySelector('.brand-glow');
+    if (glow) {
+      glow.style.background = `radial-gradient(circle at ${x}px ${y}px, var(--glow-color) 0%, transparent 70%)`;
+      gsap.to(glow, {
+        opacity: 0.25,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    }
+
+    // Capa de brillo reflectiva dinámica — gradiente se asigna directo (no GSAP)
+    let shine = card.querySelector('.card-shine');
+    if (!shine) {
+      shine = document.createElement('div');
+      shine.className = 'card-shine';
+      card.appendChild(shine);
+    }
+    shine.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.35) 0%, transparent 60%)`;
+    gsap.to(shine, {
+      opacity: 0.12,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  });
+
+  bentoGrid.addEventListener('mouseleave', (e) => {
+    const card = e.target.closest('.brand-card');
+    if (!card) return;
+
+    // Restauración suave
+    gsap.to(card, {
+      rotateY: 0,
+      rotateX: 0,
+      scale: 1,
+      duration: 0.6,
+      ease: "power3.out"
+    });
+
+    const glow = card.querySelector('.brand-glow');
+    if (glow) {
+      glow.style.background = `radial-gradient(circle at 50% 50%, transparent 60%, var(--glow-color) 120%)`;
+      gsap.to(glow, {
+        opacity: 0,
+        duration: 0.6,
+        ease: "power3.out"
+      });
+    }
+
+    const shine = card.querySelector('.card-shine');
+    if (shine) {
+      gsap.to(shine, {
+        opacity: 0,
+        duration: 0.6,
+        ease: "power3.out"
+      });
+    }
   });
 }
 

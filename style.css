@@ -794,54 +794,160 @@ ul { list-style: none; }
 .brands-header .section-label::before { display: none; }
 .brands-header .section-title { margin-bottom: 12px; }
 .brands-header p { color: var(--color-text-muted); font-size: 1.05rem; }
+.brands-header .brands-intro-text {
+  max-width: 720px;
+  margin: 16px auto 0;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.05rem;
+}
 
-/* Infinite scroll track */
-.brands-track-wrapper {
-  position: relative;
-  overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
-}
-.brands-track {
+/* Compact Row for Brands */
+.brands-row {
   display: flex;
-  gap: 48px;
-  animation: marquee 30s linear infinite;
-  width: max-content;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  max-width: 1100px;
+  margin: 32px auto 0;
+  position: relative;
+  z-index: 2;
 }
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.brand-item {
-  flex-shrink: 0;
+
+.brand-card {
+  position: relative;
+  flex: 1 1 180px;
+  max-width: 210px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px 40px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  min-width: 200px;
-  height: 80px;
-  transition: all var(--transition-base);
   cursor: default;
 }
-.brand-item:hover {
-  border-color: var(--color-glow);
-  background: var(--color-surface-elevated);
-  box-shadow: 0 0 30px rgba(245,158,11,0.08);
-  transform: scale(1.05);
+
+.brand-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
-.brand-item .brand-name {
+
+.brand-card .brand-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 60%, var(--glow-color) 120%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.brand-card:hover .brand-glow {
+  opacity: 0.15;
+}
+
+.brand-gladiator {
+  --glow-color: rgba(255, 107, 53, 0.3);
+  --accent-color: #ff6b35;
+}
+
+.brand-kto {
+  --glow-color: rgba(14, 165, 233, 0.3);
+  --accent-color: #0ea5e9;
+}
+
+.brand-bosch {
+  --glow-color: rgba(239, 68, 68, 0.3);
+  --accent-color: #ef4444;
+}
+
+.brand-makita {
+  --glow-color: rgba(13, 148, 136, 0.3);
+  --accent-color: #0d9488;
+}
+
+.brand-dewalt {
+  --glow-color: rgba(234, 179, 8, 0.3);
+  --accent-color: #eab308;
+}
+
+.brand-accent-line {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+  opacity: 0;
+  transform: scaleX(0.3);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brand-card:hover .brand-accent-line {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.brand-card-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+
+
+.brand-title {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--color-text-muted);
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  transition: color var(--transition-fast);
+  transition: color var(--transition-fast), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  margin: 0;
 }
-.brand-item:hover .brand-name { color: var(--color-text); }
+
+.brand-card:hover .brand-title {
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* Shine reflective effect */
+.card-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  mix-blend-mode: overlay;
+}
+
+@media (max-width: 768px) {
+  .brands-row {
+    gap: 12px;
+    padding: 0 16px;
+  }
+  .brand-card {
+    flex: 1 1 140px;
+    height: 70px;
+    border-radius: 10px;
+  }
+  .brand-title {
+    font-size: 1rem;
+  }
+}
 
 /* ============================================
    PRODUCTS SECTION
@@ -1450,6 +1556,12 @@ ul { list-style: none; }
   .brands-header { margin-bottom: 16px; }
   .brands-header .section-title { font-size: 1.4rem !important; }
   .brands-header p { font-size: 0.88rem !important; }
+  .brands-header .brands-intro-text {
+    font-size: 0.92rem !important;
+    line-height: 1.65 !important;
+    margin-top: 12px !important;
+    padding: 0 16px !important;
+  }
   .brand-item {
     height: 55px;
     min-width: 140px;
@@ -1559,9 +1671,7 @@ ul { list-style: none; }
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.75);
   z-index: 10000;
   opacity: 0;
   visibility: hidden;
@@ -1583,9 +1693,7 @@ ul { list-style: none; }
   max-width: 92vw;
   height: auto;
   max-height: 88vh;
-  background: rgba(13, 13, 13, 0.88);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
+  background: rgba(13, 13, 13, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: var(--radius-lg);
   box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.95);

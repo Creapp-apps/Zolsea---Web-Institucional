@@ -962,8 +962,8 @@ ul { list-style: none; }
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 }
 
 /* --- Category Tabs System --- */
@@ -1074,7 +1074,7 @@ ul { list-style: none; }
 
 .product-image-wrapper {
   position: relative;
-  padding-top: 75%;
+  padding-top: 100%;
   overflow: hidden;
   /* Carbon fiber & dot texture */
   background-color: #0f0f0f;
@@ -1114,8 +1114,8 @@ ul { list-style: none; }
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Para que la ilustración completa se vea perfecta */
-  padding: 20px;
+  object-fit: cover;
+  padding: 0;
   transition: transform 0.5s var(--ease-out), filter 0.5s var(--ease-out);
   z-index: 2;
 }
@@ -1337,7 +1337,11 @@ ul { list-style: none; }
 /* ============================================
    RESPONSIVE
    ============================================ */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
+  .products-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 992px) {
   .products-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
@@ -1588,12 +1592,14 @@ ul { list-style: none; }
     margin: 0 auto !important;
     font-size: 0.88rem !important;
   }
-  .products-grid { grid-template-columns: 1fr; gap: 20px; }
-
   .contact { padding: 80px 0; }
   .contact-alt { flex-direction: column; gap: 24px; }
 
   .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+}
+
+@media (max-width: 576px) {
+  .products-grid { grid-template-columns: 1fr; gap: 20px; }
 }
 
 @media (max-width: 480px) {
@@ -1740,7 +1746,7 @@ ul { list-style: none; }
   color: var(--color-accent);
 }
 
-/* Cuerpo del Modal con Soporte Dual Column */
+/* Cuerpo del Modal con Soporte Showroom Grid */
 .modal-body {
   flex: 1;
   min-height: 0; /* Previene la expansión desmedida en flexbox */
@@ -1753,27 +1759,10 @@ ul { list-style: none; }
   gap: 24px;
 }
 
-.modal-left-column,
-.modal-right-column {
-  min-width: 0; /* Evita que el carrusel o tablas estiren las columnas del grid */
-}
-
 @media (min-width: 769px) {
   .modal-body {
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-    gap: 40px;
-    padding: 45px;
-  }
-  
-  .modal-left-column {
-    position: sticky;
-    top: 0;
-    align-self: start;
-  }
-
-  .modal-carousel {
-    height: 400px !important;
-    margin-bottom: 0 !important;
+    padding: 40px 45px;
+    gap: 32px;
   }
 }
 
@@ -1786,97 +1775,73 @@ ul { list-style: none; }
   border-radius: 3px;
 }
 
-/* Estilos Premium del Carrusel */
-.modal-carousel {
-  position: relative;
+/* Área Superior: Título y Badges */
+.modal-header-full {
+  margin-bottom: 8px;
+}
+
+/* Showroom de Fotos Horizontal / Grid */
+.modal-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
   width: 100%;
-  height: 270px;
+  margin-bottom: 12px;
+}
+
+.gallery-card {
+  position: relative;
+  height: 240px;
   border-radius: var(--radius-md);
-  overflow: hidden;
   background: #080808;
-  margin-bottom: 26px;
   border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.carousel-slides {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.carousel-slide {
-  min-width: 100%;
-  height: 100%;
-  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.carousel-slide img {
+.gallery-card:hover {
+  border-color: rgba(245, 158, 11, 0.3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+}
+
+.gallery-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform var(--transition-base);
 }
 
-/* Botones de Navegación */
-.carousel-nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  z-index: 5;
+.gallery-card.photo-card img {
+  object-fit: contain;
+  padding: 16px;
 }
 
-.carousel-nav-btn:hover {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: #000;
-  transform: translateY(-50%) scale(1.08);
+/* Fila de detalles split a dos columnas */
+.modal-details-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  width: 100%;
 }
 
-.carousel-nav-btn.prev { left: 14px; }
-.carousel-nav-btn.next { right: 14px; }
-
-.carousel-dots {
-  position: absolute;
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  z-index: 5;
+@media (min-width: 769px) {
+  .modal-details-row {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 45px;
+  }
 }
 
-.carousel-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.carousel-dot.active {
-  width: 18px;
-  border-radius: 3px;
-  background: var(--color-accent);
+.details-desc-col,
+.details-specs-col {
+  min-width: 0;
 }
 
 /* Información de Encabezado */
-.modal-header-info {
-  margin-bottom: 24px;
+.modal-header-full {
+  margin-bottom: 0px;
 }
 
 .modal-brand-badge {
@@ -1933,12 +1898,13 @@ ul { list-style: none; }
 .spec-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 11px 16px;
   background: rgba(255, 255, 255, 0.015);
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: var(--radius-sm);
   transition: background var(--transition-fast);
+  gap: 16px;
 }
 
 .spec-row:hover {
@@ -1949,12 +1915,19 @@ ul { list-style: none; }
   font-size: 0.84rem;
   color: var(--color-text-muted);
   font-weight: 500;
+  flex: 0 0 auto;
+  max-width: 140px;
 }
 
 .spec-value {
   font-size: 0.84rem;
   color: #fff;
   font-weight: 600;
+  flex: 1;
+  text-align: right;
+  min-width: 0;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 /* Botón CTA Primario */
@@ -2009,10 +1982,25 @@ ul { list-style: none; }
     flex-direction: column;
     gap: 20px;
   }
-  
-  .modal-carousel {
-    height: 220px;
+  .modal-gallery-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 12px;
     margin-bottom: 4px;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .modal-gallery-grid::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .modal-gallery-grid .gallery-card {
+    flex: 0 0 260px;
+    height: 180px;
+    scroll-snap-align: start;
   }
 
   .modal-close-btn {

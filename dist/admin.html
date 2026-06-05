@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZolSea Herramientas — Panel de Gestión</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #070707;
+      --bg-card: #111110;
+      --bg-input: #181816;
+      --accent: #f59e0b;
+      --accent-rgb: 245, 158, 11;
+      --accent-hover: #d97706;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: rgba(255, 255, 255, 0.06);
+      --border-focus: rgba(245, 158, 11, 0.4);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      --shadow-premium: 0 15px 35px rgba(0, 0, 0, 0.5);
+      --font-body: 'Inter', sans-serif;
+      --font-title: 'Outfit', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0d0d0c;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #262624;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    /* Main Container Layout */
+    .admin-wrapper {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+      width: 280px;
+      background-color: var(--bg-card);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+      position: fixed;
+      height: 100vh;
+      left: 0;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .brand-logo svg {
+      color: var(--accent);
+    }
+
+    .brand-logo h1 {
+      font-family: var(--font-title);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--text-main);
+      text-transform: uppercase;
+    }
+
+    .brand-logo span {
+      font-size: 10px;
+      font-weight: 600;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-grow: 1;
+    }
+
+    .nav-item button {
+      width: 100%;
+      background: transparent;
+      border: 1px solid transparent;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-item button svg {
+      opacity: 0.7;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-item button:hover {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-main);
+    }
+
+    .nav-item button:hover svg {
+      transform: translateX(3px);
+      opacity: 1;
+    }
+
+    .nav-item.active button {
+      background: rgba(245, 158, 11, 0.08);
+      border-color: rgba(245, 158, 11, 0.15);
+      color: var(--accent);
+    }
+
+    .nav-item.active button svg {
+      opacity: 1;
+      color: var(--accent);
+    }
+
+    .sidebar-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 13px;
+      cursor: pointer;
+      width: 100%;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+
+    .btn-preview:hover {
+      background: var(--text-main);
+      color: var(--bg-dark);
+      border-color: var(--text-main);
+    }
+
+    /* Content Area Layout */
+    .main-content {
+      margin-left: 280px;
+      flex-grow: 1;
+      padding: 48px;
+      max-width: 1400px;
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+    }
+
+    .header-bar h2 {
+      font-family: var(--font-title);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .header-bar p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-badge.draft {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.15);
+      color: var(--accent);
+    }
+
+    .status-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    /* Section Panels */
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Grid & Widgets */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.05) 0%, transparent 70%);
+      top: -30px;
+      right: -30px;
+      border-radius: 50%;
+    }
+
+    .stat-card .label {
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-card .val {
+      font-family: var(--font-title);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .stat-card .desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Tutorial Box */
+    .tutorial-card {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.04) 0%, rgba(0, 0, 0, 0) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 40px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .tutorial-icon {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .tutorial-text h3 {
+      font-family: var(--font-title);
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .tutorial-text p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .tutorial-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .step-item {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: var(--radius-md);
+    }
+
+    .step-num {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 12px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .step-title {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .step-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Catalog Management View */
+    .section-header-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      gap: 16px;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      flex-grow: 1;
+      max-width: 480px;
+    }
+
+    .search-input-wrapper svg {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .search-input-wrapper input {
+      width: 100%;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px 12px 48px;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .search-input-wrapper input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    }
+
+    .btn-add {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      border: none;
+      color: #000;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn-add:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Products Data Table */
+    .table-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      width: 100%;
+      margin-bottom: 24px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .data-table th {
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .data-table td {
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      font-size: 14px;
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .prod-cell {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .prod-thumb {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-md);
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      object-fit: cover;
+    }
+
+    .prod-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .prod-name {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .prod-desc-trunc {
+      font-size: 12px;
+      color: var(--text-muted);
+      max-width: 320px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-tag {
+      display: inline-block;
+      padding: 3px 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .cat-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: capitalize;
+    }
+
+    .action-cell {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-action {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action.edit:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(245, 158, 11, 0.05);
+    }
+
+    .btn-action.delete:hover {
+      border-color: #ef4444;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    /* General Texts Form Grid */
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 14px;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.08);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .btn-save-container {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 14px 28px;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.02);
+      border-color: var(--text-muted);
+    }
+
+    /* Modal / Overlay Drawer for Editing Product */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .drawer-overlay.active {
+      display: flex;
+    }
+
+    .drawer-container {
+      width: 680px;
+      height: 100vh;
+      background: var(--bg-card);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 40px;
+      overflow-y: auto;
+      box-shadow: -15px 0 45px rgba(0,0,0,0.8);
+      animation: slideLeft 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideLeft {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
+
+    .drawer-header h3 {
+      font-family: var(--font-title);
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .btn-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-close:hover {
+      color: var(--text-main);
+    }
+
+    .drawer-section-title {
+      font-family: var(--font-title);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-top: 32px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      padding-bottom: 8px;
+    }
+
+    /* Specs table inside drawer */
+    .specs-edit-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+    }
+
+    .specs-edit-table th, 
+    .specs-edit-table td {
+      padding: 8px 4px;
+    }
+
+    .specs-edit-table input {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 13px;
+      width: 100%;
+    }
+
+    .specs-edit-table input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+    }
+
+    .btn-small-action {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-small-action:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(245, 158, 11, 0.05);
+    }
+
+    .btn-small-action.danger:hover {
+      border-color: #ef4444;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    /* Export Panel View */
+    .code-box-wrapper {
+      background: #0a0a09;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .code-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .code-box-header span {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-copy:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .code-box-wrapper textarea {
+      width: 100%;
+      height: 320px;
+      background: transparent;
+      border: none;
+      color: #34d399;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      resize: none;
+      outline: none;
+    }
+
+    /* Steps to apply */
+    .apply-steps-box h4 {
+      font-family: var(--font-title);
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .apply-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .apply-step-row {
+      display: flex;
+      gap: 16px;
+    }
+
+    .step-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-content-row p {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .step-content-row span.code-term {
+      font-family: monospace;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-wrapper">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        <h1>ZolSea</h1>
+        <span>ADMIN</span>
+      </div>
+
+      <ul class="nav-list">
+        <li class="nav-item active" id="nav-dashboard" onclick="switchTab('dashboard')">
+          <button>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+            Panel Principal
+          </button>
+        </li>
+        <li class="nav-item" id="nav-products" onclick="switchTab('products')">
+          <button>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 8 2-2 5.5 5.5-2 2Z"/><path d="m14 11 1 1.5 1.5-1.5L14 11Z"/><path d="M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10Z"/><path d="m10 14-5 5"/></svg>
+            Gestionar Catálogo
+          </button>
+        </li>
+        <li class="nav-item" id="nav-texts" onclick="switchTab('texts')">
+          <button>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+            Textos del Sitio
+          </button>
+        </li>
+        <li class="nav-item" id="nav-export" onclick="switchTab('export')">
+          <button>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Guardar y Exportar
+          </button>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="/" target="_blank" class="btn-preview">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Vista Previa Web
+        </a>
+        <button class="btn-preview" onclick="resetToDefaults()" style="border-color: rgba(239, 68, 68, 0.2); color: rgba(239, 68, 68, 0.85);">
+          Restaurar Datos
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+      <div class="header-bar">
+        <div>
+          <h2 id="page-title">Panel de Control</h2>
+          <p id="page-subtitle">Bienvenido al gestor institucional de ZolSea Herramientas.</p>
+        </div>
+        <div class="status-badge" id="sync-status">
+          <span class="dot"></span>
+          <span id="sync-text">Configuración Sincronizada</span>
+        </div>
+      </div>
+
+      <!-- PANEL: DASHBOARD -->
+      <section class="tab-panel active" id="panel-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="label">Productos en Catálogo</span>
+            <span class="val" id="stat-products-count">0</span>
+            <span class="desc">Publicados y visibles en la web</span>
+          </div>
+          <div class="stat-card">
+            <span class="label">Número de WhatsApp</span>
+            <span class="val" id="stat-whatsapp" style="font-size: 22px; margin-top: 14px; font-weight: 600;">-</span>
+            <span class="desc">Destino de todas las consultas directas</span>
+          </div>
+          <div class="stat-card">
+            <span class="label">Categorías de Producto</span>
+            <span class="val" id="stat-categories-count">0</span>
+            <span class="desc">Categorías de filtrado en la grilla</span>
+          </div>
+        </div>
+
+        <div class="tutorial-card">
+          <div class="tutorial-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="tutorial-text">
+            <h3>¿Cómo gestionar y actualizar tu sitio web?</h3>
+            <p>Este panel te permite gestionar dinámicamente todo el contenido de la web institucional (textos, descripciones, teléfonos de contacto y productos de catálogo). Los cambios que realices se guardan inmediatamente en tu navegador actual para que puedas previsualizarlos en vivo.</p>
+            
+            <div class="tutorial-steps">
+              <div class="step-item">
+                <div class="step-num">Paso 1</div>
+                <div class="step-title">Edita el Contenido</div>
+                <div class="step-desc">Agrega o edita productos, o modifica los textos principales en el menú lateral.</div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">Paso 2</div>
+                <div class="step-title">Previsualiza los cambios</div>
+                <div class="step-desc">Usa el botón "Vista Previa Web" para revisar cómo queda el sitio con tus cambios aplicados.</div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">Paso 3</div>
+                <div class="step-title">Exporta la Configuración</div>
+                <div class="step-desc">Ve a "Guardar y Exportar", descarga el archivo data.json y colócalo en el código para subirlo.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL: PRODUCTS -->
+      <section class="tab-panel" id="panel-products">
+        <div class="section-header-actions">
+          <div class="search-input-wrapper">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="product-search" placeholder="Buscar producto por nombre o marca..." oninput="renderProductsTable()">
+          </div>
+          <button class="btn-add" onclick="openProductDrawer(null)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar Producto
+          </button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Marca</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="products-table-body">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PANEL: TEXTS & SETTINGS -->
+      <section class="tab-panel" id="panel-texts">
+        <div class="form-card">
+          <form id="texts-form" onsubmit="saveTexts(event)">
+            <div class="form-grid">
+              
+              <div class="form-group">
+                <label for="input-whatsapp">Número de WhatsApp (Sin signos, ej: 5491100000000)</label>
+                <input type="text" id="input-whatsapp" required>
+              </div>
+
+              <div class="form-group">
+                <label for="input-hero-badge">Badge Superior del Hero</label>
+                <input type="text" id="input-hero-badge" required>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="input-hero-title">Título del Hero (HTML permitido, ej: &lt;span class="accent"&gt;CONSTRUYEN&lt;/span&gt;)</label>
+                <input type="text" id="input-hero-title" required>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="input-hero-subtitle">Subtítulo del Hero</label>
+                <textarea id="input-hero-subtitle" required></textarea>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="input-brands-intro">Texto de Presentación de Marcas</label>
+                <textarea id="input-brands-intro" required style="min-height: 120px;"></textarea>
+              </div>
+
+            </div>
+
+            <div class="btn-save-container">
+              <button type="submit" class="btn-add">Guardar Cambios</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- PANEL: EXPORT & IMPORT -->
+      <section class="tab-panel" id="panel-export">
+        <div class="form-card" style="margin-bottom: 32px;">
+          <div class="code-box-header">
+            <span style="font-family: var(--font-title); font-size: 16px; color: var(--text-main); font-weight: 600;">Archivo de Datos Generado (data.json)</span>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn-copy" onclick="copyConfigJson()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copiar JSON
+              </button>
+              <button class="btn-add" onclick="downloadConfigJson()" style="padding: 8px 18px; font-size: 12px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Descargar data.json
+              </button>
+            </div>
+          </div>
+          <div class="code-box-wrapper">
+            <textarea id="config-json-output" readonly></textarea>
+          </div>
+        </div>
+
+        <div class="form-card apply-steps-box">
+          <h4>¿Cómo aplicar estos cambios en producción de forma definitiva?</h4>
+          <div class="apply-list">
+            <div class="apply-step-row">
+              <div class="step-badge">1</div>
+              <div class="step-content-row">
+                <p>Haz clic en el botón de arriba <strong>"Descargar data.json"</strong> para descargar el archivo de datos actualizado.</p>
+              </div>
+            </div>
+            <div class="apply-step-row">
+              <div class="step-badge">2</div>
+              <div class="step-content-row">
+                <p>Busca el archivo en tu computadora y muévelo dentro de la carpeta del proyecto en la ruta: <span class="code-term">assets/data.json</span> (esto reemplazará el archivo viejo con tus textos y productos nuevos).</p>
+              </div>
+            </div>
+            <div class="apply-step-row">
+              <div class="step-badge">3</div>
+              <div class="step-content-row">
+                <p>Si estás compilando la web localmente, ejecuta el comando <span class="code-term">npm run build</span> en la terminal para que se generen los archivos listos para producción. ¡Listo! Al subir la web los clientes verán los datos actualizados de forma permanente.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- DRAWER: PRODUCT EDITOR (MODAL) -->
+  <div class="drawer-overlay" id="product-drawer-overlay">
+    <div class="drawer-container">
+      <div class="drawer-header">
+        <h3 id="drawer-title">Editar Producto</h3>
+        <button class="btn-close" onclick="closeProductDrawer()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <form id="product-form" onsubmit="saveProduct(event)">
+        <input type="hidden" id="edit-product-index">
+
+        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr);">
+          <div class="form-group full-width">
+            <label for="prod-name">Nombre del Producto</label>
+            <input type="text" id="prod-name" required placeholder="Ej: Mini Motosierra 21v">
+          </div>
+
+          <div class="form-group">
+            <label for="prod-brand">Marca</label>
+            <select id="prod-brand" required>
+              <option value="Gladiator PRO">Gladiator PRO</option>
+              <option value="KTO">KTO</option>
+              <option value="Bosch">Bosch</option>
+              <option value="Makita">Makita</option>
+              <option value="DeWalt">DeWalt</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="prod-category">Categoría</label>
+            <select id="prod-category" required>
+              <option value="battery">Batería (battery)</option>
+              <option value="welding">Soldadura (welding)</option>
+              <option value="electric">Eléctricas (electric)</option>
+              <option value="accessories">Accesorios (accessories)</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="prod-image">Ruta de Imagen (URL o local, ej: /images/KTO.jpg)</label>
+            <input type="text" id="prod-image" required placeholder="Ej: /images/KTO.jpg">
+          </div>
+
+          <div class="form-group full-width">
+            <label for="prod-desc">Descripción Corta (Tarjeta de catálogo)</label>
+            <textarea id="prod-desc" required placeholder="Descripción de una línea para mostrar en las tarjetas principales..."></textarea>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="prod-longdesc">Descripción Detallada (Vista extendida en modal)</label>
+            <textarea id="prod-longdesc" required style="min-height: 120px;" placeholder="Detalla todos los beneficios, usos recomendados y robustez de la herramienta..."></textarea>
+          </div>
+        </div>
+
+        <!-- BLUEPRINTS SECTION -->
+        <div class="drawer-section-title">
+          <span>Esquemas Técnicos (Blueprints)</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+          <!-- Blueprint 1 -->
+          <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-md);">
+            <h5 style="font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 12px;">Esquema 1</h5>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div class="form-group">
+                <label style="font-size: 10px;">Título</label>
+                <input type="text" id="blue-title-0" required placeholder="Ej: Panel de Control">
+              </div>
+              <div class="form-group">
+                <label style="font-size: 10px;">Subtítulo</label>
+                <input type="text" id="blue-subtitle-0" required placeholder="Ej: Ajuste de Precisión">
+              </div>
+              <div class="form-group">
+                <label style="font-size: 10px;">Icono Técnico</label>
+                <select id="blue-type-0">
+                  <option value="dial">Perilla / Regulador (dial)</option>
+                  <option value="igbt">Onda IGBT (igbt)</option>
+                  <option value="battery">Batería Litio (battery)</option>
+                  <option value="motor">Motor Brushless (motor)</option>
+                  <option value="blade">Espada / Cuchilla (blade)</option>
+                  <option value="gears">Engranajes / Resistencia (gears)</option>
+                  <option value="ratchet">Llave de Ajuste (ratchet)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blueprint 2 -->
+          <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-md);">
+            <h5 style="font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 12px;">Esquema 2</h5>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div class="form-group">
+                <label style="font-size: 10px;">Título</label>
+                <input type="text" id="blue-title-1" required placeholder="Ej: Tecnología Inverter">
+              </div>
+              <div class="form-group">
+                <label style="font-size: 10px;">Subtítulo</label>
+                <input type="text" id="blue-subtitle-1" required placeholder="Ej: Estabilidad del Arco">
+              </div>
+              <div class="form-group">
+                <label style="font-size: 10px;">Icono Técnico</label>
+                <select id="blue-type-1">
+                  <option value="dial">Perilla / Regulador (dial)</option>
+                  <option value="igbt">Onda IGBT (igbt)</option>
+                  <option value="battery">Batería Litio (battery)</option>
+                  <option value="motor">Motor Brushless (motor)</option>
+                  <option value="blade">Espada / Cuchilla (blade)</option>
+                  <option value="gears">Engranajes / Resistencia (gears)</option>
+                  <option value="ratchet">Llave de Ajuste (ratchet)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SPECS SECTION -->
+        <div class="drawer-section-title">
+          <span>Especificaciones Técnicas</span>
+          <button type="button" class="btn-small-action" onclick="addSpecRow()">+ Añadir Fila</button>
+        </div>
+
+        <table class="specs-edit-table">
+          <thead>
+            <tr style="text-align: left; font-size: 11px; color: var(--text-muted);">
+              <th style="width: 45%;">Propiedad (Etiqueta)</th>
+              <th style="width: 45%;">Valor</th>
+              <th style="width: 10%;">Acción</th>
+            </tr>
+          </thead>
+          <tbody id="specs-edit-tbody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+
+        <div class="btn-save-container" style="margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px;">
+          <button type="button" class="btn-secondary" onclick="closeProductDrawer()">Cancelar</button>
+          <button type="submit" class="btn-add">Guardar Producto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Global Config Object
+    let activeConfig = null;
+    let defaultConfig = null;
+
+    // Load Data
+    async function loadData() {
+      // First, fetch assets/data.json to serve as default
+      try {
+        const response = await fetch('/data.json');
+        if (response.ok) {
+          defaultConfig = await response.json();
+        }
+      } catch (e) {
+        console.error("Could not fetch data.json", e);
+      }
+
+      // Check localStorage
+      const saved = localStorage.getItem('zolsea_web_config');
+      if (saved) {
+        try {
+          activeConfig = JSON.parse(saved);
+          showSyncStatus(true);
+        } catch (e) {
+          console.error("Error parsing localStorage config", e);
+          activeConfig = JSON.parse(JSON.stringify(defaultConfig));
+          showSyncStatus(false);
+        }
+      } else {
+        activeConfig = JSON.parse(JSON.stringify(defaultConfig));
+        showSyncStatus(false);
+      }
+
+      updateDashboardStats();
+      renderProductsTable();
+      populateTextsForm();
+      updateJsonOutput();
+    }
+
+    function showSyncStatus(isDraft) {
+      const statusEl = document.getElementById('sync-status');
+      const textEl = document.getElementById('sync-text');
+      if (isDraft) {
+        statusEl.classList.add('draft');
+        textEl.textContent = 'Cambios sin exportar (Modo Vista Previa)';
+      } else {
+        statusEl.classList.remove('draft');
+        textEl.textContent = 'Configuración Sincronizada';
+      }
+    }
+
+    // Tab Switcher
+    function switchTab(tabId) {
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById(`nav-${tabId}`).classList.add('active');
+      document.getElementById(`panel-${tabId}`).classList.add('active');
+
+      // Update titles
+      const titles = {
+        dashboard: { main: "Panel Principal", sub: "Bienvenido al gestor institucional de ZolSea Herramientas." },
+        products: { main: "Gestionar Catálogo", sub: "Crea, edita y remueve productos del catálogo de herramientas." },
+        texts: { main: "Textos del Sitio", sub: "Modifica títulos del banner hero, números telefónicos y descripciones generales." },
+        export: { main: "Guardar y Exportar", sub: "Descarga la configuración definitiva para aplicar tus cambios permanentemente." }
+      };
+
+      document.getElementById('page-title').textContent = titles[tabId].main;
+      document.getElementById('page-subtitle').textContent = titles[tabId].sub;
+
+      if (tabId === 'export') {
+        updateJsonOutput();
+      }
+    }
+
+    // Update Dashboard Metrics
+    function updateDashboardStats() {
+      if (!activeConfig) return;
+      document.getElementById('stat-products-count').textContent = activeConfig.products.length;
+      document.getElementById('stat-whatsapp').textContent = '+' + activeConfig.whatsapp_number;
+      
+      const categories = new Set(activeConfig.products.map(p => p.category));
+      document.getElementById('stat-categories-count').textContent = categories.size;
+    }
+
+    // Render Products Table
+    function renderProductsTable() {
+      const tbody = document.getElementById('products-table-body');
+      if (!activeConfig || !tbody) return;
+
+      const searchVal = document.getElementById('product-search').value.toLowerCase().trim();
+      const filtered = activeConfig.products.map((p, idx) => ({...p, originalIndex: idx}))
+        .filter(p => p.name.toLowerCase().includes(searchVal) || p.brand.toLowerCase().includes(searchVal));
+
+      tbody.innerHTML = filtered.map(p => `
+        <tr>
+          <td>
+            <div class="prod-cell">
+              <img src="${p.image}" class="prod-thumb" alt="${p.name}" onerror="this.src='https://placehold.co/120x120/1a1a19/f59e0b?text=Zolsea'">
+              <div class="prod-details">
+                <span class="prod-name">${p.name}</span>
+                <span class="prod-desc-trunc">${p.desc}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="brand-tag">${p.brand}</span>
+          </td>
+          <td>
+            <span class="cat-tag">${translateCategory(p.category)}</span>
+          </td>
+          <td>
+            <div class="action-cell">
+              <button class="btn-action edit" onclick="openProductDrawer(${p.originalIndex})">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                Editar
+              </button>
+              <button class="btn-action delete" onclick="deleteProduct(${p.originalIndex})">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function translateCategory(cat) {
+      const dict = {
+        battery: 'Batería',
+        welding: 'Soldadura',
+        electric: 'Eléctricas',
+        accessories: 'Accesorios'
+      };
+      return dict[cat] || cat;
+    }
+
+    // Drawer Management
+    function openProductDrawer(index) {
+      const overlay = document.getElementById('product-drawer-overlay');
+      const drawerTitle = document.getElementById('drawer-title');
+      const indexInput = document.getElementById('edit-product-index');
+
+      // Clear Form
+      document.getElementById('product-form').reset();
+      document.getElementById('specs-edit-tbody').innerHTML = '';
+
+      if (index === null) {
+        // Adding new product
+        drawerTitle.textContent = 'Agregar Nuevo Producto';
+        indexInput.value = '';
+        
+        // Add default blueprints templates
+        document.getElementById('blue-title-0').value = 'Detalle Técnico A';
+        document.getElementById('blue-subtitle-0').value = 'Alto Rendimiento';
+        document.getElementById('blue-type-0').value = 'dial';
+
+        document.getElementById('blue-title-1').value = 'Detalle Técnico B';
+        document.getElementById('blue-subtitle-1').value = 'Máxima Calidad';
+        document.getElementById('blue-type-1').value = 'battery';
+
+        // Add 2 empty specs rows
+        addSpecRow('', '');
+        addSpecRow('', '');
+      } else {
+        // Editing product
+        drawerTitle.textContent = 'Editar Producto';
+        indexInput.value = index;
+
+        const p = activeConfig.products[index];
+        document.getElementById('prod-name').value = p.name;
+        document.getElementById('prod-brand').value = p.brand;
+        document.getElementById('prod-category').value = p.category;
+        document.getElementById('prod-image').value = p.image;
+        document.getElementById('prod-desc').value = p.desc;
+        document.getElementById('prod-longdesc').value = p.longDesc;
+
+        // Populate Blueprints
+        if (p.blueprints && p.blueprints.length >= 2) {
+          document.getElementById('blue-title-0').value = p.blueprints[0].title;
+          document.getElementById('blue-subtitle-0').value = p.blueprints[0].subtitle;
+          document.getElementById('blue-type-0').value = p.blueprints[0].type;
+
+          document.getElementById('blue-title-1').value = p.blueprints[1].title;
+          document.getElementById('blue-subtitle-1').value = p.blueprints[1].subtitle;
+          document.getElementById('blue-type-1').value = p.blueprints[1].type;
+        }
+
+        // Populate Specs
+        if (p.specs) {
+          Object.entries(p.specs).forEach(([k, v]) => {
+            addSpecRow(k, v);
+          });
+        }
+      }
+
+      overlay.classList.add('active');
+    }
+
+    function closeProductDrawer() {
+      document.getElementById('product-drawer-overlay').classList.remove('active');
+    }
+
+    // Specs List Manipulation
+    function addSpecRow(key = '', val = '') {
+      const tbody = document.getElementById('specs-edit-tbody');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="text" class="spec-k-input" value="${key}" required placeholder="Ej: Voltaje"></td>
+        <td><input type="text" class="spec-v-input" value="${val}" required placeholder="Ej: 220v"></td>
+        <td style="text-align: center;">
+          <button type="button" class="btn-small-action danger" onclick="this.closest('tr').remove()" style="padding: 6px 8px;">✕</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    // Delete Product
+    function deleteProduct(index) {
+      if (!confirm(`¿Estás seguro que deseas eliminar el producto "${activeConfig.products[index].name}"?`)) {
+        return;
+      }
+      activeConfig.products.splice(index, 1);
+      saveToStorage();
+      renderProductsTable();
+      updateDashboardStats();
+    }
+
+    // Save Product from Drawer Form
+    function saveProduct(e) {
+      e.preventDefault();
+      
+      const indexInput = document.getElementById('edit-product-index').value;
+      const name = document.getElementById('prod-name').value.trim();
+      const brand = document.getElementById('prod-brand').value;
+      const category = document.getElementById('prod-category').value;
+      const image = document.getElementById('prod-image').value.trim();
+      const desc = document.getElementById('prod-desc').value.trim();
+      const longDesc = document.getElementById('prod-longdesc').value.trim();
+
+      // Read Blueprints
+      const blueprints = [
+        {
+          title: document.getElementById('blue-title-0').value.trim(),
+          subtitle: document.getElementById('blue-subtitle-0').value.trim(),
+          type: document.getElementById('blue-type-0').value
+        },
+        {
+          title: document.getElementById('blue-title-1').value.trim(),
+          subtitle: document.getElementById('blue-subtitle-1').value.trim(),
+          type: document.getElementById('blue-type-1').value
+        }
+      ];
+
+      // Read Specs
+      const specs = {};
+      const rows = document.querySelectorAll('#specs-edit-tbody tr');
+      rows.forEach(row => {
+        const k = row.querySelector('.spec-k-input').value.trim();
+        const v = row.querySelector('.spec-v-input').value.trim();
+        if (k && v) {
+          specs[k] = v;
+        }
+      });
+
+      const productData = {
+        name,
+        brand,
+        category,
+        desc,
+        image,
+        blueprints,
+        specs,
+        longDesc
+      };
+
+      if (indexInput === '') {
+        // Create new
+        activeConfig.products.push(productData);
+      } else {
+        // Edit existing
+        const idx = parseInt(indexInput);
+        activeConfig.products[idx] = productData;
+      }
+
+      saveToStorage();
+      closeProductDrawer();
+      renderProductsTable();
+      updateDashboardStats();
+    }
+
+    // Populate Site General Texts Form
+    function populateTextsForm() {
+      if (!activeConfig) return;
+      document.getElementById('input-whatsapp').value = activeConfig.whatsapp_number;
+      document.getElementById('input-hero-badge').value = activeConfig.hero_badge;
+      document.getElementById('input-hero-title').value = activeConfig.hero_title;
+      document.getElementById('input-hero-subtitle').value = activeConfig.hero_subtitle;
+      document.getElementById('input-brands-intro').value = activeConfig.brands_intro_text;
+    }
+
+    // Save site general texts
+    function saveTexts(e) {
+      e.preventDefault();
+      
+      activeConfig.whatsapp_number = document.getElementById('input-whatsapp').value.trim();
+      activeConfig.hero_badge = document.getElementById('input-hero-badge').value.trim();
+      activeConfig.hero_title = document.getElementById('input-hero-title').value.trim();
+      activeConfig.hero_subtitle = document.getElementById('input-hero-subtitle').value.trim();
+      activeConfig.brands_intro_text = document.getElementById('input-brands-intro').value.trim();
+
+      saveToStorage();
+      updateDashboardStats();
+      alert('¡Textos principales del sitio guardados con éxito!');
+    }
+
+    // Save active config to localStorage
+    function saveToStorage() {
+      localStorage.setItem('zolsea_web_config', JSON.stringify(activeConfig));
+      showSyncStatus(true);
+    }
+
+    // Update Textarea for JSON Code Exporter
+    function updateJsonOutput() {
+      const output = document.getElementById('config-json-output');
+      if (output && activeConfig) {
+        output.value = JSON.stringify(activeConfig, null, 2);
+      }
+    }
+
+    // Copy JSON to Clipboard
+    function copyConfigJson() {
+      const output = document.getElementById('config-json-output');
+      output.select();
+      document.execCommand('copy');
+      alert('¡Configuración copiada en formato JSON al portapapeles!');
+    }
+
+    // Download data.json
+    function downloadConfigJson() {
+      if (!activeConfig) return;
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(activeConfig, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "data.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+
+      // Show synchronized after exporting
+      showSyncStatus(false);
+    }
+
+    // Reset all to defaults
+    function resetToDefaults() {
+      if (!confirm('¿Estás seguro que deseas eliminar todos tus cambios locales y restaurar el catálogo inicial?')) {
+        return;
+      }
+      localStorage.removeItem('zolsea_web_config');
+      loadData();
+      alert('Se han restaurado los valores por defecto del sitio.');
+    }
+
+    // Init Page on Load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadData();
+    });
+  </script>
+</body>
+</html>

@@ -92,7 +92,7 @@ const PRODUCTS = [
     brand: 'KTO',
     category: 'battery',
     desc: 'Mini motosierra inalámbrica 21v con maletín y extensores. Compacta, liviana y potente.',
-    image: '/images/mini-motosierra.png',
+    image: '/images/KTO.jpg',
     blueprints: [
       { title: 'Soporte y Guía', subtitle: 'Protección Anti-Astillas', type: 'blade' },
       { title: 'Batería Desplazable', subtitle: 'Acople Deslizante Rápido', type: 'battery' }
@@ -169,10 +169,76 @@ const PRODUCTS = [
   }
 ];
 
+// ── Configuration State ───────────────────────
+let siteConfig = {
+  whatsapp_number: WHATSAPP_NUMBER,
+  hero_badge: "MercadoLíder Platinum · +1.900 seguidores",
+  hero_title: 'HERRAMIENTAS QUE <span class="accent">CONSTRUYEN</span>',
+  hero_subtitle: 'Somos distribuidores oficiales de las mejores marcas de herramientas en Argentina. Potencia, precisión y confianza para cada proyecto.',
+  brands_intro_text: 'Somos una empresa dedicada a la distribución mayorista de herramientas y accesorios. Entregamos en todo el país (GBA e interior) con camiones propios y tercerizados, estamos preparados para brindar el mejor servicio de asesoramiento, venta y postventa del mercado.',
+  products: PRODUCTS
+};
+
+async function initSiteData() {
+  // 1. Try reading from localStorage (for instant admin previews)
+  const saved = localStorage.getItem('zolsea_web_config');
+  if (saved) {
+    try {
+      siteConfig = JSON.parse(saved);
+      hydrateDOM();
+      return;
+    } catch(e) {
+      console.error("Error loading config from localStorage:", e);
+    }
+  }
+
+  // 2. Otherwise fetch from data.json
+  try {
+    const res = await fetch('/data.json');
+    if (res.ok) {
+      siteConfig = await res.json();
+    }
+  } catch(e) {
+    console.warn("Could not fetch data.json, using static fallback", e);
+  }
+
+  hydrateDOM();
+}
+
+function hydrateDOM() {
+  if (!siteConfig) return;
+
+  // Actualizar Badge del Hero
+  const heroBadge = document.querySelector('.hero-badge');
+  if (heroBadge && siteConfig.hero_badge) {
+    heroBadge.innerHTML = `<span class="dot"></span>${siteConfig.hero_badge}`;
+  }
+
+  // Actualizar Título del Hero
+  const heroTitle = document.getElementById('heroTitle');
+  if (heroTitle && siteConfig.hero_title) {
+    heroTitle.innerHTML = siteConfig.hero_title;
+  }
+
+  // Actualizar Subtítulo del Hero
+  const heroSubtitle = document.querySelector('.hero-subtitle');
+  if (heroSubtitle && siteConfig.hero_subtitle) {
+    heroSubtitle.textContent = siteConfig.hero_subtitle;
+  }
+
+  // Actualizar Texto de Presentación de Marcas
+  const brandsIntro = document.querySelector('.brands-intro-text');
+  if (brandsIntro && siteConfig.brands_intro_text) {
+    brandsIntro.textContent = siteConfig.brands_intro_text;
+  }
+}
+
 // ── WhatsApp SVG icon ─────────────────────────
 const WA_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  await initSiteData();
+
   initHeroEditorial();
   initProductsGrid();
   initSplitTextReveal(); // Divide los títulos antes de observar el scroll
@@ -525,7 +591,7 @@ function initProductsGrid() {
   const grid = document.getElementById('productsGrid');
   if (!grid) return;
 
-  grid.innerHTML = PRODUCTS.map((p, i) => `
+  grid.innerHTML = siteConfig.products.map((p, i) => `
     <article class="product-card reveal reveal-delay-${(i % 3) + 1}" data-category="${p.category}">
       <div class="product-image-wrapper">
         <img src="${p.image}" alt="${p.name}" loading="lazy" />
@@ -552,7 +618,7 @@ function initProductsGrid() {
       e.stopPropagation();
       const product = btn.dataset.product;
       const msg = encodeURIComponent(`Hola! Me interesa el producto: ${product}. ¿Podrían darme más información?`);
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+      window.open(`https://wa.me/${siteConfig.whatsapp_number}?text=${msg}`, '_blank');
     });
   });
 
@@ -710,7 +776,7 @@ function initWhatsApp() {
     if (message) text += message;
     else text += 'Me gustaría recibir asesoramiento sobre herramientas.';
 
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(`https://wa.me/${siteConfig.whatsapp_number}?text=${encodeURIComponent(text)}`, '_blank');
   });
 }
 
@@ -808,7 +874,7 @@ function generateBlueprintSVG(title, subtitle, type) {
 
 // ── Open Product Modal Toast ──────────────────
 function openProductModal(index) {
-  const p = PRODUCTS[index];
+  const p = siteConfig.products[index];
   const overlay = document.getElementById('productModalOverlay');
   const toast = document.getElementById('productModalToast');
   const modalBody = document.getElementById('modalBody');
@@ -833,101 +899,52 @@ function openProductModal(index) {
 
   // Render content
   modalBody.innerHTML = `
-    <!-- Left Column: Carousel & Technical Blueprints -->
-    <div class="modal-left-column">
-      <div class="modal-carousel">
-        <div class="carousel-slides" id="carouselSlides" style="transform: translateX(0%);">
-          ${modalSlides.map((s, idx) => `
-            <div class="carousel-slide">
-              <img src="${s}" alt="${p.name} - Vista ${idx + 1}" />
-            </div>
-          `).join('')}
-        </div>
-        
-        <button class="carousel-nav-btn prev" id="carouselPrevBtn" aria-label="Anterior">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-        <button class="carousel-nav-btn next" id="carouselNextBtn" aria-label="Siguiente">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-        
-        <div class="carousel-dots" id="carouselDots">
-          ${modalSlides.map((_, idx) => `
-            <div class="carousel-dot ${idx === 0 ? 'active' : ''}" data-slide="${idx}"></div>
-          `).join('')}
-        </div>
+    <!-- Top Area: Header & Badges -->
+    <div class="modal-header-full">
+      <span class="modal-brand-badge">${p.brand}</span>
+      <h2 class="modal-product-title">${p.name}</h2>
+    </div>
+
+    <!-- Middle Area: Gallery Grid (3 columns) -->
+    <div class="modal-gallery-grid">
+      <div class="gallery-card photo-card">
+        <img src="${slide1}" alt="${p.name} - Imagen Principal" />
+      </div>
+      <div class="gallery-card blueprint-card">
+        <img src="${slide2}" alt="${p.name} - Ficha Técnica Dimétrica" />
+      </div>
+      <div class="gallery-card blueprint-card">
+        <img src="${slide3}" alt="${p.name} - Ficha Técnica Despiece" />
       </div>
     </div>
 
-    <!-- Right Column: Text Information & Specs Sheet -->
-    <div class="modal-right-column">
-      <!-- Header Info -->
-      <div class="modal-header-info">
-        <span class="modal-brand-badge">${p.brand}</span>
-        <h2 class="modal-product-title">${p.name}</h2>
+    <!-- Bottom Area: Split Details -->
+    <div class="modal-details-row">
+      <!-- Left side: Description -->
+      <div class="details-desc-col">
+        <h4 class="modal-section-title">Descripción Detallada</h4>
+        <p class="modal-description">${p.longDesc}</p>
       </div>
 
-      <!-- Description -->
-      <h4 class="modal-section-title">Descripción Detallada</h4>
-      <p class="modal-description">${p.longDesc}</p>
-
-      <!-- Technical Specs -->
-      <h4 class="modal-section-title">Ficha Técnica</h4>
-      <div class="modal-specs-grid">
-        ${specRowsHtml}
+      <!-- Right side: Technical Specifications & CTA -->
+      <div class="details-specs-col">
+        <h4 class="modal-section-title">Ficha Técnica</h4>
+        <div class="modal-specs-grid">
+          ${specRowsHtml}
+        </div>
+        <button class="modal-action-cta" id="modalCtaBtn" data-product="${p.name}">
+          ${WA_ICON}
+          Consultar por WhatsApp
+        </button>
       </div>
-
-      <!-- Call to action -->
-      <button class="modal-action-cta" id="modalCtaBtn" data-product="${p.name}">
-        ${WA_ICON}
-        Consultar por WhatsApp
-      </button>
     </div>
   `;
-
-  // Attach carousel listeners
-  const slidesContainer = document.getElementById('carouselSlides');
-  const prevBtn = document.getElementById('carouselPrevBtn');
-  const nextBtn = document.getElementById('carouselNextBtn');
-  const dotsContainer = document.getElementById('carouselDots');
-  const dots = dotsContainer.querySelectorAll('.carousel-dot');
-
-  function updateCarousel() {
-    slidesContainer.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
-    dots.forEach((dot, idx) => {
-      dot.classList.toggle('active', idx === currentSlideIndex);
-    });
-  }
-
-  prevBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    currentSlideIndex = (currentSlideIndex - 1 + modalSlides.length) % modalSlides.length;
-    updateCarousel();
-  });
-
-  nextBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    currentSlideIndex = (currentSlideIndex + 1) % modalSlides.length;
-    updateCarousel();
-  });
-
-  dots.forEach((dot) => {
-    dot.addEventListener('click', (e) => {
-      e.stopPropagation();
-      currentSlideIndex = parseInt(dot.dataset.slide);
-      updateCarousel();
-    });
-  });
 
   // Attach WhatsApp CTA inside modal
   const ctaBtn = document.getElementById('modalCtaBtn');
   ctaBtn.addEventListener('click', () => {
     const msg = encodeURIComponent(`Hola! Me interesa el producto: ${p.name}. ¿Podrían darme más información detallada sobre las especificaciones técnicas?`);
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+    window.open(`https://wa.me/${siteConfig.whatsapp_number}?text=${msg}`, '_blank');
   });
 
   // Show Modal Drawer

@@ -912,12 +912,454 @@
     .upload-spinner {
       animation: spin 0.8s linear infinite;
     }
+
+    /* Hide admin content by default if not authenticated */
+    body:not(.authenticated) .admin-wrapper {
+      display: none !important;
+    }
+
+    /* Admin Login Overlay Styles */
+    #admin-login-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: #080808;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+    }
+    
+    #admin-login-overlay::before {
+      content: '';
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0) 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .login-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 400px;
+      padding: 2.5rem;
+      background: rgba(18, 18, 18, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .login-logo svg {
+      width: 42px;
+      height: 42px;
+      color: #f59e0b;
+      filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.4));
+    }
+
+    .login-logo h2 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .login-logo p {
+      font-size: 0.85rem;
+      color: #8c92a0;
+      margin: 0;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-group svg {
+      position: absolute;
+      left: 14px;
+      color: #8c92a0;
+      pointer-events: none;
+      transition: color 0.3s;
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 14px 44px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .login-input:focus {
+      border-color: #f59e0b;
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+    }
+
+    .login-input:focus + svg {
+      color: #f59e0b;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #ff6b35, #f59e0b);
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
+    .login-error {
+      font-size: 0.85rem;
+      color: #ef4444;
+      min-height: 20px;
+      margin: 0;
+      text-align: left;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .login-error.visible {
+      opacity: 1;
+    }
+
+    /* Password Visibility Toggle and Security Group Styles */
+    .btn-toggle-pass {
+      position: absolute;
+      right: 14px;
+      background: none;
+      border: none;
+      color: #8c92a0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: color 0.2s;
+      outline: none;
+      z-index: 10;
+    }
+    .btn-toggle-pass:hover {
+      color: var(--brand-color, #f59e0b);
+    }
+    .security-input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .security-input-group input {
+      width: 100%;
+      padding: 10px 40px 10px 14px !important;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .security-input-group input:focus {
+      border-color: var(--brand-color);
+    }
+    .security-input-group .btn-toggle-pass {
+      right: 12px;
+      color: var(--text-muted);
+    }
+    .security-input-group .btn-toggle-pass:hover {
+      color: var(--brand-color);
+    }
+
+    /* Custom Toast Modal Overlay */
+    .custom-toast-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .custom-toast-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .custom-toast-card {
+      background: rgba(20, 20, 22, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 24px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .custom-toast-overlay.show .custom-toast-card {
+      transform: scale(1);
+    }
+    .toast-icon-wrapper {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .toast-icon-wrapper.success {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    .toast-icon-wrapper.error {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+    .toast-content h4 {
+      font-family: var(--font-title);
+      font-size: 1.2rem;
+      color: #fff;
+      margin: 0 0 8px 0;
+      font-weight: 700;
+    }
+    .toast-content p {
+      color: #8c92a0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 0 0 20px 0;
+    }
+    .toast-close-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #ff6b35, #f59e0b);
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+    .toast-close-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    /* Loading Spinner Animations */
+    @keyframes rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes dash {
+      0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+      }
+      100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+      }
+    }
+    .spinner {
+      display: inline-block;
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-DrWwvOgX.js"></script>
+  <script type="module" crossorigin src="/assets/admin-7hVA2ppo.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
+  <script>
+    if (sessionStorage.getItem('zolsea_admin_auth') === 'true') {
+      document.body.classList.add('authenticated');
+    }
+  </script>
+
+  <!-- Autenticación de Acceso -->
+  <div id="admin-login-overlay" style="display: none;">
+    <div class="login-card">
+      <div class="login-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        <h2>ZolSea</h2>
+        <p id="login-card-subtitle">Panel de Control Administrativo</p>
+      </div>
+
+      <!-- STEP 1: LOGIN -->
+      <div id="login-form-step" class="login-form">
+        <div class="input-group">
+          <input type="password" id="login-pass" class="login-input" placeholder="Contraseña de acceso" autofocus>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <button type="button" class="btn-toggle-pass" onclick="togglePasswordVisibility('login-pass', this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: -8px; width: 100%;">
+          <a href="#" id="btn-show-forgot" style="color: var(--brand-color); font-size: 0.8rem; text-decoration: none; font-weight: 500; transition: opacity 0.2s; cursor: pointer;">¿Olvidaste tu contraseña?</a>
+        </div>
+        <p id="login-err-msg" class="login-error">Contraseña incorrecta. Intente nuevamente.</p>
+        <button id="login-submit-btn" class="login-btn">
+          <span>Ingresar</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </div>
+
+      <!-- STEP 2: FORGOT / RECOVERY KEY -->
+      <div id="forgot-form-step" class="login-form" style="display: none;">
+        <p style="color: #8c92a0; font-size: 0.85rem; line-height: 1.4; margin-top: -10px; margin-bottom: 15px; text-align: center;">
+          Ingresa la <strong>Clave de Recuperación</strong> de emergencia o usa la consulta SQL para restablecer desde Supabase.
+        </p>
+        <div class="input-group">
+          <input type="text" id="recovery-key" class="login-input" placeholder="ZOLSEA-RECOVERY-XXXX-XXXX..." style="text-transform: uppercase; font-family: monospace; letter-spacing: 0.5px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+        </div>
+        
+        <p id="recovery-err-msg" class="login-error">Clave de recuperación inválida.</p>
+        
+        <button id="recovery-submit-btn" class="login-btn" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff;">
+          <span>Verificar Clave</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+        </button>
+
+        <!-- SQL Reset Option Accordion -->
+        <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 12px; margin-top: 15px; text-align: left; width: 100%;">
+          <span style="font-size: 0.8rem; font-weight: 700; color: #fff; display: block; margin-bottom: 6px;">Restablecer vía Supabase (SQL)</span>
+          <p style="color: #6b7280; font-size: 0.75rem; line-height: 1.35; margin: 0 0 8px 0;">
+            Si eres el administrador y tienes acceso a Supabase, copia esta consulta SQL y ejecútala en el SQL Editor para restablecer la clave a <strong>zolsea2026</strong>.
+          </p>
+          <div style="display: flex; gap: 6px; align-items: stretch;">
+            <input type="text" readonly id="sql-reset-code" value="UPDATE site_config SET data = jsonb_set(data, '{admin_password_hash}', '&quot;563a4e5ca30e296163790797fd393bcaedf41b483482e803a27e4069e68beeea&quot;') WHERE id = 'zolsea';" style="flex: 1; font-family: monospace; font-size: 0.65rem; background: #000; border: 1px solid #222; border-radius: 4px; padding: 6px; color: #10b981; outline: none;">
+            <button id="btn-copy-sql" onclick="const input = document.getElementById('sql-reset-code'); input.select(); document.execCommand('copy'); alert('¡Consulta SQL copiada al portapapeles!');" style="padding: 0 10px; background: #222; border: 1px solid #333; color: #fff; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: bold; outline: none;">Copiar</button>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; margin-top: 15px;">
+          <a href="#" id="btn-back-login" style="color: #8c92a0; font-size: 0.8rem; text-decoration: none; font-weight: 500;">← Volver al inicio</a>
+        </div>
+      </div>
+
+      <!-- STEP 3: RESET TO NEW PASSWORD -->
+      <div id="reset-form-step" class="login-form" style="display: none;">
+        <p style="color: #8c92a0; font-size: 0.85rem; line-height: 1.4; margin-top: -10px; margin-bottom: 15px; text-align: center;">
+          Clave de recuperación correcta. Ingresa tu nueva contraseña administrativa.
+        </p>
+        <div class="input-group" style="margin-bottom: 10px;">
+          <input type="password" id="reset-new-pass" class="login-input" placeholder="Nueva contraseña (mín. 6 caracteres)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <button type="button" class="btn-toggle-pass" onclick="togglePasswordVisibility('reset-new-pass', this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="input-group">
+          <input type="password" id="reset-confirm-pass" class="login-input" placeholder="Confirmar nueva contraseña">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <button type="button" class="btn-toggle-pass" onclick="togglePasswordVisibility('reset-confirm-pass', this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        
+        <p id="reset-err-msg" class="login-error">Las contraseñas no coinciden.</p>
+        
+        <button id="reset-submit-btn" class="login-btn" style="background: linear-gradient(135deg, #10b981, #059669); color: #fff;">
+          <span>Establecer y Acceder</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Toast Notificación -->
+  <div id="custom-toast-container" class="custom-toast-overlay">
+    <div class="custom-toast-card">
+      <div class="toast-icon-wrapper success">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <div class="toast-content">
+        <h4 id="toast-title">¡Éxito!</h4>
+        <p id="toast-message">Contraseña modificada satisfactoriamente.</p>
+      </div>
+      <button class="toast-close-btn" onclick="closeCustomToast()">Aceptar</button>
+    </div>
+  </div>
+
+  <script>
+    if (sessionStorage.getItem('zolsea_admin_auth') !== 'true') {
+      document.getElementById('admin-login-overlay').style.display = 'flex';
+    }
+  </script>
 
   <div class="admin-wrapper">
     <!-- SIDEBAR -->
@@ -951,6 +1393,12 @@
           <button>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Guardar y Exportar
+          </button>
+        </li>
+        <li class="nav-item" id="nav-security" onclick="switchTab('security')">
+          <button>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Seguridad y Acceso
           </button>
         </li>
       </ul>
@@ -1150,6 +1598,75 @@
                 <p>Si estás compilando la web localmente, ejecuta el comando <span class="code-term">npm run build</span> en la terminal para que se generen los archivos listos para producción. ¡Listo! Al subir la web los clientes verán los datos actualizados de forma permanente.</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL: SEGURIDAD Y ACCESO -->
+      <section class="tab-panel" id="panel-security">
+        <div class="form-card" style="max-width: 500px; margin-bottom: 32px;">
+          <h3 style="font-family: var(--font-title); font-size: 20px; color: var(--text-main); font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Cambiar Contraseña Administrativa
+          </h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 24px;">
+            Actualiza la contraseña utilizada para acceder al panel de control de ZolSea Herramientas. 
+            Este cambio modificará el archivo local de configuración y deberá ser publicado en Supabase para que tenga efecto global.
+          </p>
+
+          <form id="change-pass-form" onsubmit="changeAdminPassword(event)">
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="current-pass" style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: var(--text-main);">Contraseña Actual</label>
+              <div class="security-input-group">
+                <input type="password" id="current-pass" required placeholder="Ingresa tu contraseña actual">
+                <button type="button" class="btn-toggle-pass" onclick="togglePasswordVisibility('current-pass', this)">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="new-pass" style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: var(--text-main);">Nueva Contraseña</label>
+              <div class="security-input-group">
+                <input type="password" id="new-pass" required placeholder="Mínimo 6 caracteres">
+                <button type="button" class="btn-toggle-pass" onclick="togglePasswordVisibility('new-pass', this)">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 24px;">
+              <label for="confirm-pass" style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: var(--text-main);">Confirmar Nueva Contraseña</label>
+              <div class="security-input-group">
+                <input type="password" id="confirm-pass" required placeholder="Repite la nueva contraseña">
+                <button type="button" class="btn-toggle-pass" onclick="togglePasswordVisibility('confirm-pass', this)">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <p id="change-pass-err" style="margin-bottom: 16px; color: #ef4444; font-size: 13px; display: none;"></p>
+            <p id="change-pass-success" style="margin-bottom: 16px; color: #10b981; font-size: 13px; display: none; font-weight: 600;"></p>
+
+            <button type="submit" class="login-btn" style="margin-top: 10px;">
+              Actualizar Contraseña
+            </button>
+          </form>
+        </div>
+
+        <div class="form-card" style="max-width: 500px;">
+          <h3 style="font-family: var(--font-title); font-size: 16px; color: var(--text-main); font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><key><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></key><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+            Clave de Recuperación de Emergencia
+          </h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 16px;">
+            Si alguna vez olvidas tu contraseña, puedes ingresar esta clave maestra en la pantalla de inicio de sesión para establecer una nueva clave. <strong>Guárdala en un lugar seguro.</strong>
+          </p>
+          <div style="display: flex; gap: 8px; align-items: stretch; background: rgba(0, 0, 0, 0.3); padding: 12px; border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 6px;">
+            <code style="font-family: monospace; font-size: 14px; color: var(--brand-color); flex: 1; align-self: center; letter-spacing: 0.5px;">ZOLSEA-RECOVERY-9F8E-2A1B-5D3C</code>
+            <button onclick="navigator.clipboard.writeText('ZOLSEA-RECOVERY-9F8E-2A1B-5D3C'); alert('¡Clave de recuperación copiada al portapapeles!');" style="padding: 6px 12px; font-size: 11px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; cursor: pointer; border-radius: 4px;" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
+              Copiar Clave
+            </button>
           </div>
         </div>
       </section>

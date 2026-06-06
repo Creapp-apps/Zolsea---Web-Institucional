@@ -896,7 +896,26 @@
       font-size: 12px;
       border: 1px solid var(--border);
     }
+
+    /* Drag & Drop Zone Styles */
+    #drop-zone.dragover {
+      border-color: var(--accent) !important;
+      background: rgba(245, 158, 11, 0.05) !important;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .upload-spinner {
+      animation: spin 0.8s linear infinite;
+    }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" crossorigin src="/assets/admin-DrWwvOgX.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
 
@@ -954,9 +973,15 @@
           <h2 id="page-title">Panel de Control</h2>
           <p id="page-subtitle">Bienvenido al gestor institucional de ZolSea Herramientas.</p>
         </div>
-        <div class="status-badge" id="sync-status">
-          <span class="dot"></span>
-          <span id="sync-text">Configuración Sincronizada</span>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <div class="status-badge" id="sync-status">
+            <span class="dot"></span>
+            <span id="sync-text">Configuración Sincronizada</span>
+          </div>
+          <button class="btn-add" onclick="publishConfigToSupabase()" style="background: #10b981; color: #fff; padding: 8px 16px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; border: none; border-radius: var(--radius-md); cursor: pointer;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Publicar Cambios
+          </button>
         </div>
       </div>
 
@@ -1093,6 +1118,10 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Descargar data.json
               </button>
+              <button class="btn-add" onclick="publishConfigToSupabase()" style="padding: 8px 18px; font-size: 12px; background: #10b981; color: #fff; border: none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Publicar en Supabase
+              </button>
             </div>
           </div>
           <div class="code-box-wrapper">
@@ -1168,8 +1197,81 @@
           </div>
 
           <div class="form-group full-width">
-            <label for="prod-image">Ruta de Imagen (URL o local, ej: /images/KTO.jpg)</label>
-            <input type="text" id="prod-image" required placeholder="Ej: /images/KTO.jpg">
+            <label>Fotos del Producto (Máximo 3)</label>
+            <div class="product-photos-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px;">
+              
+              <!-- Slot 1 -->
+              <div class="photo-slot" data-slot="1" id="photo-slot-1" style="border: 2px dashed var(--border); border-radius: var(--radius-md); aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; cursor: pointer; overflow: hidden; background: rgba(255, 255, 255, 0.01); transition: all 0.3s ease;">
+                <div class="slot-empty" style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px; text-align: center;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span style="font-size: 11px; color: var(--text-main); font-weight: 600;">Foto Principal *</span>
+                  <span style="font-size: 9px; color: var(--text-muted);">Arrastra o haz clic</span>
+                </div>
+                <div class="slot-loading" style="display: none; flex-direction: column; align-items: center; gap: 8px; padding: 10px;">
+                  <div class="upload-spinner" style="width: 20px; height: 20px; border: 2px solid rgba(245, 158, 11, 0.1); border-top: 2px solid var(--accent); border-radius: 50%;"></div>
+                  <span style="font-size: 9px; color: var(--text-main);" class="slot-loading-text">0%</span>
+                </div>
+                <div class="slot-preview-container" style="display: none; width: 100%; height: 100%; position: relative;">
+                  <img class="slot-preview-img" src="" alt="Vista previa" style="width: 100%; height: 100%; object-fit: cover;">
+                  <button type="button" class="slot-delete-btn" onclick="removeSlotImage(1, event)" style="position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; background: rgba(239, 68, 68, 0.9); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 10px;">×</button>
+                </div>
+              </div>
+
+              <!-- Slot 2 -->
+              <div class="photo-slot" data-slot="2" id="photo-slot-2" style="border: 2px dashed var(--border); border-radius: var(--radius-md); aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; cursor: pointer; overflow: hidden; background: rgba(255, 255, 255, 0.01); transition: all 0.3s ease;">
+                <div class="slot-empty" style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px; text-align: center;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">Foto 2 (Opcional)</span>
+                  <span style="font-size: 9px; color: var(--text-muted);">Arrastra o haz clic</span>
+                </div>
+                <div class="slot-loading" style="display: none; flex-direction: column; align-items: center; gap: 8px; padding: 10px;">
+                  <div class="upload-spinner" style="width: 20px; height: 20px; border: 2px solid rgba(245, 158, 11, 0.1); border-top: 2px solid var(--accent); border-radius: 50%;"></div>
+                  <span style="font-size: 9px; color: var(--text-main);" class="slot-loading-text">0%</span>
+                </div>
+                <div class="slot-preview-container" style="display: none; width: 100%; height: 100%; position: relative;">
+                  <img class="slot-preview-img" src="" alt="Vista previa" style="width: 100%; height: 100%; object-fit: cover;">
+                  <button type="button" class="slot-delete-btn" onclick="removeSlotImage(2, event)" style="position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; background: rgba(239, 68, 68, 0.9); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 10px;">×</button>
+                </div>
+              </div>
+
+              <!-- Slot 3 -->
+              <div class="photo-slot" data-slot="3" id="photo-slot-3" style="border: 2px dashed var(--border); border-radius: var(--radius-md); aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; cursor: pointer; overflow: hidden; background: rgba(255, 255, 255, 0.01); transition: all 0.3s ease;">
+                <div class="slot-empty" style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px; text-align: center;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">Foto 3 (Opcional)</span>
+                  <span style="font-size: 9px; color: var(--text-muted);">Arrastra o haz clic</span>
+                </div>
+                <div class="slot-loading" style="display: none; flex-direction: column; align-items: center; gap: 8px; padding: 10px;">
+                  <div class="upload-spinner" style="width: 20px; height: 20px; border: 2px solid rgba(245, 158, 11, 0.1); border-top: 2px solid var(--accent); border-radius: 50%;"></div>
+                  <span style="font-size: 9px; color: var(--text-main);" class="slot-loading-text">0%</span>
+                </div>
+                <div class="slot-preview-container" style="display: none; width: 100%; height: 100%; position: relative;">
+                  <img class="slot-preview-img" src="" alt="Vista previa" style="width: 100%; height: 100%; object-fit: cover;">
+                  <button type="button" class="slot-delete-btn" onclick="removeSlotImage(3, event)" style="position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; background: rgba(239, 68, 68, 0.9); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 10px;">×</button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Single hidden input file field -->
+            <input type="file" id="prod-image-file" accept="image/*" style="display: none;">
+
+            <!-- Hidden input fields to store URLs -->
+            <input type="hidden" id="prod-image" required>
+            <input type="hidden" id="prod-image2">
+            <input type="hidden" id="prod-image3">
+
+            <!-- Manual URLs fields -->
+            <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px;">
+              <span style="font-size: 11px; color: var(--text-muted);">URLs manuales (opcional):</span>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <input type="text" id="prod-image-url-manual" placeholder="URL Foto 1" style="font-size: 11px; padding: 6px;" oninput="handleManualSlotUrl(1, this.value)">
+                <input type="text" id="prod-image-2-url-manual" placeholder="URL Foto 2" style="font-size: 11px; padding: 6px;" oninput="handleManualSlotUrl(2, this.value)">
+                <input type="text" id="prod-image-3-url-manual" placeholder="URL Foto 3" style="font-size: 11px; padding: 6px;" oninput="handleManualSlotUrl(3, this.value)">
+              </div>
+            </div>
+            
+            <span id="upload-status" style="font-size: 11px; display: none;"></span>
           </div>
 
           <div class="form-group full-width">
@@ -1271,373 +1373,5 @@
     </div>
   </div>
 
-  <script>
-    // Global Config Object
-    let activeConfig = null;
-    let defaultConfig = null;
-
-    // Load Data
-    async function loadData() {
-      // First, fetch assets/data.json to serve as default
-      try {
-        const response = await fetch('/data.json');
-        if (response.ok) {
-          defaultConfig = await response.json();
-        }
-      } catch (e) {
-        console.error("Could not fetch data.json", e);
-      }
-
-      // Check localStorage
-      const saved = localStorage.getItem('zolsea_web_config');
-      if (saved) {
-        try {
-          activeConfig = JSON.parse(saved);
-          showSyncStatus(true);
-        } catch (e) {
-          console.error("Error parsing localStorage config", e);
-          activeConfig = JSON.parse(JSON.stringify(defaultConfig));
-          showSyncStatus(false);
-        }
-      } else {
-        activeConfig = JSON.parse(JSON.stringify(defaultConfig));
-        showSyncStatus(false);
-      }
-
-      updateDashboardStats();
-      renderProductsTable();
-      populateTextsForm();
-      updateJsonOutput();
-    }
-
-    function showSyncStatus(isDraft) {
-      const statusEl = document.getElementById('sync-status');
-      const textEl = document.getElementById('sync-text');
-      if (isDraft) {
-        statusEl.classList.add('draft');
-        textEl.textContent = 'Cambios sin exportar (Modo Vista Previa)';
-      } else {
-        statusEl.classList.remove('draft');
-        textEl.textContent = 'Configuración Sincronizada';
-      }
-    }
-
-    // Tab Switcher
-    function switchTab(tabId) {
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
-      
-      document.getElementById(`nav-${tabId}`).classList.add('active');
-      document.getElementById(`panel-${tabId}`).classList.add('active');
-
-      // Update titles
-      const titles = {
-        dashboard: { main: "Panel Principal", sub: "Bienvenido al gestor institucional de ZolSea Herramientas." },
-        products: { main: "Gestionar Catálogo", sub: "Crea, edita y remueve productos del catálogo de herramientas." },
-        texts: { main: "Textos del Sitio", sub: "Modifica títulos del banner hero, números telefónicos y descripciones generales." },
-        export: { main: "Guardar y Exportar", sub: "Descarga la configuración definitiva para aplicar tus cambios permanentemente." }
-      };
-
-      document.getElementById('page-title').textContent = titles[tabId].main;
-      document.getElementById('page-subtitle').textContent = titles[tabId].sub;
-
-      if (tabId === 'export') {
-        updateJsonOutput();
-      }
-    }
-
-    // Update Dashboard Metrics
-    function updateDashboardStats() {
-      if (!activeConfig) return;
-      document.getElementById('stat-products-count').textContent = activeConfig.products.length;
-      document.getElementById('stat-whatsapp').textContent = '+' + activeConfig.whatsapp_number;
-      
-      const categories = new Set(activeConfig.products.map(p => p.category));
-      document.getElementById('stat-categories-count').textContent = categories.size;
-    }
-
-    // Render Products Table
-    function renderProductsTable() {
-      const tbody = document.getElementById('products-table-body');
-      if (!activeConfig || !tbody) return;
-
-      const searchVal = document.getElementById('product-search').value.toLowerCase().trim();
-      const filtered = activeConfig.products.map((p, idx) => ({...p, originalIndex: idx}))
-        .filter(p => p.name.toLowerCase().includes(searchVal) || p.brand.toLowerCase().includes(searchVal));
-
-      tbody.innerHTML = filtered.map(p => `
-        <tr>
-          <td>
-            <div class="prod-cell">
-              <img src="${p.image}" class="prod-thumb" alt="${p.name}" onerror="this.src='https://placehold.co/120x120/1a1a19/f59e0b?text=Zolsea'">
-              <div class="prod-details">
-                <span class="prod-name">${p.name}</span>
-                <span class="prod-desc-trunc">${p.desc}</span>
-              </div>
-            </div>
-          </td>
-          <td>
-            <span class="brand-tag">${p.brand}</span>
-          </td>
-          <td>
-            <span class="cat-tag">${translateCategory(p.category)}</span>
-          </td>
-          <td>
-            <div class="action-cell">
-              <button class="btn-action edit" onclick="openProductDrawer(${p.originalIndex})">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-                Editar
-              </button>
-              <button class="btn-action delete" onclick="deleteProduct(${p.originalIndex})">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                Eliminar
-              </button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function translateCategory(cat) {
-      const dict = {
-        battery: 'Batería',
-        welding: 'Soldadura',
-        electric: 'Eléctricas',
-        accessories: 'Accesorios'
-      };
-      return dict[cat] || cat;
-    }
-
-    // Drawer Management
-    function openProductDrawer(index) {
-      const overlay = document.getElementById('product-drawer-overlay');
-      const drawerTitle = document.getElementById('drawer-title');
-      const indexInput = document.getElementById('edit-product-index');
-
-      // Clear Form
-      document.getElementById('product-form').reset();
-      document.getElementById('specs-edit-tbody').innerHTML = '';
-
-      if (index === null) {
-        // Adding new product
-        drawerTitle.textContent = 'Agregar Nuevo Producto';
-        indexInput.value = '';
-        
-        // Add default blueprints templates
-        document.getElementById('blue-title-0').value = 'Detalle Técnico A';
-        document.getElementById('blue-subtitle-0').value = 'Alto Rendimiento';
-        document.getElementById('blue-type-0').value = 'dial';
-
-        document.getElementById('blue-title-1').value = 'Detalle Técnico B';
-        document.getElementById('blue-subtitle-1').value = 'Máxima Calidad';
-        document.getElementById('blue-type-1').value = 'battery';
-
-        // Add 2 empty specs rows
-        addSpecRow('', '');
-        addSpecRow('', '');
-      } else {
-        // Editing product
-        drawerTitle.textContent = 'Editar Producto';
-        indexInput.value = index;
-
-        const p = activeConfig.products[index];
-        document.getElementById('prod-name').value = p.name;
-        document.getElementById('prod-brand').value = p.brand;
-        document.getElementById('prod-category').value = p.category;
-        document.getElementById('prod-image').value = p.image;
-        document.getElementById('prod-desc').value = p.desc;
-        document.getElementById('prod-longdesc').value = p.longDesc;
-
-        // Populate Blueprints
-        if (p.blueprints && p.blueprints.length >= 2) {
-          document.getElementById('blue-title-0').value = p.blueprints[0].title;
-          document.getElementById('blue-subtitle-0').value = p.blueprints[0].subtitle;
-          document.getElementById('blue-type-0').value = p.blueprints[0].type;
-
-          document.getElementById('blue-title-1').value = p.blueprints[1].title;
-          document.getElementById('blue-subtitle-1').value = p.blueprints[1].subtitle;
-          document.getElementById('blue-type-1').value = p.blueprints[1].type;
-        }
-
-        // Populate Specs
-        if (p.specs) {
-          Object.entries(p.specs).forEach(([k, v]) => {
-            addSpecRow(k, v);
-          });
-        }
-      }
-
-      overlay.classList.add('active');
-    }
-
-    function closeProductDrawer() {
-      document.getElementById('product-drawer-overlay').classList.remove('active');
-    }
-
-    // Specs List Manipulation
-    function addSpecRow(key = '', val = '') {
-      const tbody = document.getElementById('specs-edit-tbody');
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><input type="text" class="spec-k-input" value="${key}" required placeholder="Ej: Voltaje"></td>
-        <td><input type="text" class="spec-v-input" value="${val}" required placeholder="Ej: 220v"></td>
-        <td style="text-align: center;">
-          <button type="button" class="btn-small-action danger" onclick="this.closest('tr').remove()" style="padding: 6px 8px;">✕</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    }
-
-    // Delete Product
-    function deleteProduct(index) {
-      if (!confirm(`¿Estás seguro que deseas eliminar el producto "${activeConfig.products[index].name}"?`)) {
-        return;
-      }
-      activeConfig.products.splice(index, 1);
-      saveToStorage();
-      renderProductsTable();
-      updateDashboardStats();
-    }
-
-    // Save Product from Drawer Form
-    function saveProduct(e) {
-      e.preventDefault();
-      
-      const indexInput = document.getElementById('edit-product-index').value;
-      const name = document.getElementById('prod-name').value.trim();
-      const brand = document.getElementById('prod-brand').value;
-      const category = document.getElementById('prod-category').value;
-      const image = document.getElementById('prod-image').value.trim();
-      const desc = document.getElementById('prod-desc').value.trim();
-      const longDesc = document.getElementById('prod-longdesc').value.trim();
-
-      // Read Blueprints
-      const blueprints = [
-        {
-          title: document.getElementById('blue-title-0').value.trim(),
-          subtitle: document.getElementById('blue-subtitle-0').value.trim(),
-          type: document.getElementById('blue-type-0').value
-        },
-        {
-          title: document.getElementById('blue-title-1').value.trim(),
-          subtitle: document.getElementById('blue-subtitle-1').value.trim(),
-          type: document.getElementById('blue-type-1').value
-        }
-      ];
-
-      // Read Specs
-      const specs = {};
-      const rows = document.querySelectorAll('#specs-edit-tbody tr');
-      rows.forEach(row => {
-        const k = row.querySelector('.spec-k-input').value.trim();
-        const v = row.querySelector('.spec-v-input').value.trim();
-        if (k && v) {
-          specs[k] = v;
-        }
-      });
-
-      const productData = {
-        name,
-        brand,
-        category,
-        desc,
-        image,
-        blueprints,
-        specs,
-        longDesc
-      };
-
-      if (indexInput === '') {
-        // Create new
-        activeConfig.products.push(productData);
-      } else {
-        // Edit existing
-        const idx = parseInt(indexInput);
-        activeConfig.products[idx] = productData;
-      }
-
-      saveToStorage();
-      closeProductDrawer();
-      renderProductsTable();
-      updateDashboardStats();
-    }
-
-    // Populate Site General Texts Form
-    function populateTextsForm() {
-      if (!activeConfig) return;
-      document.getElementById('input-whatsapp').value = activeConfig.whatsapp_number;
-      document.getElementById('input-hero-badge').value = activeConfig.hero_badge;
-      document.getElementById('input-hero-title').value = activeConfig.hero_title;
-      document.getElementById('input-hero-subtitle').value = activeConfig.hero_subtitle;
-      document.getElementById('input-brands-intro').value = activeConfig.brands_intro_text;
-    }
-
-    // Save site general texts
-    function saveTexts(e) {
-      e.preventDefault();
-      
-      activeConfig.whatsapp_number = document.getElementById('input-whatsapp').value.trim();
-      activeConfig.hero_badge = document.getElementById('input-hero-badge').value.trim();
-      activeConfig.hero_title = document.getElementById('input-hero-title').value.trim();
-      activeConfig.hero_subtitle = document.getElementById('input-hero-subtitle').value.trim();
-      activeConfig.brands_intro_text = document.getElementById('input-brands-intro').value.trim();
-
-      saveToStorage();
-      updateDashboardStats();
-      alert('¡Textos principales del sitio guardados con éxito!');
-    }
-
-    // Save active config to localStorage
-    function saveToStorage() {
-      localStorage.setItem('zolsea_web_config', JSON.stringify(activeConfig));
-      showSyncStatus(true);
-    }
-
-    // Update Textarea for JSON Code Exporter
-    function updateJsonOutput() {
-      const output = document.getElementById('config-json-output');
-      if (output && activeConfig) {
-        output.value = JSON.stringify(activeConfig, null, 2);
-      }
-    }
-
-    // Copy JSON to Clipboard
-    function copyConfigJson() {
-      const output = document.getElementById('config-json-output');
-      output.select();
-      document.execCommand('copy');
-      alert('¡Configuración copiada en formato JSON al portapapeles!');
-    }
-
-    // Download data.json
-    function downloadConfigJson() {
-      if (!activeConfig) return;
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(activeConfig, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "data.json");
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-
-      // Show synchronized after exporting
-      showSyncStatus(false);
-    }
-
-    // Reset all to defaults
-    function resetToDefaults() {
-      if (!confirm('¿Estás seguro que deseas eliminar todos tus cambios locales y restaurar el catálogo inicial?')) {
-        return;
-      }
-      localStorage.removeItem('zolsea_web_config');
-      loadData();
-      alert('Se han restaurado los valores por defecto del sitio.');
-    }
-
-    // Init Page on Load
-    document.addEventListener('DOMContentLoaded', () => {
-      loadData();
-    });
-  </script>
 </body>
 </html>

@@ -896,7 +896,24 @@
       font-size: 12px;
       border: 1px solid var(--border);
     }
+
+    /* Drag & Drop Zone Styles */
+    #drop-zone.dragover {
+      border-color: var(--accent) !important;
+      background: rgba(245, 158, 11, 0.05) !important;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .upload-spinner {
+      animation: spin 0.8s linear infinite;
+    }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -954,9 +971,15 @@
           <h2 id="page-title">Panel de Control</h2>
           <p id="page-subtitle">Bienvenido al gestor institucional de ZolSea Herramientas.</p>
         </div>
-        <div class="status-badge" id="sync-status">
-          <span class="dot"></span>
-          <span id="sync-text">Configuración Sincronizada</span>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <div class="status-badge" id="sync-status">
+            <span class="dot"></span>
+            <span id="sync-text">Configuración Sincronizada</span>
+          </div>
+          <button class="btn-add" onclick="publishConfigToSupabase()" style="background: #10b981; color: #fff; padding: 8px 16px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; border: none; border-radius: var(--radius-md); cursor: pointer;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Publicar Cambios
+          </button>
         </div>
       </div>
 
@@ -1093,6 +1116,10 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Descargar data.json
               </button>
+              <button class="btn-add" onclick="publishConfigToSupabase()" style="padding: 8px 18px; font-size: 12px; background: #10b981; color: #fff; border: none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Publicar en Supabase
+              </button>
             </div>
           </div>
           <div class="code-box-wrapper">
@@ -1168,8 +1195,81 @@
           </div>
 
           <div class="form-group full-width">
-            <label for="prod-image">Ruta de Imagen (URL o local, ej: /images/KTO.jpg)</label>
-            <input type="text" id="prod-image" required placeholder="Ej: /images/KTO.jpg">
+            <label>Fotos del Producto (Máximo 3)</label>
+            <div class="product-photos-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px;">
+              
+              <!-- Slot 1 -->
+              <div class="photo-slot" data-slot="1" id="photo-slot-1" style="border: 2px dashed var(--border); border-radius: var(--radius-md); aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; cursor: pointer; overflow: hidden; background: rgba(255, 255, 255, 0.01); transition: all 0.3s ease;">
+                <div class="slot-empty" style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px; text-align: center;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span style="font-size: 11px; color: var(--text-main); font-weight: 600;">Foto Principal *</span>
+                  <span style="font-size: 9px; color: var(--text-muted);">Arrastra o haz clic</span>
+                </div>
+                <div class="slot-loading" style="display: none; flex-direction: column; align-items: center; gap: 8px; padding: 10px;">
+                  <div class="upload-spinner" style="width: 20px; height: 20px; border: 2px solid rgba(245, 158, 11, 0.1); border-top: 2px solid var(--accent); border-radius: 50%;"></div>
+                  <span style="font-size: 9px; color: var(--text-main);" class="slot-loading-text">0%</span>
+                </div>
+                <div class="slot-preview-container" style="display: none; width: 100%; height: 100%; position: relative;">
+                  <img class="slot-preview-img" src="" alt="Vista previa" style="width: 100%; height: 100%; object-fit: cover;">
+                  <button type="button" class="slot-delete-btn" onclick="removeSlotImage(1, event)" style="position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; background: rgba(239, 68, 68, 0.9); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 10px;">×</button>
+                </div>
+              </div>
+
+              <!-- Slot 2 -->
+              <div class="photo-slot" data-slot="2" id="photo-slot-2" style="border: 2px dashed var(--border); border-radius: var(--radius-md); aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; cursor: pointer; overflow: hidden; background: rgba(255, 255, 255, 0.01); transition: all 0.3s ease;">
+                <div class="slot-empty" style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px; text-align: center;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">Foto 2 (Opcional)</span>
+                  <span style="font-size: 9px; color: var(--text-muted);">Arrastra o haz clic</span>
+                </div>
+                <div class="slot-loading" style="display: none; flex-direction: column; align-items: center; gap: 8px; padding: 10px;">
+                  <div class="upload-spinner" style="width: 20px; height: 20px; border: 2px solid rgba(245, 158, 11, 0.1); border-top: 2px solid var(--accent); border-radius: 50%;"></div>
+                  <span style="font-size: 9px; color: var(--text-main);" class="slot-loading-text">0%</span>
+                </div>
+                <div class="slot-preview-container" style="display: none; width: 100%; height: 100%; position: relative;">
+                  <img class="slot-preview-img" src="" alt="Vista previa" style="width: 100%; height: 100%; object-fit: cover;">
+                  <button type="button" class="slot-delete-btn" onclick="removeSlotImage(2, event)" style="position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; background: rgba(239, 68, 68, 0.9); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 10px;">×</button>
+                </div>
+              </div>
+
+              <!-- Slot 3 -->
+              <div class="photo-slot" data-slot="3" id="photo-slot-3" style="border: 2px dashed var(--border); border-radius: var(--radius-md); aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; cursor: pointer; overflow: hidden; background: rgba(255, 255, 255, 0.01); transition: all 0.3s ease;">
+                <div class="slot-empty" style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px; text-align: center;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">Foto 3 (Opcional)</span>
+                  <span style="font-size: 9px; color: var(--text-muted);">Arrastra o haz clic</span>
+                </div>
+                <div class="slot-loading" style="display: none; flex-direction: column; align-items: center; gap: 8px; padding: 10px;">
+                  <div class="upload-spinner" style="width: 20px; height: 20px; border: 2px solid rgba(245, 158, 11, 0.1); border-top: 2px solid var(--accent); border-radius: 50%;"></div>
+                  <span style="font-size: 9px; color: var(--text-main);" class="slot-loading-text">0%</span>
+                </div>
+                <div class="slot-preview-container" style="display: none; width: 100%; height: 100%; position: relative;">
+                  <img class="slot-preview-img" src="" alt="Vista previa" style="width: 100%; height: 100%; object-fit: cover;">
+                  <button type="button" class="slot-delete-btn" onclick="removeSlotImage(3, event)" style="position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; background: rgba(239, 68, 68, 0.9); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 10px;">×</button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Single hidden input file field -->
+            <input type="file" id="prod-image-file" accept="image/*" style="display: none;">
+
+            <!-- Hidden input fields to store URLs -->
+            <input type="hidden" id="prod-image" required>
+            <input type="hidden" id="prod-image2">
+            <input type="hidden" id="prod-image3">
+
+            <!-- Manual URLs fields -->
+            <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px;">
+              <span style="font-size: 11px; color: var(--text-muted);">URLs manuales (opcional):</span>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <input type="text" id="prod-image-url-manual" placeholder="URL Foto 1" style="font-size: 11px; padding: 6px;" oninput="handleManualSlotUrl(1, this.value)">
+                <input type="text" id="prod-image-2-url-manual" placeholder="URL Foto 2" style="font-size: 11px; padding: 6px;" oninput="handleManualSlotUrl(2, this.value)">
+                <input type="text" id="prod-image-3-url-manual" placeholder="URL Foto 3" style="font-size: 11px; padding: 6px;" oninput="handleManualSlotUrl(3, this.value)">
+              </div>
+            </div>
+            
+            <span id="upload-status" style="font-size: 11px; display: none;"></span>
           </div>
 
           <div class="form-group full-width">
@@ -1271,24 +1371,46 @@
     </div>
   </div>
 
-  <script>
+  <script type="module">
     // Global Config Object
+    const SUPABASE_URL = __SUPABASE_URL__;
+    const SUPABASE_ANON_KEY = __SUPABASE_ANON_KEY__;
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     let activeConfig = null;
     let defaultConfig = null;
 
     // Load Data
     async function loadData() {
-      // First, fetch assets/data.json to serve as default
+      // 1. Try to fetch from Supabase first
+      let supaConfig = null;
       try {
-        const response = await fetch('/data.json');
-        if (response.ok) {
-          defaultConfig = await response.json();
+        const { data, error } = await supabaseClient
+          .from('site_config')
+          .select('data')
+          .eq('id', 'zolsea')
+          .single();
+        if (data && data.data) {
+          supaConfig = data.data;
+          defaultConfig = JSON.parse(JSON.stringify(supaConfig));
         }
-      } catch (e) {
-        console.error("Could not fetch data.json", e);
+      } catch(e) {
+        console.warn("Could not load config from Supabase database:", e);
       }
 
-      // Check localStorage
+      // 2. If Supabase fails or is empty, fetch static data.json
+      if (!defaultConfig) {
+        try {
+          const response = await fetch('/data.json');
+          if (response.ok) {
+            defaultConfig = await response.json();
+          }
+        } catch (e) {
+          console.error("Could not fetch data.json", e);
+        }
+      }
+
+      // 3. Check localStorage
       const saved = localStorage.getItem('zolsea_web_config');
       if (saved) {
         try {
@@ -1308,6 +1430,223 @@
       renderProductsTable();
       populateTextsForm();
       updateJsonOutput();
+    }
+
+    let activeUploadSlot = 1;
+
+    function setSlotState(slotNum, state, data = {}) {
+      const slotEl = document.getElementById(`photo-slot-${slotNum}`);
+      if (!slotEl) return;
+      
+      const emptyEl = slotEl.querySelector('.slot-empty');
+      const loadingEl = slotEl.querySelector('.slot-loading');
+      const previewEl = slotEl.querySelector('.slot-preview-container');
+      const previewImg = slotEl.querySelector('.slot-preview-img');
+      const loadingText = slotEl.querySelector('.slot-loading-text');
+      
+      if (emptyEl) emptyEl.style.display = 'none';
+      if (loadingEl) loadingEl.style.display = 'none';
+      if (previewEl) previewEl.style.display = 'none';
+      
+      if (state === 'empty') {
+        if (emptyEl) emptyEl.style.display = 'flex';
+      } else if (state === 'loading') {
+        if (loadingEl) loadingEl.style.display = 'flex';
+        if (loadingText) loadingText.textContent = data.percent ? `${data.percent}%` : '0%';
+      } else if (state === 'preview') {
+        if (previewEl) previewEl.style.display = 'block';
+        if (previewImg && data.src) {
+          previewImg.src = data.src;
+        }
+      }
+    }
+
+    function removeSlotImage(slotNum, e) {
+      if (e) e.stopPropagation();
+      
+      const hiddenId = slotNum === 1 ? 'prod-image' : `prod-image${slotNum}`;
+      const manualId = slotNum === 1 ? 'prod-image-url-manual' : `prod-image-${slotNum}-url-manual`;
+      
+      const hiddenInput = document.getElementById(hiddenId);
+      const manualInput = document.getElementById(manualId);
+      
+      if (hiddenInput) hiddenInput.value = '';
+      if (manualInput) manualInput.value = '';
+      
+      setSlotState(slotNum, 'empty');
+    }
+
+    function handleManualSlotUrl(slotNum, url) {
+      const hiddenId = slotNum === 1 ? 'prod-image' : `prod-image${slotNum}`;
+      const hiddenInput = document.getElementById(hiddenId);
+      
+      if (hiddenInput) hiddenInput.value = url;
+      
+      if (url.trim()) {
+        setSlotState(slotNum, 'preview', { src: url });
+      } else {
+        setSlotState(slotNum, 'empty');
+      }
+    }
+
+    function uploadFileWithProgress(file, filename, onProgress) {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        const url = `${SUPABASE_URL}/storage/v1/object/catalogo/products/${filename}`;
+        
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('apikey', SUPABASE_ANON_KEY);
+        xhr.setRequestHeader('Authorization', `Bearer ${SUPABASE_ANON_KEY}`);
+        xhr.setRequestHeader('Content-Type', file.type);
+        
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const percentComplete = Math.round((e.loaded / e.total) * 100);
+            onProgress(percentComplete);
+          }
+        };
+        
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve();
+          } else {
+            reject(new Error(`Upload failed with status: ${xhr.status}`));
+          }
+        };
+        
+        xhr.onerror = () => reject(new Error('Network error during upload'));
+        xhr.send(file);
+      });
+    }
+
+    async function handleImageUpload(file, slotNum) {
+      const filename = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+      
+      setSlotState(slotNum, 'loading', { percent: 0 });
+      
+      try {
+        await uploadFileWithProgress(file, filename, (percent) => {
+          setSlotState(slotNum, 'loading', { percent: percent });
+        });
+        
+        // Get public URL
+        const { data } = supabaseClient.storage
+          .from('catalogo')
+          .getPublicUrl(`products/${filename}`);
+          
+        const publicUrl = data.publicUrl;
+        
+        const hiddenId = slotNum === 1 ? 'prod-image' : `prod-image${slotNum}`;
+        const manualId = slotNum === 1 ? 'prod-image-url-manual' : `prod-image-${slotNum}-url-manual`;
+        
+        const hiddenInput = document.getElementById(hiddenId);
+        const manualInput = document.getElementById(manualId);
+        
+        if (hiddenInput) hiddenInput.value = publicUrl;
+        if (manualInput) manualInput.value = publicUrl;
+        
+        setSlotState(slotNum, 'preview', { src: publicUrl });
+      } catch (err) {
+        console.error(err);
+        alert('Error al subir la imagen. Asegúrate de tener el bucket "catalogo" en Supabase.');
+        setSlotState(slotNum, 'empty');
+      }
+    }
+
+    function setupUploadListener() {
+      const fileInput = document.getElementById('prod-image-file');
+      const slots = document.querySelectorAll('.photo-slot');
+      if (!fileInput || slots.length === 0) return;
+      
+      // Prevent default drag & drop behaviors on window and slots
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        window.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }, false);
+      });
+
+      slots.forEach(slot => {
+        const slotNum = parseInt(slot.getAttribute('data-slot'));
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+          slot.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }, false);
+        });
+
+        // Hover styles
+        ['dragenter', 'dragover'].forEach(eventName => {
+          slot.addEventListener(eventName, () => slot.classList.add('dragover'), false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+          slot.addEventListener(eventName, () => slot.classList.remove('dragover'), false);
+        });
+        
+        // Handle dropped files
+        slot.addEventListener('drop', (e) => {
+          const dt = e.dataTransfer;
+          const files = dt.files;
+          if (files && files.length > 0) {
+            handleImageUpload(files[0], slotNum);
+          }
+        });
+        
+        // Handle click to browse
+        slot.addEventListener('click', (e) => {
+          // If clicked the delete button, do not open browser
+          if (e.target.closest('.slot-delete-btn')) return;
+          
+          activeUploadSlot = slotNum;
+          fileInput.click();
+        });
+      });
+      
+      // Handle file input selection
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          handleImageUpload(file, activeUploadSlot);
+          // Reset file input value so same file can be uploaded again if needed
+          fileInput.value = '';
+        }
+      });
+    }
+
+    async function publishConfigToSupabase() {
+      if (!activeConfig) return;
+      
+      const publishBtn = document.querySelector('button[onclick="publishConfigToSupabase()"]');
+      const originalHtml = publishBtn ? publishBtn.innerHTML : '';
+      if (publishBtn) {
+        publishBtn.disabled = true;
+        publishBtn.innerHTML = `
+          Subiendo...
+        `;
+      }
+      
+      try {
+        const { data, error } = await supabaseClient
+          .from('site_config')
+          .upsert({ id: 'zolsea', data: activeConfig });
+          
+        if (error) throw error;
+        
+        defaultConfig = JSON.parse(JSON.stringify(activeConfig));
+        localStorage.removeItem('zolsea_web_config');
+        showSyncStatus(false);
+        alert('¡Cambios publicados en vivo con éxito! El sitio web ya cargará la nueva información.');
+      } catch (err) {
+        console.error(err);
+        alert('Error al publicar: Asegúrate de haber creado la tabla "site_config" en Supabase con la columna "data" tipo JSONB. Revisa la consola para más detalles.');
+      } finally {
+        if (publishBtn) {
+          publishBtn.disabled = false;
+          publishBtn.innerHTML = originalHtml;
+        }
+      }
     }
 
     function showSyncStatus(isDraft) {
@@ -1435,6 +1774,17 @@
         // Add 2 empty specs rows
         addSpecRow('', '');
         addSpecRow('', '');
+
+        // Photo slots state
+        setSlotState(1, 'empty');
+        setSlotState(2, 'empty');
+        setSlotState(3, 'empty');
+        document.getElementById('prod-image').value = '';
+        document.getElementById('prod-image2').value = '';
+        document.getElementById('prod-image3').value = '';
+        document.getElementById('prod-image-url-manual').value = '';
+        document.getElementById('prod-image-2-url-manual').value = '';
+        document.getElementById('prod-image-3-url-manual').value = '';
       } else {
         // Editing product
         drawerTitle.textContent = 'Editar Producto';
@@ -1444,9 +1794,36 @@
         document.getElementById('prod-name').value = p.name;
         document.getElementById('prod-brand').value = p.brand;
         document.getElementById('prod-category').value = p.category;
-        document.getElementById('prod-image').value = p.image;
+        document.getElementById('prod-image').value = p.image || '';
+        document.getElementById('prod-image2').value = p.image2 || '';
+        document.getElementById('prod-image3').value = p.image3 || '';
         document.getElementById('prod-desc').value = p.desc;
         document.getElementById('prod-longdesc').value = p.longDesc;
+
+        // Photo slots state
+        if (p.image) {
+          setSlotState(1, 'preview', { src: p.image });
+          document.getElementById('prod-image-url-manual').value = p.image;
+        } else {
+          setSlotState(1, 'empty');
+          document.getElementById('prod-image-url-manual').value = '';
+        }
+
+        if (p.image2) {
+          setSlotState(2, 'preview', { src: p.image2 });
+          document.getElementById('prod-image-2-url-manual').value = p.image2;
+        } else {
+          setSlotState(2, 'empty');
+          document.getElementById('prod-image-2-url-manual').value = '';
+        }
+
+        if (p.image3) {
+          setSlotState(3, 'preview', { src: p.image3 });
+          document.getElementById('prod-image-3-url-manual').value = p.image3;
+        } else {
+          setSlotState(3, 'empty');
+          document.getElementById('prod-image-3-url-manual').value = '';
+        }
 
         // Populate Blueprints
         if (p.blueprints && p.blueprints.length >= 2) {
@@ -1508,6 +1885,8 @@
       const brand = document.getElementById('prod-brand').value;
       const category = document.getElementById('prod-category').value;
       const image = document.getElementById('prod-image').value.trim();
+      const image2 = document.getElementById('prod-image2').value.trim();
+      const image3 = document.getElementById('prod-image3').value.trim();
       const desc = document.getElementById('prod-desc').value.trim();
       const longDesc = document.getElementById('prod-longdesc').value.trim();
 
@@ -1542,6 +1921,8 @@
         category,
         desc,
         image,
+        image2,
+        image3,
         blueprints,
         specs,
         longDesc
@@ -1634,10 +2015,36 @@
       alert('Se han restaurado los valores por defecto del sitio.');
     }
 
+    // Expose functions to global scope for HTML event handlers
+    window.loadData = loadData;
+    window.setSlotState = setSlotState;
+    window.removeSlotImage = removeSlotImage;
+    window.handleManualSlotUrl = handleManualSlotUrl;
+    window.uploadFileWithProgress = uploadFileWithProgress;
+    window.handleImageUpload = handleImageUpload;
+    window.setupUploadListener = setupUploadListener;
+    window.publishConfigToSupabase = publishConfigToSupabase;
+    window.switchTab = switchTab;
+    window.openProductDrawer = openProductDrawer;
+    window.closeProductDrawer = closeProductDrawer;
+    window.addSpecRow = addSpecRow;
+    window.deleteProduct = deleteProduct;
+    window.saveProduct = saveProduct;
+    window.saveTexts = saveTexts;
+    window.copyConfigJson = copyConfigJson;
+    window.downloadConfigJson = downloadConfigJson;
+    window.resetToDefaults = resetToDefaults;
+
     // Init Page on Load
-    document.addEventListener('DOMContentLoaded', () => {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+        setupUploadListener();
+      });
+    } else {
       loadData();
-    });
+      setupUploadListener();
+    }
   </script>
 </body>
 </html>

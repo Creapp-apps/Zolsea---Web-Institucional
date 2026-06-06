@@ -1761,8 +1761,10 @@ ul { list-style: none; }
 
 @media (min-width: 769px) {
   .modal-body {
-    padding: 40px 45px;
+    padding: 24px 30px;
     gap: 32px;
+    grid-template-columns: 1.15fr 1fr;
+    align-items: start;
   }
 }
 
@@ -1780,58 +1782,236 @@ ul { list-style: none; }
   margin-bottom: 8px;
 }
 
-/* Showroom de Fotos Horizontal / Grid */
-.modal-gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  width: 100%;
-  margin-bottom: 12px;
-}
-
-.gallery-card {
+/* Carousel Premium de Fotos del Modal */
+.modal-carousel {
   position: relative;
-  height: 240px;
-  border-radius: var(--radius-md);
+  width: 100%;
+  aspect-ratio: 1.3 / 1;
+  height: auto;
   background: #080808;
   border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
   overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: border-color var(--transition-fast);
+}
+
+.modal-carousel:hover {
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.modal-carousel-inner {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.modal-carousel-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  background: #080808;
+  position: relative;
 }
 
-.gallery-card:hover {
-  border-color: rgba(245, 158, 11, 0.3);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
-}
-
-.gallery-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.modal-carousel-slide img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  padding: 16px;
   transition: transform var(--transition-base);
 }
 
-.gallery-card.photo-card img {
-  object-fit: contain;
-  padding: 16px;
+/* Flechas de Navegación */
+.modal-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-text);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all var(--transition-fast);
 }
 
-/* Fila de detalles split a dos columnas */
-.modal-details-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 28px;
+.modal-carousel-arrow:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.modal-carousel-arrow.prev {
+  left: 16px;
+}
+
+.modal-carousel-arrow.next {
+  right: 16px;
+}
+
+/* Indicadores de diapositivas (Dots) */
+.modal-carousel-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.modal-carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.modal-carousel-dot.active {
+  width: 20px;
+  border-radius: 3px;
+  background: var(--color-accent);
+}
+
+/* Columnas de Distribución en el Modal */
+.modal-left-col {
+  min-width: 0;
   width: 100%;
 }
 
-@media (min-width: 769px) {
-  .modal-details-row {
-    grid-template-columns: 1.2fr 1fr;
-    gap: 45px;
-  }
+/* Bloque de Badges de Confianza en el Modal */
+.modal-trust-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.trust-badge-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  transition: all var(--transition-fast);
+}
+
+.trust-badge-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(245, 158, 11, 0.2);
+  transform: translateX(2px);
+}
+
+.trust-badge-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trust-badge-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.trust-badge-title {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.trust-badge-desc {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* Tarjeta de Información Extra (Distribuidor & Facturación) */
+.modal-extra-info-card {
+  margin-top: 16px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px dashed rgba(245, 158, 11, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: all var(--transition-fast);
+}
+
+.modal-extra-info-card:hover {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+.extra-info-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-accent);
+}
+
+.extra-info-title {
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.extra-info-text {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.modal-right-col {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .details-desc-col,
@@ -1881,25 +2061,25 @@ ul { list-style: none; }
 }
 
 .modal-description {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--color-text-muted);
-  line-height: 1.65;
-  margin-bottom: 30px;
+  line-height: 1.6;
+  margin-bottom: 12px;
 }
 
 /* Grilla de Ficha Técnica */
 .modal-specs-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 8px;
-  margin-bottom: 35px;
+  gap: 6px;
+  margin-bottom: 20px;
 }
 
 .spec-row {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 11px 16px;
+  padding: 8px 12px;
   background: rgba(255, 255, 255, 0.015);
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: var(--radius-sm);
@@ -1935,11 +2115,11 @@ ul { list-style: none; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 15px 30px;
+  padding: 12px 24px;
   background: var(--color-whatsapp);
   color: #fff;
   font-weight: 700;
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   border-radius: var(--radius-sm);
   transition: all var(--transition-fast);
   width: 100%;
@@ -1982,25 +2162,19 @@ ul { list-style: none; }
     flex-direction: column;
     gap: 20px;
   }
-  .modal-gallery-grid {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 12px;
-    margin-bottom: 4px;
-    padding-bottom: 8px;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none; /* Firefox */
+  /* Responsive for modal carousel */
+  .modal-carousel {
+    height: 220px;
   }
-
-  .modal-gallery-grid::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+  .modal-carousel-arrow {
+    width: 34px;
+    height: 34px;
   }
-
-  .modal-gallery-grid .gallery-card {
-    flex: 0 0 260px;
-    height: 180px;
-    scroll-snap-align: start;
+  .modal-carousel-arrow.prev {
+    left: 8px;
+  }
+  .modal-carousel-arrow.next {
+    right: 8px;
   }
 
   .modal-close-btn {

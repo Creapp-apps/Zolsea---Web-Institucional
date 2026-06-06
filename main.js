@@ -170,6 +170,9 @@ const PRODUCTS = [
 ];
 
 // ── Configuration State ───────────────────────
+const SUPABASE_URL = __SUPABASE_URL__;
+const SUPABASE_ANON_KEY = __SUPABASE_ANON_KEY__;
+
 let siteConfig = {
   whatsapp_number: WHATSAPP_NUMBER,
   hero_badge: "MercadoLíder Platinum · +1.900 seguidores",
@@ -178,6 +181,22 @@ let siteConfig = {
   brands_intro_text: 'Somos una empresa dedicada a la distribución mayorista de herramientas y accesorios. Entregamos en todo el país (GBA e interior) con camiones propios y tercerizados, estamos preparados para brindar el mejor servicio de asesoramiento, venta y postventa del mercado.',
   products: PRODUCTS
 };
+
+async function fetchFromSupabase() {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_config?id=eq.zolsea`, {
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+    }
+  });
+  if (res.ok) {
+    const data = await res.json();
+    if (data && data.length > 0) {
+      return data[0].data;
+    }
+  }
+  return null;
+}
 
 async function initSiteData() {
   // 1. Try reading from localStorage (for instant admin previews)
@@ -192,7 +211,19 @@ async function initSiteData() {
     }
   }
 
-  // 2. Otherwise fetch from data.json
+  // 2. Try fetching from Supabase Database
+  try {
+    const supaData = await fetchFromSupabase();
+    if (supaData) {
+      siteConfig = supaData;
+      hydrateDOM();
+      return;
+    }
+  } catch(e) {
+    console.warn("Could not fetch from Supabase, trying data.json", e);
+  }
+
+  // 3. Otherwise fetch from data.json
   try {
     const res = await fetch('/data.json');
     if (res.ok) {
@@ -820,17 +851,17 @@ function generateBlueprintSVG(title, subtitle, type) {
 
   // Generate clean spec bullet points spaced at the bottom
   const specText = specs.map((s, idx) => 
-    `<text x="300" y="${220 + idx * 18}" fill="%238c92a0" font-family="monospace" font-size="10" font-weight="500" text-anchor="middle" letter-spacing="1">▪ ${s.toUpperCase()}</text>`
+    `<text x="300" y="${220 + idx * 18}" fill="#8c92a0" font-family="monospace" font-size="10" font-weight="500" text-anchor="middle" letter-spacing="1">▪ ${s.toUpperCase()}</text>`
   ).join('');
 
-  return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
+  const svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
     <!-- Dark Space Surface Background -->
-    <rect width="100%" height="100%" fill="%23080808"/>
+    <rect width="100%" height="100%" fill="#080808"/>
     
     <defs>
       <linearGradient id="neonOrangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="%23ff6b35" />
-        <stop offset="100%" stop-color="%23f59e0b" />
+        <stop offset="0%" stop-color="#ff6b35" />
+        <stop offset="100%" stop-color="#f59e0b" />
       </linearGradient>
       <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
         <feGaussianBlur stdDeviation="4" result="blur" />
@@ -842,34 +873,36 @@ function generateBlueprintSVG(title, subtitle, type) {
     </defs>
 
     <!-- Technical Digital Grid -->
-    <path d="M 0 25 L 600 25 M 0 50 L 600 50 M 0 75 L 600 75 M 0 100 L 600 100 M 0 125 L 600 125 M 0 150 L 600 150 M 0 175 L 600 175 M 0 200 L 600 200" stroke="%23121212" stroke-width="1"/>
-    <path d="M 50 0 L 50 300 M 100 0 L 100 300 M 150 0 L 150 300 M 200 0 L 200 300 M 250 0 L 250 300 M 300 0 L 300 300 M 350 0 L 350 300 M 400 0 L 400 300 M 450 0 L 450 300 M 500 0 L 500 300 M 550 0 L 550 300" stroke="%23121212" stroke-width="1"/>
+    <path d="M 0 25 L 600 25 M 0 50 L 600 50 M 0 75 L 600 75 M 0 100 L 600 100 M 0 125 L 600 125 M 0 150 L 600 150 M 0 175 L 600 175 M 0 200 L 600 200" stroke="#121212" stroke-width="1"/>
+    <path d="M 50 0 L 50 300 M 100 0 L 100 300 M 150 0 L 150 300 M 200 0 L 200 300 M 250 0 L 250 300 M 300 0 L 300 300 M 350 0 L 350 300 M 400 0 L 400 300 M 450 0 L 450 300 M 500 0 L 500 300 M 550 0 L 550 300" stroke="#121212" stroke-width="1"/>
     
     <!-- Precision Crosshairs in Corners -->
-    <path d="M 30 20 H 45 M 35 15 V 30" stroke="%23333" stroke-width="1"/>
-    <path d="M 555 20 H 570 M 565 15 V 30" stroke="%23333" stroke-width="1"/>
-    <path d="M 30 280 H 45 M 35 270 V 285" stroke="%23333" stroke-width="1"/>
-    <path d="M 555 280 H 570 M 565 270 V 285" stroke="%23333" stroke-width="1"/>
+    <path d="M 30 20 H 45 M 35 15 V 30" stroke="#333" stroke-width="1"/>
+    <path d="M 555 20 H 570 M 565 15 V 30" stroke="#333" stroke-width="1"/>
+    <path d="M 30 280 H 45 M 35 270 V 285" stroke="#333" stroke-width="1"/>
+    <path d="M 555 280 H 570 M 565 270 V 285" stroke="#333" stroke-width="1"/>
 
     <!-- Outer Technical Border -->
-    <rect x="15" y="15" width="570" height="270" rx="6" fill="none" stroke="%23222" stroke-width="1" stroke-dasharray="10, 5"/>
-    <rect x="20" y="20" width="560" height="260" rx="4" fill="none" stroke="%23181818" stroke-width="1.5"/>
+    <rect x="15" y="15" width="570" height="270" rx="6" fill="none" stroke="#222" stroke-width="1" stroke-dasharray="10, 5"/>
+    <rect x="20" y="20" width="560" height="260" rx="4" fill="none" stroke="#181818" stroke-width="1.5"/>
 
     <!-- Blueprint circles with glow -->
-    <circle cx="300" cy="120" r="55" stroke="url(%23neonOrangeGrad)" stroke-dasharray="6,5" stroke-width="1.2" stroke-opacity="0.35" fill="none" filter="url(%23neonGlow)"/>
-    <circle cx="300" cy="120" r="68" stroke="url(%23neonOrangeGrad)" stroke-width="0.8" stroke-opacity="0.18" fill="none"/>
+    <circle cx="300" cy="120" r="55" stroke="url(#neonOrangeGrad)" stroke-dasharray="6,5" stroke-width="1.2" stroke-opacity="0.35" fill="none" filter="url(#neonGlow)"/>
+    <circle cx="300" cy="120" r="68" stroke="url(#neonOrangeGrad)" stroke-width="0.8" stroke-opacity="0.18" fill="none"/>
     
     <!-- Core Technical Icon -->
-    <path d="${iconPath}" stroke="url(%23neonOrangeGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(%23neonGlow)"/>
+    <path d="${iconPath}" stroke="url(#neonOrangeGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#neonGlow)"/>
     
     <!-- Header Labels at the top -->
-    <text x="300" y="48" fill="%23ffffff" font-family="sans-serif" font-size="12" font-weight="900" text-anchor="middle" letter-spacing="4.5">${title.toUpperCase()}</text>
-    <text x="300" y="66" fill="%23f59e0b" font-family="monospace" font-size="8.5" font-weight="bold" text-anchor="middle" letter-spacing="2">${subtitle.toUpperCase()}</text>
-    <line x1="200" y1="78" x2="400" y2="78" stroke="%23ff6b35" stroke-width="1.5" stroke-opacity="0.5"/>
+    <text x="300" y="48" fill="#ffffff" font-family="sans-serif" font-size="12" font-weight="900" text-anchor="middle" letter-spacing="4.5">${title.toUpperCase()}</text>
+    <text x="300" y="66" fill="#f59e0b" font-family="monospace" font-size="8.5" font-weight="bold" text-anchor="middle" letter-spacing="2">${subtitle.toUpperCase()}</text>
+    <line x1="200" y1="78" x2="400" y2="78" stroke="#ff6b35" stroke-width="1.5" stroke-opacity="0.5"/>
 
     <!-- Specifications at the bottom -->
     ${specText}
   </svg>`;
+
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgString)}`;
 }
 
 // ── Open Product Modal Toast ──────────────────
@@ -881,12 +914,32 @@ function openProductModal(index) {
   
   if (!p || !overlay || !toast || !modalBody) return;
 
-  // Build carousel slides
-  const slide1 = p.image;
-  const slide2 = generateBlueprintSVG(p.blueprints[0].title, p.blueprints[0].subtitle, p.blueprints[0].type);
-  const slide3 = generateBlueprintSVG(p.blueprints[1].title, p.blueprints[1].subtitle, p.blueprints[1].type);
+  // Build slides: product images and blueprints (only if configured)
+  const modalSlides = [];
+  if (p.image) {
+    modalSlides.push({ type: 'image', content: p.image });
+  }
+  if (p.image2) {
+    modalSlides.push({ type: 'image', content: p.image2 });
+  }
+  if (p.image3) {
+    modalSlides.push({ type: 'image', content: p.image3 });
+  }
   
-  const modalSlides = [slide1, slide2, slide3];
+  if (p.blueprints && p.blueprints.length > 0) {
+    p.blueprints.forEach((bp) => {
+      if (bp && (bp.title.trim() !== '' || bp.subtitle.trim() !== '')) {
+        const svgContent = generateBlueprintSVG(bp.title, bp.subtitle, bp.type);
+        modalSlides.push({ type: 'blueprint', content: svgContent });
+      }
+    });
+  }
+
+  // If no slides at all, fall back to a placeholder
+  if (modalSlides.length === 0) {
+    modalSlides.push({ type: 'image', content: p.image || '' });
+  }
+
   let currentSlideIndex = 0;
 
   // Technical specifications grid
@@ -897,36 +950,112 @@ function openProductModal(index) {
     </div>
   `).join('');
 
+  // Render carousel HTML
+  let carouselHtml = '';
+  if (modalSlides.length > 1) {
+    carouselHtml = `
+      <div class="modal-carousel" id="modalCarousel">
+        <div class="modal-carousel-inner" id="carouselInner">
+          ${modalSlides.map(slide => `
+            <div class="modal-carousel-slide">
+              ${slide.type === 'image'
+                ? `<img src="${slide.content}" alt="${p.name} - Imagen Principal" />`
+                : `<img src="${slide.content}" alt="${p.name} - Ficha Técnica" />`
+              }
+            </div>
+          `).join('')}
+        </div>
+        
+        <!-- Left/Right Arrows -->
+        <button class="modal-carousel-arrow prev" id="carouselPrevBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="modal-carousel-arrow next" id="carouselNextBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        
+        <!-- Indicator Dots -->
+        <div class="modal-carousel-dots" id="carouselDotsContainer">
+          ${modalSlides.map((_, idx) => `
+            <div class="modal-carousel-dot ${idx === 0 ? 'active' : ''}" data-index="${idx}"></div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } else {
+    // Only 1 slide: show complete occupying horizontal space with no arrows/dots
+    carouselHtml = `
+      <div class="modal-carousel single-slide">
+        <div class="modal-carousel-inner">
+          <div class="modal-carousel-slide">
+            <img src="${modalSlides[0].content}" alt="${p.name} - Imagen Principal" />
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   // Render content
   modalBody.innerHTML = `
-    <!-- Top Area: Header & Badges -->
-    <div class="modal-header-full">
-      <span class="modal-brand-badge">${p.brand}</span>
-      <h2 class="modal-product-title">${p.name}</h2>
+    <!-- Left Column: Carousel/Gallery -->
+    <div class="modal-left-col">
+      ${carouselHtml}
+      
+      <!-- Bloque de Confianza y Garantía ZolSea -->
+      <div class="modal-trust-badges">
+        <div class="trust-badge-card">
+          <div class="trust-badge-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          <div class="trust-badge-info">
+            <h5 class="trust-badge-title">Garantía Oficial</h5>
+            <p class="trust-badge-desc">1 año de respaldo directo en todas nuestras herramientas.</p>
+          </div>
+        </div>
+        
+        <div class="trust-badge-card">
+          <div class="trust-badge-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+          </div>
+          <div class="trust-badge-info">
+            <h5 class="trust-badge-title">Servicio Técnico Especializado</h5>
+            <p class="trust-badge-desc">Taller post-venta oficial con repuestos originales.</p>
+          </div>
+        </div>
+
+        <div class="trust-badge-card">
+          <div class="trust-badge-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </div>
+          <div class="trust-badge-info">
+            <h5 class="trust-badge-title">Stock y Entrega Inmediata</h5>
+            <p class="trust-badge-desc">Retiro al instante en nuestro showroom de ventas oficial.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sello de Distribuidor Oficial y Pagos -->
+      <div class="modal-extra-info-card">
+        <div class="extra-info-header">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 2 18 2 18 6 6 6"></polygon><rect x="3" y="6" width="18" height="16" rx="2"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+          <span class="extra-info-title">Distribuidor Oficial & Financiación</span>
+        </div>
+        <p class="extra-info-text">Punto de venta oficial con repuestos legítimos. Ofrecemos facturación A y B, transferencias y planes de pago.</p>
+      </div>
     </div>
 
-    <!-- Middle Area: Gallery Grid (3 columns) -->
-    <div class="modal-gallery-grid">
-      <div class="gallery-card photo-card">
-        <img src="${slide1}" alt="${p.name} - Imagen Principal" />
+    <!-- Right Column: Product Info -->
+    <div class="modal-right-col">
+      <div class="modal-header-full">
+        <span class="modal-brand-badge">${p.brand}</span>
+        <h2 class="modal-product-title">${p.name}</h2>
       </div>
-      <div class="gallery-card blueprint-card">
-        <img src="${slide2}" alt="${p.name} - Ficha Técnica Dimétrica" />
-      </div>
-      <div class="gallery-card blueprint-card">
-        <img src="${slide3}" alt="${p.name} - Ficha Técnica Despiece" />
-      </div>
-    </div>
 
-    <!-- Bottom Area: Split Details -->
-    <div class="modal-details-row">
-      <!-- Left side: Description -->
       <div class="details-desc-col">
         <h4 class="modal-section-title">Descripción Detallada</h4>
         <p class="modal-description">${p.longDesc}</p>
       </div>
 
-      <!-- Right side: Technical Specifications & CTA -->
       <div class="details-specs-col">
         <h4 class="modal-section-title">Ficha Técnica</h4>
         <div class="modal-specs-grid">
@@ -942,10 +1071,78 @@ function openProductModal(index) {
 
   // Attach WhatsApp CTA inside modal
   const ctaBtn = document.getElementById('modalCtaBtn');
-  ctaBtn.addEventListener('click', () => {
-    const msg = encodeURIComponent(`Hola! Me interesa el producto: ${p.name}. ¿Podrían darme más información detallada sobre las especificaciones técnicas?`);
-    window.open(`https://wa.me/${siteConfig.whatsapp_number}?text=${msg}`, '_blank');
-  });
+  if (ctaBtn) {
+    ctaBtn.addEventListener('click', () => {
+      const msg = encodeURIComponent(`Hola! Me interesa el producto: ${p.name}. ¿Podrían darme más información detallada sobre las especificaciones técnicas?`);
+      window.open(`https://wa.me/${siteConfig.whatsapp_number}?text=${msg}`, '_blank');
+    });
+  }
+
+  // Bind Carousel Event Listeners if multiple slides exist
+  if (modalSlides.length > 1) {
+    const inner = document.getElementById('carouselInner');
+    const prevBtn = document.getElementById('carouselPrevBtn');
+    const nextBtn = document.getElementById('carouselNextBtn');
+    const dots = document.querySelectorAll('.modal-carousel-dot');
+
+    const updateSlide = () => {
+      if (inner) {
+        inner.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+      }
+      dots.forEach((dot, idx) => {
+        if (idx === currentSlideIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    };
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        currentSlideIndex = (currentSlideIndex - 1 + modalSlides.length) % modalSlides.length;
+        updateSlide();
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        currentSlideIndex = (currentSlideIndex + 1) % modalSlides.length;
+        updateSlide();
+      });
+    }
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', (e) => {
+        currentSlideIndex = parseInt(e.target.getAttribute('data-index'), 10);
+        updateSlide();
+      });
+    });
+
+    // Touch support (swipe left/right) for premium mobile feeling
+    const carouselEl = document.getElementById('modalCarousel');
+    if (carouselEl) {
+      let startX = 0;
+      carouselEl.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+      }, { passive: true });
+
+      carouselEl.addEventListener('touchend', (e) => {
+        const endX = e.changedTouches[0].clientX;
+        const diffX = startX - endX;
+        if (Math.abs(diffX) > 50) { // Threshold for swipe
+          if (diffX > 0) {
+            // Swiped left -> next
+            currentSlideIndex = (currentSlideIndex + 1) % modalSlides.length;
+          } else {
+            // Swiped right -> prev
+            currentSlideIndex = (currentSlideIndex - 1 + modalSlides.length) % modalSlides.length;
+          }
+          updateSlide();
+        }
+      }, { passive: true });
+    }
+  }
 
   // Show Modal Drawer
   overlay.classList.add('active');

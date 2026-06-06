@@ -175,6 +175,7 @@ const SUPABASE_ANON_KEY = __SUPABASE_ANON_KEY__;
 
 let siteConfig = {
   whatsapp_number: WHATSAPP_NUMBER,
+  google_analytics_id: "",
   hero_badge: "MercadoLíder Platinum · +1.900 seguidores",
   hero_title: 'HERRAMIENTAS QUE <span class="accent">CONSTRUYEN</span>',
   hero_subtitle: 'Somos distribuidores oficiales de las mejores marcas de herramientas en Argentina. Potencia, precisión y confianza para cada proyecto.',
@@ -273,6 +274,37 @@ function hydrateDOM() {
   if (brandsIntro && siteConfig.brands_intro_text) {
     brandsIntro.textContent = siteConfig.brands_intro_text;
   }
+
+  // Inicializar Google Analytics
+  if (siteConfig.google_analytics_id) {
+    initGoogleAnalytics(siteConfig.google_analytics_id);
+  }
+}
+
+function initGoogleAnalytics(gaId) {
+  if (!gaId || !gaId.trim()) return;
+  const cleanId = gaId.trim();
+
+  // Evitar duplicados
+  if (document.getElementById('ga-gtag-script')) return;
+
+  // Cargar script externo de gtag
+  const script = document.createElement('script');
+  script.id = 'ga-gtag-script';
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${cleanId}`;
+  document.head.appendChild(script);
+
+  // Cargar configuración de gtag
+  const inlineScript = document.createElement('script');
+  inlineScript.id = 'ga-inline-script';
+  inlineScript.textContent = `
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '${cleanId}');
+  `;
+  document.head.appendChild(inlineScript);
 }
 
 // ── WhatsApp SVG icon ─────────────────────────

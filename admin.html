@@ -1007,7 +1007,7 @@
       align-items: center;
     }
 
-    .input-group svg {
+    .input-group > svg {
       position: absolute;
       left: 14px;
       color: #8c92a0;
@@ -1409,6 +1409,10 @@
         <button class="btn-preview" onclick="resetToDefaults()" style="border-color: rgba(239, 68, 68, 0.2); color: rgba(239, 68, 68, 0.85);">
           Restaurar Datos
         </button>
+        <button class="btn-preview" onclick="logoutAdmin()" style="border-color: rgba(239, 68, 68, 0.4); color: #ef4444; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Cerrar Sesión
+        </button>
       </div>
     </aside>
 
@@ -1527,7 +1531,7 @@
               </div>
 
               <div class="form-group full-width">
-                <label for="input-hero-title">Título del Hero (HTML permitido, ej: &lt;span class="accent"&gt;CONSTRUYEN&lt;/span&gt;)</label>
+                <label for="input-hero-title">Título del Hero</label>
                 <input type="text" id="input-hero-title" required>
               </div>
 
@@ -2466,7 +2470,10 @@
       if (!activeConfig) return;
       document.getElementById('input-whatsapp').value = activeConfig.whatsapp_number;
       document.getElementById('input-hero-badge').value = activeConfig.hero_badge;
-      document.getElementById('input-hero-title').value = activeConfig.hero_title;
+      
+      const rawTitle = activeConfig.hero_title || '';
+      document.getElementById('input-hero-title').value = rawTitle.replace(/<\/?[^>]+(>|$)/g, "").trim();
+      
       document.getElementById('input-hero-subtitle').value = activeConfig.hero_subtitle;
       document.getElementById('input-brands-intro').value = activeConfig.brands_intro_text;
     }
@@ -2477,7 +2484,10 @@
       
       activeConfig.whatsapp_number = document.getElementById('input-whatsapp').value.trim();
       activeConfig.hero_badge = document.getElementById('input-hero-badge').value.trim();
-      activeConfig.hero_title = document.getElementById('input-hero-title').value.trim();
+      
+      const titleVal = document.getElementById('input-hero-title').value.trim();
+      activeConfig.hero_title = titleVal.replace(/<\/?[^>]+(>|$)/g, "").trim();
+      
       activeConfig.hero_subtitle = document.getElementById('input-hero-subtitle').value.trim();
       activeConfig.brands_intro_text = document.getElementById('input-brands-intro').value.trim();
 
@@ -2840,9 +2850,14 @@
       overlay.classList.add('show');
     }
 
+    function logoutAdmin() {
+      sessionStorage.removeItem('zolsea_admin_auth');
+      window.location.reload();
+    }
+
     function closeCustomToast() {
       const overlay = document.getElementById('custom-toast-container');
-      overlay.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
     }
 
     // Expose security functions
@@ -2850,6 +2865,7 @@
     window.togglePasswordVisibility = togglePasswordVisibility;
     window.closeCustomToast = closeCustomToast;
     window.showToast = showToast;
+    window.logoutAdmin = logoutAdmin;
 
     function togglePasswordVisibility(inputId, buttonEl) {
       const input = document.getElementById(inputId);

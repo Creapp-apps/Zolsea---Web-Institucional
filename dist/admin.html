@@ -1007,7 +1007,7 @@
       align-items: center;
     }
 
-    .input-group svg {
+    .input-group > svg {
       position: absolute;
       left: 14px;
       color: #8c92a0;
@@ -1239,7 +1239,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-7hVA2ppo.js"></script>
+  <script type="module" crossorigin src="/assets/admin-BL7d4kV1.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -1411,6 +1411,10 @@
         <button class="btn-preview" onclick="resetToDefaults()" style="border-color: rgba(239, 68, 68, 0.2); color: rgba(239, 68, 68, 0.85);">
           Restaurar Datos
         </button>
+        <button class="btn-preview" onclick="logoutAdmin()" style="border-color: rgba(239, 68, 68, 0.4); color: #ef4444; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Cerrar Sesión
+        </button>
       </div>
     </aside>
 
@@ -1529,7 +1533,7 @@
               </div>
 
               <div class="form-group full-width">
-                <label for="input-hero-title">Título del Hero (HTML permitido, ej: &lt;span class="accent"&gt;CONSTRUYEN&lt;/span&gt;)</label>
+                <label for="input-hero-title">Título del Hero</label>
                 <input type="text" id="input-hero-title" required>
               </div>
 

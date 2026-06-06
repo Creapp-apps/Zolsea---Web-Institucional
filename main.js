@@ -248,7 +248,18 @@ function hydrateDOM() {
   // Actualizar Título del Hero
   const heroTitle = document.getElementById('heroTitle');
   if (heroTitle && siteConfig.hero_title) {
-    heroTitle.innerHTML = siteConfig.hero_title;
+    let titleText = siteConfig.hero_title.trim();
+    if (!titleText.includes('<span') && !titleText.includes('<strong')) {
+      titleText = titleText.replace(/<\/?[^>]+(>|$)/g, "").trim();
+      const words = titleText.split(/\s+/);
+      if (words.length > 1) {
+        const lastWord = words.pop();
+        titleText = `${words.join(' ')} <span class="accent">${lastWord}</span>`;
+      } else if (words.length === 1 && words[0]) {
+        titleText = `<span class="accent">${words[0]}</span>`;
+      }
+    }
+    heroTitle.innerHTML = titleText;
   }
 
   // Actualizar Subtítulo del Hero

@@ -320,6 +320,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initNavbar();
   initWhatsApp();
   initProductModalEvents();
+  initLightboxEvents();
   
   // Inicialización de Interactividades Premium de Alta Gama
   // initMagneticButtons();   // DISABLED — investigating freeze
@@ -948,6 +949,192 @@ function generateBlueprintSVG(title, subtitle, type) {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgString)}`;
 }
 
+// ── Lightbox Fullscreen Carousel ──────────────
+let currentSyncHandler = null;
+let lightboxActiveIndex = 0;
+let lightboxSlides = [];
+let lightboxTouchStartX = 0;
+
+function openLightbox(slides, startIndex) {
+  const overlay = document.getElementById('lightboxOverlay');
+  const content = document.getElementById('lightboxContent');
+  const dotsContainer = document.getElementById('lightboxDots');
+  const prevBtn = document.getElementById('lightboxPrevBtn');
+  const nextBtn = document.getElementById('lightboxNextBtn');
+
+  if (!overlay || !content) return;
+
+  lightboxSlides = slides;
+  lightboxActiveIndex = startIndex;
+
+  // Render slides
+  content.innerHTML = slides.map((slide, idx) => `
+    <div class="lightbox-slide ${idx === startIndex ? 'active' : ''}" data-index="${idx}">
+      <img src="${slide.content}" alt="Imagen de producto ampliada" />
+    </div>
+  `).join('');
+
+  // Render dots
+  if (dotsContainer) {
+    if (slides.length > 1) {
+      dotsContainer.style.display = 'flex';
+      dotsContainer.innerHTML = slides.map((_, idx) => `
+        <div class="lightbox-dot ${idx === startIndex ? 'active' : ''}" data-index="${idx}"></div>
+      `).join('');
+
+      // Add dot click event listeners
+      const dots = dotsContainer.querySelectorAll('.lightbox-dot');
+      dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const targetIdx = parseInt(e.target.getAttribute('data-index'), 10);
+          updateLightboxSlide(targetIdx);
+        });
+      });
+    } else {
+      dotsContainer.style.display = 'none';
+    }
+  }
+
+  // Show/hide arrows
+  if (prevBtn && nextBtn) {
+    if (slides.length > 1) {
+      prevBtn.style.display = 'flex';
+      nextBtn.style.display = 'flex';
+    } else {
+      prevBtn.style.display = 'none';
+      nextBtn.style.display = 'none';
+    }
+  }
+
+  // Show Lightbox overlay
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Bind event listeners for keyboard navigation and touch swipes
+  document.addEventListener('keydown', handleLightboxKeydown);
+  overlay.addEventListener('touchstart', handleLightboxTouchStart, { passive: true });
+  overlay.addEventListener('touchend', handleLightboxTouchEnd, { passive: true });
+}
+
+function updateLightboxSlide(index) {
+  if (index < 0 || index >= lightboxSlides.length) return;
+  lightboxActiveIndex = index;
+
+  const slidesEls = document.querySelectorAll('.lightbox-slide');
+  const dotsEls = document.querySelectorAll('.lightbox-dot');
+
+  slidesEls.forEach((slide, idx) => {
+    if (idx === index) {
+      slide.classList.add('active');
+    } else {
+      slide.classList.remove('active');
+    }
+  });
+
+  dotsEls.forEach((dot, idx) => {
+    if (idx === index) {
+      dot.classList.add('active');
+    } else {
+      dot.classList.remove('active');
+    }
+  });
+  
+  // Dispatch sync event to update parent modal
+  document.dispatchEvent(new CustomEvent('syncModalCarousel', { detail: { index: lightboxActiveIndex } }));
+}
+
+function prevLightboxSlide() {
+  const newIndex = (lightboxActiveIndex - 1 + lightboxSlides.length) % lightboxSlides.length;
+  updateLightboxSlide(newIndex);
+}
+
+function nextLightboxSlide() {
+  const newIndex = (lightboxActiveIndex + 1) % lightboxSlides.length;
+  updateLightboxSlide(newIndex);
+}
+
+function closeLightbox() {
+  const overlay = document.getElementById('lightboxOverlay');
+  if (!overlay) return;
+
+  overlay.classList.remove('active');
+  
+  // Restore overflow only if the product modal toast is NOT active (which it usually is, but just in case)
+  const productToast = document.getElementById('productModalToast');
+  if (!productToast || !productToast.classList.contains('active')) {
+    document.body.style.overflow = '';
+  }
+
+  // Remove listeners
+  document.removeEventListener('keydown', handleLightboxKeydown);
+  overlay.removeEventListener('touchstart', handleLightboxTouchStart);
+  overlay.removeEventListener('touchend', handleLightboxTouchEnd);
+}
+
+function handleLightboxKeydown(e) {
+  if (e.key === 'ArrowLeft') {
+    prevLightboxSlide();
+  } else if (e.key === 'ArrowRight') {
+    nextLightboxSlide();
+  } else if (e.key === 'Escape') {
+    closeLightbox();
+  }
+}
+
+function handleLightboxTouchStart(e) {
+  lightboxTouchStartX = e.touches[0].clientX;
+}
+
+function handleLightboxTouchEnd(e) {
+  const endX = e.changedTouches[0].clientX;
+  const diffX = lightboxTouchStartX - endX;
+  if (Math.abs(diffX) > 50) {
+    if (diffX > 0) {
+      nextLightboxSlide();
+    } else {
+      prevLightboxSlide();
+    }
+  }
+}
+
+function initLightboxEvents() {
+  const overlay = document.getElementById('lightboxOverlay');
+  const closeBtn = document.getElementById('lightboxCloseBtn');
+  const prevBtn = document.getElementById('lightboxPrevBtn');
+  const nextBtn = document.getElementById('lightboxNextBtn');
+
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      // Close only if clicked the backdrop or content container, not the image itself
+      if (e.target === overlay || e.target.id === 'lightboxContent' || e.target.classList.contains('lightbox-slide')) {
+        closeLightbox();
+      }
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeLightbox();
+    });
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      prevLightboxSlide();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nextLightboxSlide();
+    });
+  }
+}
+
 // ── Open Product Modal Toast ──────────────────
 function openProductModal(index) {
   const p = siteConfig.products[index];
@@ -1187,6 +1374,37 @@ function openProductModal(index) {
     }
   }
 
+  // Bind click listener to each slide to open fullscreen lightbox
+  const carouselSlides = modalBody.querySelectorAll('.modal-carousel-slide');
+  carouselSlides.forEach((slide) => {
+    slide.addEventListener('click', () => {
+      openLightbox(modalSlides, currentSlideIndex);
+    });
+  });
+
+  // Sync event listener to update modal slide index when lightbox slide changes
+  if (currentSyncHandler) {
+    document.removeEventListener('syncModalCarousel', currentSyncHandler);
+  }
+  currentSyncHandler = (e) => {
+    currentSlideIndex = e.detail.index;
+    if (modalSlides.length > 1) {
+      const inner = document.getElementById('carouselInner');
+      const dots = document.querySelectorAll('.modal-carousel-dot');
+      if (inner) {
+        inner.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+      }
+      dots.forEach((dot, idx) => {
+        if (idx === currentSlideIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+  };
+  document.addEventListener('syncModalCarousel', currentSyncHandler);
+
   // Show Modal Drawer
   overlay.classList.add('active');
   toast.classList.add('active');
@@ -1197,6 +1415,11 @@ function openProductModal(index) {
 function closeProductModal() {
   const overlay = document.getElementById('productModalOverlay');
   const toast = document.getElementById('productModalToast');
+  
+  if (currentSyncHandler) {
+    document.removeEventListener('syncModalCarousel', currentSyncHandler);
+    currentSyncHandler = null;
+  }
   
   if (overlay && toast) {
     overlay.classList.remove('active');

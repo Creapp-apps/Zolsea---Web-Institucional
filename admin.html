@@ -2849,10 +2849,11 @@
         ? activeConfig.admin_password_hash 
         : '563a4e5ca30e296163790797fd393bcaedf41b483482e803a27e4069e68beeea'; // zolsea2026 hash
 
-      // Backup check for ZolSea2026
+      // Backup check for ZolSea2026 and Zolsea2026!
       const backupHash = 'dd60e4783d5ddc091de5db616dde589d1db73c661a80d1dea740f711cc808089';
+      const backupHash2 = '567dc0d0659a74634e158dcfc484fb1c4fa49eb7355b273a6eea7e33d00df0ec';
 
-      if (hashHex === storedHash || hashHex === backupHash) {
+      if (hashHex === storedHash || hashHex === backupHash || hashHex === backupHash2) {
         sessionStorage.setItem('zolsea_admin_auth', 'true');
         document.body.classList.add('authenticated');
         const overlay = document.getElementById('admin-login-overlay');
@@ -3026,8 +3027,9 @@
         : '563a4e5ca30e296163790797fd393bcaedf41b483482e803a27e4069e68beeea'; // default zolsea2026
 
       const backupHash = 'dd60e4783d5ddc091de5db616dde589d1db73c661a80d1dea740f711cc808089';
+      const backupHash2 = '567dc0d0659a74634e158dcfc484fb1c4fa49eb7355b273a6eea7e33d00df0ec';
 
-      if (currentHashHex !== storedHash && currentHashHex !== backupHash) {
+      if (currentHashHex !== storedHash && currentHashHex !== backupHash && currentHashHex !== backupHash2) {
         errEl.textContent = 'La contraseña actual ingresada es incorrecta.';
         errEl.style.display = 'block';
         return;

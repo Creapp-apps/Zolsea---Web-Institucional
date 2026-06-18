@@ -1300,7 +1300,7 @@
           </p>
           <div style="display: flex; gap: 6px; align-items: stretch;">
             <input type="text" readonly id="sql-reset-code" value="UPDATE site_config SET data = jsonb_set(data, '{admin_password_hash}', '&quot;563a4e5ca30e296163790797fd393bcaedf41b483482e803a27e4069e68beeea&quot;') WHERE id = 'zolsea';" style="flex: 1; font-family: monospace; font-size: 0.65rem; background: #000; border: 1px solid #222; border-radius: 4px; padding: 6px; color: #10b981; outline: none;">
-            <button id="btn-copy-sql" onclick="const input = document.getElementById('sql-reset-code'); input.select(); document.execCommand('copy'); alert('¡Consulta SQL copiada al portapapeles!');" style="padding: 0 10px; background: #222; border: 1px solid #333; color: #fff; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: bold; outline: none;">Copiar</button>
+            <button id="btn-copy-sql" onclick="const input = document.getElementById('sql-reset-code'); input.select(); document.execCommand('copy'); window.showToast('Copiado', '¡Consulta SQL copiada al portapapeles!', 'success');" style="padding: 0 10px; background: #222; border: 1px solid #333; color: #fff; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: bold; outline: none;">Copiar</button>
           </div>
         </div>
 
@@ -1872,7 +1872,7 @@
           </p>
           <div style="display: flex; gap: 8px; align-items: stretch; background: rgba(0, 0, 0, 0.3); padding: 12px; border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 6px;">
             <code style="font-family: monospace; font-size: 14px; color: var(--brand-color); flex: 1; align-self: center; letter-spacing: 0.5px;">ZOLSEA-RECOVERY-9F8E-2A1B-5D3C</code>
-            <button onclick="navigator.clipboard.writeText('ZOLSEA-RECOVERY-9F8E-2A1B-5D3C'); alert('¡Clave de recuperación copiada al portapapeles!');" style="padding: 6px 12px; font-size: 11px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; cursor: pointer; border-radius: 4px;" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
+            <button onclick="navigator.clipboard.writeText('ZOLSEA-RECOVERY-9F8E-2A1B-5D3C'); window.showToast('Copiado', '¡Clave de recuperación copiada al portapapeles!', 'success');" style="padding: 6px 12px; font-size: 11px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; cursor: pointer; border-radius: 4px;" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
               Copiar Clave
             </button>
           </div>
@@ -2276,7 +2276,7 @@
         setSlotState(slotNum, 'preview', { src: publicUrl });
       } catch (err) {
         console.error(err);
-        alert('Error al subir la imagen. Asegúrate de tener el bucket "catalogo" en Supabase.');
+        showToast('Error de Carga', 'Error al subir la imagen. Asegúrate de tener el bucket "catalogo" en Supabase.', 'error');
         setSlotState(slotNum, 'empty');
       }
     }
@@ -2365,10 +2365,10 @@
         defaultConfig = JSON.parse(JSON.stringify(activeConfig));
         localStorage.removeItem('zolsea_web_config');
         showSyncStatus(false);
-        alert('¡Cambios publicados en vivo con éxito! El sitio web ya cargará la nueva información.');
+        showToast('Cambios Publicados', '¡Cambios publicados en vivo con éxito! El sitio web ya cargará la nueva información.', 'success');
       } catch (err) {
         console.error(err);
-        alert('Error al publicar: Asegúrate de haber creado la tabla "site_config" en Supabase con la columna "data" tipo JSONB. Revisa la consola para más detalles.');
+        showToast('Error al publicar', 'Asegúrate de haber creado la tabla "site_config" en Supabase con la columna "data" tipo JSONB.', 'error');
       } finally {
         if (publishBtn) {
           publishBtn.disabled = false;
@@ -2704,7 +2704,7 @@
 
       saveToStorage();
       updateDashboardStats();
-      alert('¡Textos principales del sitio guardados con éxito!');
+      showToast('Cambios Guardados', '¡Textos principales del sitio guardados con éxito!', 'success');
     }
 
     function updateAnalyticsTab() {
@@ -2757,7 +2757,7 @@
       updateAnalyticsTab();
       updateDashboardStats();
       
-      alert(gaId ? '¡ID de Google Analytics configurado y propiedad vinculada!' : '¡Google Analytics desactivado correctamente!');
+      showToast('Google Analytics', gaId ? '¡ID de Google Analytics configurado y propiedad vinculada!' : '¡Google Analytics desactivado correctamente!', 'success');
     }
 
     // Save active config to localStorage
@@ -2779,7 +2779,7 @@
       const output = document.getElementById('config-json-output');
       output.select();
       document.execCommand('copy');
-      alert('¡Configuración copiada en formato JSON al portapapeles!');
+      showToast('Copiado', '¡Configuración copiada en formato JSON al portapapeles!', 'success');
     }
 
     // Download data.json
@@ -2804,7 +2804,7 @@
       }
       localStorage.removeItem('zolsea_web_config');
       loadData();
-      alert('Se han restaurado los valores por defecto del sitio.');
+      showToast('Restaurado', 'Se han restaurado los valores por defecto del sitio.', 'success');
     }
 
     // Expose functions to global scope for HTML event handlers
@@ -2974,7 +2974,7 @@
           const overlay = document.getElementById('admin-login-overlay');
           if (overlay) overlay.style.display = 'none';
           
-          alert('¡Nueva contraseña administrativa establecida con éxito!');
+          showToast('Contraseña Restablecida', '¡Nueva contraseña administrativa establecida con éxito!', 'success');
         });
       }
     }

@@ -1239,7 +1239,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-D7iB9ruF.js"></script>
+  <script type="module" crossorigin src="/assets/admin-DS88782P.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -1302,7 +1302,7 @@
           </p>
           <div style="display: flex; gap: 6px; align-items: stretch;">
             <input type="text" readonly id="sql-reset-code" value="UPDATE site_config SET data = jsonb_set(data, '{admin_password_hash}', '&quot;563a4e5ca30e296163790797fd393bcaedf41b483482e803a27e4069e68beeea&quot;') WHERE id = 'zolsea';" style="flex: 1; font-family: monospace; font-size: 0.65rem; background: #000; border: 1px solid #222; border-radius: 4px; padding: 6px; color: #10b981; outline: none;">
-            <button id="btn-copy-sql" onclick="const input = document.getElementById('sql-reset-code'); input.select(); document.execCommand('copy'); alert('¡Consulta SQL copiada al portapapeles!');" style="padding: 0 10px; background: #222; border: 1px solid #333; color: #fff; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: bold; outline: none;">Copiar</button>
+            <button id="btn-copy-sql" onclick="const input = document.getElementById('sql-reset-code'); input.select(); document.execCommand('copy'); window.showToast('Copiado', '¡Consulta SQL copiada al portapapeles!', 'success');" style="padding: 0 10px; background: #222; border: 1px solid #333; color: #fff; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: bold; outline: none;">Copiar</button>
           </div>
         </div>
 
@@ -1874,7 +1874,7 @@
           </p>
           <div style="display: flex; gap: 8px; align-items: stretch; background: rgba(0, 0, 0, 0.3); padding: 12px; border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 6px;">
             <code style="font-family: monospace; font-size: 14px; color: var(--brand-color); flex: 1; align-self: center; letter-spacing: 0.5px;">ZOLSEA-RECOVERY-9F8E-2A1B-5D3C</code>
-            <button onclick="navigator.clipboard.writeText('ZOLSEA-RECOVERY-9F8E-2A1B-5D3C'); alert('¡Clave de recuperación copiada al portapapeles!');" style="padding: 6px 12px; font-size: 11px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; cursor: pointer; border-radius: 4px;" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
+            <button onclick="navigator.clipboard.writeText('ZOLSEA-RECOVERY-9F8E-2A1B-5D3C'); window.showToast('Copiado', '¡Clave de recuperación copiada al portapapeles!', 'success');" style="padding: 6px 12px; font-size: 11px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; cursor: pointer; border-radius: 4px;" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
               Copiar Clave
             </button>
           </div>

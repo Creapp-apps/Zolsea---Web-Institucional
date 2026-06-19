@@ -5,6 +5,13 @@
   "hero_title": "HERRAMIENTAS QUE <span class=\"accent\">CONSTRUYEN</span>",
   "hero_subtitle": "Somos distribuidores oficiales de las mejores marcas de herramientas en Argentina. Potencia, precisión y confianza para cada proyecto.",
   "brands_intro_text": "Somos una empresa dedicada a la distribución mayorista de herramientas y accesorios. Entregamos en todo el país (GBA e interior) con camiones propios y tercerizados, estamos preparados para brindar el mejor servicio de asesoramiento, venta y postventa del mercado.",
+  "brands": [
+    { "name": "Gladiator PRO", "accent_color": "#ff6b35" },
+    { "name": "KTO", "accent_color": "#0ea5e9" },
+    { "name": "Bosch", "accent_color": "#ef4444" },
+    { "name": "Makita", "accent_color": "#0d9488" },
+    { "name": "DeWalt", "accent_color": "#eab308" }
+  ],
   "products": [
     {
       "name": "Soldadora MIG 200A",

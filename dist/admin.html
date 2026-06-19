@@ -273,7 +273,7 @@
     /* Grid & Widgets */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 24px;
       margin-bottom: 40px;
     }
@@ -1124,6 +1124,100 @@
       color: var(--brand-color);
     }
 
+    /* Custom Select Component styles */
+    .custom-select-wrapper {
+      position: relative;
+      width: 100%;
+    }
+    .custom-select-trigger {
+      width: 100%;
+      height: 42px;
+      padding: 0 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+    .custom-select-trigger:hover,
+    .custom-select-wrapper.open .custom-select-trigger {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.15);
+    }
+    .custom-select-chevron {
+      color: #8c92a0;
+      transition: transform 0.2s ease;
+    }
+    .custom-select-wrapper.open .custom-select-chevron {
+      transform: rotate(180deg);
+      color: var(--brand-color);
+    }
+    .custom-select-options {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      width: 100%;
+      background: rgba(20, 20, 22, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      max-height: 220px;
+      overflow-y: auto;
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+      pointer-events: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .custom-select-wrapper.open .custom-select-options {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+    .custom-select-option {
+      padding: 10px 16px;
+      color: #8c92a0;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .custom-select-option:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+    .custom-select-option.selected {
+      background: rgba(255, 107, 53, 0.08);
+      color: var(--brand-color);
+      font-weight: 600;
+    }
+    .custom-select-options::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-select-options::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-select-options::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+    .custom-select-options::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
     /* Custom Toast Modal Overlay */
     .custom-toast-overlay {
       position: fixed;
@@ -1239,7 +1333,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-DS88782P.js"></script>
+  <script type="module" crossorigin src="/assets/admin-BTQnc1Bp.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -1355,6 +1449,23 @@
     </div>
   </div>
 
+  <!-- Modal Confirmación -->
+  <div id="custom-confirm-container" class="custom-toast-overlay">
+    <div class="custom-toast-card">
+      <div class="toast-icon-wrapper error" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div class="toast-content">
+        <h4 id="confirm-title">¿Estás seguro?</h4>
+        <p id="confirm-message">Esta acción no se puede deshacer.</p>
+      </div>
+      <div style="display: flex; gap: 12px; width: 100%;">
+        <button class="toast-close-btn" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff;" onclick="closeCustomConfirm(false)">Cancelar</button>
+        <button class="toast-close-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff;" onclick="closeCustomConfirm(true)">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     if (sessionStorage.getItem('zolsea_admin_auth') !== 'true') {
       document.getElementById('admin-login-overlay').style.display = 'flex';
@@ -1381,6 +1492,12 @@
           <button>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 8 2-2 5.5 5.5-2 2Z"/><path d="m14 11 1 1.5 1.5-1.5L14 11Z"/><path d="M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10Z"/><path d="m10 14-5 5"/></svg>
             Gestionar Catálogo
+          </button>
+        </li>
+        <li class="nav-item" id="nav-brands" onclick="switchTab('brands')">
+          <button>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Gestionar Marcas
           </button>
         </li>
         <li class="nav-item" id="nav-texts" onclick="switchTab('texts')">
@@ -1461,6 +1578,11 @@
             <span class="val" id="stat-categories-count">0</span>
             <span class="desc">Categorías de filtrado en la grilla</span>
           </div>
+          <div class="stat-card">
+            <span class="label">Marcas que Respaldamos</span>
+            <span class="val" id="stat-brands-count">0</span>
+            <span class="desc">Marcas dinámicas mostradas en la web</span>
+          </div>
         </div>
 
         <div class="tutorial-card">
@@ -1516,6 +1638,36 @@
               </tr>
             </thead>
             <tbody id="products-table-body">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PANEL: BRANDS -->
+      <section class="tab-panel" id="panel-brands">
+        <div class="section-header-actions">
+          <div class="search-input-wrapper">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="brand-search" placeholder="Buscar marca por nombre..." oninput="renderBrandsList()">
+          </div>
+          <button class="btn-add" onclick="openBrandModal(null)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar Marca
+          </button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Marca</th>
+                <th>Color de Acento</th>
+                <th>Visualización</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="brands-table-body">
               <!-- Rendered via JS -->
             </tbody>
           </table>
@@ -2095,6 +2247,56 @@
         <div class="btn-save-container" style="margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px;">
           <button type="button" class="btn-secondary" onclick="closeProductDrawer()">Cancelar</button>
           <button type="submit" class="btn-add">Guardar Producto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DRAWER: BRAND EDITOR (MODAL) -->
+  <div class="drawer-overlay" id="brand-drawer-overlay">
+    <div class="drawer-container" style="max-width: 450px;">
+      <div class="drawer-header">
+        <h3 id="brand-drawer-title">Editar Marca</h3>
+        <button class="btn-close" onclick="closeBrandDrawer()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <form id="brand-form" onsubmit="saveBrand(event)">
+        <input type="hidden" id="edit-brand-index">
+
+        <div class="form-grid" style="grid-template-columns: 1fr;">
+          <div class="form-group">
+            <label for="brand-name">Nombre de la Marca</label>
+            <input type="text" id="brand-name" required placeholder="Ej: Gladiator PRO">
+          </div>
+
+          <div class="form-group">
+            <label for="brand-color">Color de Acento (Glow)</label>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <input type="color" id="brand-color" value="#ff6b35" style="width: 60px; height: 42px; padding: 2px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; cursor: pointer;">
+              <input type="text" id="brand-color-text" value="#ff6b35" placeholder="#ff6b35" pattern="^#[0-9A-Fa-f]{6}$" required style="flex: 1;" oninput="document.getElementById('brand-color').value = this.value">
+            </div>
+            <span style="font-size: 11px; color: var(--text-muted); margin-top: 6px; display: block;">Este color se usará para el brillo de fondo y la línea de acento del bento card de marcas.</span>
+          </div>
+
+          <div class="form-group" style="margin-top: 10px;">
+            <label>Previsualización del Bento Card</label>
+            <div style="display: flex; justify-content: center; padding: 20px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: var(--radius-md);">
+              <div id="brand-card-preview" class="brand-card" style="width: 190px; height: 80px; transform: none !important; border: 1px solid rgba(255,255,255,0.1); background: #ffffff05; position: relative; border-radius: 14px; display: flex; align-items: center; justify-content: center; overflow: hidden; --glow-color: rgba(255, 107, 53, 0.3); --accent-color: #ff6b35;">
+                <div class="brand-glow" style="position: absolute; top:0; right:0; bottom:0; left:0; background: radial-gradient(circle at center, transparent 60%, var(--glow-color) 120%); opacity: 0.15;"></div>
+                <div class="brand-card-content" style="position: relative; z-index: 2;">
+                  <h3 class="brand-title" id="brand-preview-title" style="color: #fff; font-size: 1.15rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin: 0;">GLADIATOR PRO</h3>
+                </div>
+                <div class="brand-accent-line" style="position: absolute; bottom: 0; left: 20px; right: 20px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-color), transparent); opacity: 1; transform: scaleX(1);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="drawer-footer" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; gap: 12px; justify-content: flex-end;">
+          <button type="button" class="btn-secondary" onclick="closeBrandDrawer()">Cancelar</button>
+          <button type="submit" class="btn-add">Guardar Marca</button>
         </div>
       </form>
     </div>

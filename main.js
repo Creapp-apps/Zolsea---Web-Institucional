@@ -180,6 +180,13 @@ let siteConfig = {
   hero_title: 'HERRAMIENTAS QUE <span class="accent">CONSTRUYEN</span>',
   hero_subtitle: 'Somos distribuidores oficiales de las mejores marcas de herramientas en Argentina. Potencia, precisión y confianza para cada proyecto.',
   brands_intro_text: 'Somos una empresa dedicada a la distribución mayorista de herramientas y accesorios. Entregamos en todo el país (GBA e interior) con camiones propios y tercerizados, estamos preparados para brindar el mejor servicio de asesoramiento, venta y postventa del mercado.',
+  brands: [
+    { name: "Gladiator PRO", accent_color: "#ff6b35" },
+    { name: "KTO", accent_color: "#0ea5e9" },
+    { name: "Bosch", accent_color: "#ef4444" },
+    { name: "Makita", accent_color: "#0d9488" },
+    { name: "DeWalt", accent_color: "#eab308" }
+  ],
   products: PRODUCTS
 };
 
@@ -273,6 +280,36 @@ function hydrateDOM() {
   const brandsIntro = document.querySelector('.brands-intro-text');
   if (brandsIntro && siteConfig.brands_intro_text) {
     brandsIntro.textContent = siteConfig.brands_intro_text;
+  }
+
+  // Actualizar Marcas en Bento Grid
+  const brandsRow = document.querySelector('.brands-row');
+  if (brandsRow) {
+    const brands = siteConfig.brands || [
+      { name: "Gladiator PRO", accent_color: "#ff6b35" },
+      { name: "KTO", accent_color: "#0ea5e9" },
+      { name: "Bosch", accent_color: "#ef4444" },
+      { name: "Makita", accent_color: "#0d9488" },
+      { name: "DeWalt", accent_color: "#eab308" }
+    ];
+
+    brandsRow.innerHTML = brands.map((b, i) => {
+      const hex = b.accent_color || '#ff6b35';
+      const r = parseInt(hex.slice(1, 3), 16) || 255;
+      const g = parseInt(hex.slice(3, 5), 16) || 107;
+      const blue = parseInt(hex.slice(5, 7), 16) || 53;
+      const glowColor = `rgba(${r}, ${g}, ${blue}, 0.3)`;
+
+      return `
+        <div class="brand-card reveal reveal-delay-${(i % 5) + 1}" data-brand="${b.name.toLowerCase().replace(/\s+/g, '-')}" style="--glow-color: ${glowColor}; --accent-color: ${hex};">
+          <div class="brand-glow"></div>
+          <div class="brand-card-content">
+            <h3 class="brand-title">${b.name}</h3>
+          </div>
+          <div class="brand-accent-line"></div>
+        </div>
+      `;
+    }).join('');
   }
 
   // Inicializar Google Analytics

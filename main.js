@@ -187,6 +187,17 @@ let siteConfig = {
     { name: "Makita", accent_color: "#0d9488" },
     { name: "DeWalt", accent_color: "#eab308" }
   ],
+  colors: {
+    bg: '#0A0A0A',
+    surface: '#141414',
+    surface_hover: '#242424',
+    accent: '#F59E0B',
+    accent_hover: '#D97706',
+    accent_secondary: '#FF6B35',
+    text: '#F5F5F5',
+    text_muted: '#9CA3AF',
+    border: '#1F1F1F'
+  },
   products: PRODUCTS
 };
 
@@ -244,8 +255,55 @@ async function initSiteData() {
   hydrateDOM();
 }
 
+function applyTheme() {
+  if (!siteConfig || !siteConfig.colors) return;
+  const colors = siteConfig.colors;
+  const root = document.documentElement;
+
+  if (colors.bg) root.style.setProperty('--color-bg', colors.bg);
+  if (colors.surface) root.style.setProperty('--color-surface', colors.surface);
+  if (colors.surface_hover) root.style.setProperty('--color-surface-hover', colors.surface_hover);
+  if (colors.accent) root.style.setProperty('--color-accent', colors.accent);
+  if (colors.accent_hover) root.style.setProperty('--color-accent-hover', colors.accent_hover);
+  if (colors.accent_secondary) root.style.setProperty('--color-accent-secondary', colors.accent_secondary);
+  if (colors.text) root.style.setProperty('--color-text', colors.text);
+  if (colors.text_muted) root.style.setProperty('--color-text-muted', colors.text_muted);
+  
+  if (colors.border) {
+    root.style.setProperty('--color-border', colors.border);
+  }
+
+  // Handle derived variables (glow and surface-elevated)
+  if (colors.surface_hover) {
+    root.style.setProperty('--color-surface-elevated', colors.surface_hover);
+  }
+  
+  if (colors.accent) {
+    const hex = colors.accent.replace('#', '');
+    const r = parseInt(hex.substring(0, 2), 16) || 245;
+    const g = parseInt(hex.substring(2, 4), 16) || 158;
+    const b = parseInt(hex.substring(4, 6), 16) || 11;
+    root.style.setProperty('--color-glow', `rgba(${r}, ${g}, ${b}, 0.15)`);
+  }
+}
+
 function hydrateDOM() {
   if (!siteConfig) return;
+
+  if (!siteConfig.colors) {
+    siteConfig.colors = {
+      bg: '#0A0A0A',
+      surface: '#141414',
+      surface_hover: '#242424',
+      accent: '#F59E0B',
+      accent_hover: '#D97706',
+      accent_secondary: '#FF6B35',
+      text: '#F5F5F5',
+      text_muted: '#9CA3AF',
+      border: '#1F1F1F'
+    };
+  }
+  applyTheme();
 
   // Actualizar Badge del Hero
   const heroBadge = document.querySelector('.hero-badge');
@@ -704,7 +762,7 @@ function initProductsGrid() {
   if (!grid) return;
 
   grid.innerHTML = siteConfig.products.map((p, i) => `
-    <article class="product-card reveal reveal-delay-${(i % 3) + 1}" data-category="${p.category}">
+    <article class="product-card reveal reveal-delay-${(i % 3) + 1}" data-category="${p.category}" data-index="${i}">
       <div class="product-image-wrapper">
         <img src="${p.image}" alt="${p.name}" loading="lazy" />
       </div>
@@ -723,6 +781,14 @@ function initProductsGrid() {
       </div>
     </article>
   `).join('');
+
+  // Click en la tarjeta completa (Modal Toast)
+  grid.querySelectorAll('.product-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const index = parseInt(card.dataset.index);
+      openProductModal(index);
+    });
+  });
 
   // Click en "Consultar" (WhatsApp directo)
   grid.querySelectorAll('.btn-whatsapp').forEach((btn) => {

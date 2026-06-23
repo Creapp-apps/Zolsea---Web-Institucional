@@ -1050,6 +1050,7 @@ ul { list-style: none; }
   overflow: hidden;
   transition: all 0.5s var(--ease-out);
   position: relative;
+  cursor: pointer;
 }
 .product-card::before {
   content: '';

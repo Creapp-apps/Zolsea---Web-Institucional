@@ -12,6 +12,17 @@
     { "name": "Makita", "accent_color": "#0d9488" },
     { "name": "DeWalt", "accent_color": "#eab308" }
   ],
+  "colors": {
+    "bg": "#0A0A0A",
+    "surface": "#141414",
+    "surface_hover": "#242424",
+    "accent": "#F59E0B",
+    "accent_hover": "#D97706",
+    "accent_secondary": "#FF6B35",
+    "text": "#F5F5F5",
+    "text_muted": "#9CA3AF",
+    "border": "#1F1F1F"
+  },
   "products": [
     {
       "name": "Soldadora MIG 200A",

@@ -1339,7 +1339,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-CWZYtE73.js"></script>
+  <script type="module" crossorigin src="/assets/admin-BzLHVDV0.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -1510,6 +1510,12 @@
           <button>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
             Textos del Sitio
+          </button>
+        </li>
+        <li class="nav-item" id="nav-colors" onclick="switchTab('colors')">
+          <button>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"/><circle cx="7.5" cy="10.5" r="1.5"/><circle cx="11.5" cy="7.5" r="1.5"/><circle cx="16.5" cy="9.5" r="1.5"/><circle cx="15.5" cy="14.5" r="1.5"/><path d="M12 17c-2 0-3-1-3-3"/></svg>
+            Colores del Sitio
           </button>
         </li>
         <li class="nav-item" id="nav-analytics" onclick="switchTab('analytics')">
@@ -1717,6 +1723,208 @@
               <button type="submit" class="btn-add">Guardar Cambios</button>
             </div>
           </form>
+        </div>
+      </section>
+
+      <!-- PANEL: COLORS & THEMING -->
+      <section class="tab-panel" id="panel-colors">
+        <div class="colors-layout" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;">
+          <!-- Config Column -->
+          <div class="form-card" style="margin-bottom: 0;">
+            <form id="colors-form" onsubmit="saveColors(event)">
+              
+              <!-- Grupo: Marca -->
+              <div class="color-section-group" style="margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
+                <h4 style="font-family: var(--font-title); font-size: 15px; color: var(--text-main); margin-bottom: 16px;">Colores de Marca (Acentos)</h4>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                  <!-- Acento Principal -->
+                  <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Acento Principal</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Botones, badges, logo e iconos primarios.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <input type="text" id="hex-accent" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('accent')">
+                      <input type="color" id="picker-accent" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('accent')">
+                    </div>
+                  </div>
+                  <!-- Acento Secundario -->
+                  <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Acento Secundario</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Gradientes y detalles decorativos.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <input type="text" id="hex-accent-secondary" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('accent-secondary')">
+                      <input type="color" id="picker-accent-secondary" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('accent-secondary')">
+                    </div>
+                  </div>
+                  <!-- Acento Hover -->
+                  <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Acento Hover</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Estado activo al posar cursor en botones.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <input type="text" id="hex-accent-hover" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('accent-hover')">
+                      <input type="color" id="picker-accent-hover" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('accent-hover')">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Grupo: Fondos -->
+              <div class="color-section-group" style="margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
+                <h4 style="font-family: var(--font-title); font-size: 15px; color: var(--text-main); margin-bottom: 16px;">Fondos y Superficies</h4>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                  <!-- Fondo de Página -->
+                  <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Fondo del Sitio</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Color de fondo general de la web.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <input type="text" id="hex-bg" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('bg')">
+                      <input type="color" id="picker-bg" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('bg')">
+                    </div>
+                  </div>
+                  <!-- Superficie -->
+                  <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Fondo Contenedores</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Color para tarjetas de productos y modales.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <input type="text" id="hex-surface" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('surface')">
+                      <input type="color" id="picker-surface" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('surface')">
+                    </div>
+                  </div>
+                  <!-- Superficie Hover -->
+                  <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Hover de Contenedores</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Efecto interactivo al posar cursor sobre tarjetas.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <input type="text" id="hex-surface-hover" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('surface-hover')">
+                      <input type="color" id="picker-surface-hover" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('surface-hover')">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Grupo: Textos -->
+              <div class="color-section-group" style="margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
+                <h4 style="font-family: var(--font-title); font-size: 15px; color: var(--text-main); margin-bottom: 16px;">Colores de Texto</h4>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                  <!-- Texto Principal -->
+                  <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Texto Principal</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Títulos y contenidos de alta lectura.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <input type="text" id="hex-text" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('text')">
+                      <input type="color" id="picker-text" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('text')">
+                    </div>
+                  </div>
+                  <!-- Texto Secundario -->
+                  <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Texto Secundario (Muted)</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Fichas técnicas y descripciones secundarias.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <input type="text" id="hex-text-muted" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('text-muted')">
+                      <input type="color" id="picker-text-muted" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('text-muted')">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Grupo: Detalles -->
+              <div class="color-section-group" style="margin-bottom: 24px;">
+                <h4 style="font-family: var(--font-title); font-size: 15px; color: var(--text-main); margin-bottom: 16px;">Contornos y Detalles</h4>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                  <!-- Borde -->
+                  <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Color de Borde</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Líneas de división y contornos de tarjetas.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <input type="text" id="hex-border" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('border')">
+                      <input type="color" id="picker-border" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('border')">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 12px; margin-top: 20px;">
+                <button type="button" class="btn-preview" style="flex: 1; border-color: rgba(255, 255, 255, 0.1);" onclick="resetColorsToDefault()">Restablecer Colores</button>
+                <button type="submit" class="btn-add" style="flex: 1; margin-bottom: 0; height: 42px;">Guardar Colores</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Preview Column -->
+          <div class="form-card" style="margin-bottom: 0; position: sticky; top: 100px;">
+            <h4 style="font-family: var(--font-title); font-size: 15px; color: var(--text-main); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; margin-top: 0;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              Previsualización en Vivo
+            </h4>
+            <p style="color: var(--text-muted); font-size: 12px; line-height: 1.4; margin-bottom: 20px;">
+              Este es un boceto del sitio que refleja instantáneamente los cambios en tu paleta antes de guardarlos.
+            </p>
+            
+            <!-- Mockup container with customizable variables -->
+            <div id="theme-mockup-container" style="border-radius: var(--radius-lg); padding: 24px; font-family: var(--font-body); border: 1px solid var(--border-col, #1f1f1f); background: var(--bg-col, #0a0a0a); transition: all 0.3s ease;">
+              
+              <!-- Mock Header -->
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--border-col, #1f1f1f); margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 8px; color: var(--accent-col, #F59E0B);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg>
+                  <span style="font-weight: 800; font-size: 13px; letter-spacing: 1px;">ZOLSEA</span>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                  <span style="font-size: 11px; color: var(--text-muted-col, #9CA3AF); font-weight: 500;">Productos</span>
+                  <span style="font-size: 11px; color: var(--text-muted-col, #9CA3AF); font-weight: 500;">Marcas</span>
+                </div>
+              </div>
+
+              <!-- Mock Hero Banner -->
+              <div style="padding: 16px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--surface-col, #141414), var(--bg-col, #0A0A0A)); border: 1px solid var(--border-col, #1f1f1f); margin-bottom: 20px;">
+                <span style="border: 1px solid var(--accent-col, #F59E0B); color: var(--accent-col, #F59E0B); padding: 3px 8px; border-radius: 99px; font-size: 10px; font-weight: 600; display: inline-block; margin-bottom: 10px;">MercadoLíder Platinum</span>
+                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-col, #F5F5F5); margin-bottom: 8px; line-height: 1.2;">HERRAMIENTAS QUE <span style="color: var(--accent-col, #F59E0B);">CONSTRUYEN</span></h3>
+                <p style="font-size: 11px; color: var(--text-muted-col, #9CA3AF); margin-bottom: 12px;">Distribuidores oficiales de las mejores marcas.</p>
+                <div style="display: flex; gap: 8px;">
+                  <button type="button" style="background: var(--accent-col, #F59E0B); color: #000; padding: 6px 14px; font-weight: 700; border-radius: 6px; font-size: 10px; border: none; cursor: default;">Catálogo</button>
+                  <button type="button" style="border: 1px solid var(--border-col, #1f1f1f); color: var(--text-col, #F5F5F5); padding: 6px 14px; font-weight: 600; border-radius: 6px; font-size: 10px; background: transparent; cursor: default;">Contacto</button>
+                </div>
+              </div>
+
+              <!-- Mock Grid Card -->
+              <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
+                <div id="mockup-product-card" style="border-radius: var(--radius-md); border: 1px solid var(--border-col, #1f1f1f); background: var(--surface-col, #141414); padding: 14px; display: flex; gap: 12px; align-items: center; transition: background 0.2s;">
+                  <div style="width: 48px; height: 48px; border-radius: 8px; background: var(--bg-col, #0a0a0a); border: 1px solid var(--border-col, #1f1f1f); display: flex; align-items: center; justify-content: center; color: var(--accent-col, #F59E0B);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>
+                  </div>
+                  <div style="flex: 1;">
+                    <span style="font-size: 9px; color: var(--accent-secondary-col, #FF6B35); font-weight: 700; text-transform: uppercase;">Gladiator PRO</span>
+                    <h4 style="font-size: 12px; font-weight: 700; color: var(--text-col, #F5F5F5); margin: 2px 0 4px;">Soldadora MIG 200A</h4>
+                    <p style="font-size: 10px; color: var(--text-muted-col, #9CA3AF); margin: 0;">220V · Inverter IGBT · Profesional</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mock Hover Preview Trigger -->
+              <div style="margin-top: 15px; text-align: center;">
+                <span id="btn-preview-hover-state" style="font-size: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-col, #1f1f1f); color: var(--text-muted-col, #9CA3AF); padding: 4px 8px; border-radius: 4px; cursor: pointer; display: inline-block; transition: all 0.2s;" onmouseenter="toggleMockHover(true)" onmouseleave="toggleMockHover(false)">
+                  Apoya aquí para simular Hover en tarjeta
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

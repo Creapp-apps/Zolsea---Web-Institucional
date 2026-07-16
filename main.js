@@ -305,6 +305,59 @@ function hydrateDOM() {
   }
   applyTheme();
 
+  // Actualizar Logo del Navbar y Footer
+  const navbarLogoLink = document.querySelector('.navbar-logo');
+  const footerLogoContainer = document.querySelector('.footer-logo');
+  
+  // Fallbacks de los SVG originales del sitio
+  const defaultNavbarSvg = `
+    <svg class="logo-svg" viewBox="0 0 200 46" width="200" height="46">
+      <defs>
+        <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF6B35" />
+          <stop offset="100%" stop-color="#F59E0B" />
+        </linearGradient>
+      </defs>
+      <rect class="logo-border" x="2" y="2" width="196" height="42" rx="4" fill="none" stroke="url(#orangeGrad)" stroke-width="2.5" />
+      <text class="logo-text" x="100" y="31" font-family="'Space Grotesk', sans-serif" font-size="25" font-weight="900" font-style="italic" fill="url(#orangeGrad)" text-anchor="middle" letter-spacing="3">ZOLSEA</text>
+    </svg>
+  `;
+
+  const defaultFooterSvg = `
+    <svg class="logo-svg" viewBox="0 0 200 46" width="160" height="37">
+      <defs>
+        <linearGradient id="orangeGradFooter" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF6B35" />
+          <stop offset="100%" stop-color="#F59E0B" />
+        </linearGradient>
+      </defs>
+      <rect class="logo-border" x="2" y="2" width="196" height="42" rx="4" fill="none" stroke="url(#orangeGradFooter)" stroke-width="2.5" />
+      <text class="logo-text" x="100" y="31" font-family="'Space Grotesk', sans-serif" font-size="25" font-weight="900" font-style="italic" fill="url(#orangeGradFooter)" text-anchor="middle" letter-spacing="3">ZOLSEA</text>
+    </svg>
+  `;
+
+  if (siteConfig.logo_url) {
+    if (navbarLogoLink) {
+      const existingImg = navbarLogoLink.querySelector('.logo-img');
+      if (!existingImg || existingImg.getAttribute('src') !== siteConfig.logo_url) {
+        navbarLogoLink.innerHTML = `<img src="${siteConfig.logo_url}" class="logo-img" alt="ZolSea Herramientas" />`;
+      }
+    }
+    if (footerLogoContainer) {
+      const existingImg = footerLogoContainer.querySelector('.logo-img');
+      if (!existingImg || existingImg.getAttribute('src') !== siteConfig.logo_url) {
+        footerLogoContainer.innerHTML = `<img src="${siteConfig.logo_url}" class="logo-img" alt="ZolSea Herramientas" />`;
+      }
+    }
+  } else {
+    if (navbarLogoLink && !navbarLogoLink.querySelector('.logo-svg')) {
+      navbarLogoLink.innerHTML = defaultNavbarSvg;
+    }
+    if (footerLogoContainer && !footerLogoContainer.querySelector('.logo-svg')) {
+      footerLogoContainer.innerHTML = defaultFooterSvg;
+    }
+  }
+
   // Actualizar Badge del Hero
   const heroBadge = document.querySelector('.hero-badge');
   if (heroBadge && siteConfig.hero_badge) {

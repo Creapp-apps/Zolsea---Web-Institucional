@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Cropper.js (Premium Image Cropping) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
   
   <style>
     :root {
@@ -1337,9 +1340,33 @@
     .spinner {
       display: inline-block;
     }
+    
+    /* Custom Cropper.js overrides for gold branding */
+    .cropper-line {
+      background-color: var(--accent) !important;
+    }
+    .cropper-point {
+      background-color: var(--accent) !important;
+      border-radius: 50%;
+    }
+    .cropper-point.point-se {
+      width: 10px !important;
+      height: 10px !important;
+      opacity: 0.9;
+    }
+    .cropper-view-box {
+      outline: 2px solid var(--accent) !important;
+    }
+    .cropper-face {
+      background-color: transparent !important;
+    }
+    .cropper-modal {
+      background-color: #000 !important;
+      opacity: 0.75 !important;
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-BzLHVDV0.js"></script>
+  <script type="module" crossorigin src="/assets/admin-Ox-cdtiC.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -1469,6 +1496,56 @@
         <button class="toast-close-btn" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff;" onclick="closeCustomConfirm(false)">Cancelar</button>
         <button class="toast-close-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff;" onclick="closeCustomConfirm(true)">Confirmar</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal Recorte de Logo (Cropper.js) -->
+  <div id="logo-crop-modal" class="custom-toast-overlay" style="z-index: 9999;">
+    <div class="custom-toast-card" style="max-width: 600px; width: 90%; background: rgba(17, 17, 16, 0.95); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); padding: 24px; display: flex; flex-direction: column; gap: 20px;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 12px;">
+        <h4 style="font-family: var(--font-title); font-size: 18px; font-weight: 700; color: var(--accent); margin: 0; display: flex; align-items: center; gap: 8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.13 1L6 16a2 2 0 0 0 2 2h15"/><path d="M1 6.13L16 6a2 2 0 0 1 2 2v15"/></svg>
+          Ajustar y Recortar Logo
+        </h4>
+        <button type="button" style="background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; border-radius: 50%; transition: all 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'" onclick="closeLogoCropModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      
+      <!-- Cropper Container -->
+      <div style="background: #000; border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-md); overflow: hidden; height: 320px; display: flex; align-items: center; justify-content: center; position: relative;">
+        <img id="cropper-target-img" style="max-width: 100%; max-height: 100%; display: block;" alt="Imagen a recortar">
+      </div>
+      
+      <!-- Zoom and Action Controls -->
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <!-- Slider and zoom buttons -->
+        <div style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.02); padding: 10px 16px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05);">
+          <span style="font-size: 12px; color: var(--text-muted); font-weight: 500;">Zoom:</span>
+          <button type="button" onclick="zoomLogoCropper(-0.1)" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;">-</button>
+          <input type="range" id="cropper-zoom-slider" min="0.1" max="3" step="0.05" value="1" style="flex: 1; accent-color: var(--accent); cursor: pointer;" oninput="syncCropperZoomSlider(this.value)">
+          <button type="button" onclick="zoomLogoCropper(0.1)" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;">+</button>
+          <button type="button" onclick="resetLogoCropper()" style="font-size: 11px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); color: var(--accent); font-weight: 600; padding: 4px 10px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s;">Resetear</button>
+        </div>
+        
+        <!-- Aspect Ratio Controls -->
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <span style="font-size: 12px; color: var(--text-muted); font-weight: 500;">Proporción:</span>
+          <div style="display: flex; gap: 8px;">
+            <button id="ratio-btn-free" type="button" onclick="setLogoCropperAspectRatio(NaN, this)" style="font-size: 11px; padding: 6px 12px; border-radius: 20px; background: var(--accent); color: #000; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s;">Libre</button>
+            <button id="ratio-btn-standard" type="button" onclick="setLogoCropperAspectRatio(200/46, this)" style="font-size: 11px; padding: 6px 12px; border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--text-muted); font-weight: 600; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s;">Estándar (200x46)</button>
+            <button id="ratio-btn-square" type="button" onclick="setLogoCropperAspectRatio(1, this)" style="font-size: 11px; padding: 6px 12px; border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--text-muted); font-weight: 600; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s;">1:1 (Cuadrado)</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer actions -->
+      <div style="display: flex; gap: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px;">
+        <button type="button" style="flex: 1; height: 44px; border-radius: var(--radius-md); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" onclick="closeLogoCropModal()">Cancelar</button>
+        <button id="btn-apply-logo-crop" type="button" style="flex: 1; height: 44px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: #000; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity='0.95'" onmouseout="this.style.opacity='1'" onclick="applyLogoCropAndUpload()">Aplicar y Subir</button>
+      </div>
+      
     </div>
   </div>
 
@@ -1715,6 +1792,54 @@
               <div class="form-group full-width">
                 <label for="input-brands-intro">Texto de Presentación de Marcas</label>
                 <textarea id="input-brands-intro" required style="min-height: 120px;"></textarea>
+              </div>
+
+              <div class="form-group full-width">
+                <label style="font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin-bottom: 12px; display: block;">Logo de la página web (Formatos sugeridos: PNG transparente, SVG, JPG)</label>
+                
+                <div style="display: grid; grid-template-columns: 240px 1fr; gap: 20px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border); padding: 24px; border-radius: var(--radius-lg); backdrop-filter: blur(10px); box-shadow: var(--shadow-premium);">
+                  
+                  <!-- Left: Logo Preview Box -->
+                  <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.4); border: 1px dashed rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: 20px; min-height: 180px; position: relative; overflow: hidden; text-align: center;">
+                    <!-- Checkerboard pattern for transparency representation -->
+                    <div style="position: absolute; inset: 0; opacity: 0.05; pointer-events: none; background-image: radial-gradient(#fff 20%, transparent 20%), radial-gradient(#fff 20%, transparent 20%); background-size: 8px 8px; background-position: 0 0, 4px 4px;"></div>
+                    
+                    <div style="max-width: 100%; max-height: 80px; display: flex; align-items: center; justify-content: center; z-index: 1;">
+                      <span id="logo-preview-placeholder" style="font-size: 11px; color: var(--text-muted); font-weight: 500; line-height: 1.4;">Sin Logo Cargado<br><span style="font-size:9px; opacity:0.7;">(Vectorial original)</span></span>
+                      <img id="logo-preview-img" src="" style="max-width: 100%; max-height: 80px; object-fit: contain; display: none; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));" alt="Logo Vista Previa">
+                    </div>
+                    
+                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-top: 10px; z-index: 1;">Vista Previa</span>
+                  </div>
+                  
+                  <!-- Right: Drag & Drop Zone -->
+                  <div id="logo-dropzone" style="display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed rgba(245, 158, 11, 0.25); border-radius: var(--radius-md); padding: 30px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(255, 255, 255, 0.01); text-align: center; position: relative;" ondragover="handleLogoDragOver(event)" ondragleave="handleLogoDragLeave(event)" ondrop="handleLogoDrop(event)" onclick="triggerLogoUpload()">
+                    
+                    <!-- Upload icon -->
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(245, 158, 11, 0.08); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; border: 1px solid rgba(245, 158, 11, 0.15); transition: all 0.3s ease;">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                      </svg>
+                    </div>
+                    
+                    <h3 style="font-family: var(--font-title); font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">Arrastra y suelta tu logo aquí</h3>
+                    <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 16px; max-width: 320px;">Formatos soportados: PNG transparente, SVG o JPG. Se abrirá la herramienta de encuadre al cargar.</p>
+                    
+                    <div style="font-size: 11px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(245, 158, 11, 0.1); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(245, 158, 11, 0.2);">Buscar Archivo</div>
+                    
+                    <!-- Hidden File Input -->
+                    <input type="file" id="logo-file-input" accept="image/*" style="display: none;" onchange="handleLogoFileSelect(event)">
+                  </div>
+                  
+                </div>
+                
+                <!-- Manual Direct URL Input -->
+                <div style="margin-top: 16px; display: flex; align-items: center; gap: 12px; background: rgba(0, 0, 0, 0.2); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                  <label for="input-logo-url" style="font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 0; white-space: nowrap;">URL Directa Alternativa:</label>
+                  <input type="text" id="input-logo-url" placeholder="https://ejemplo.com/logo.png" style="flex: 1; margin-bottom: 0; font-size: 13px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); color: var(--text-main); padding: 8px 12px; border-radius: var(--radius-sm);" oninput="handleLogoUrlInput(this.value)">
+                </div>
               </div>
 
             </div>

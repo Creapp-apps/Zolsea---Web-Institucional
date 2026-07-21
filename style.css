@@ -191,7 +191,6 @@ ul { list-style: none; }
   transition: transform var(--transition-base);
 }
 .logo-border {
-  stroke: var(--color-accent);
   stroke-dasharray: 500;
   stroke-dashoffset: 500;
   animation: drawLogoBorder 2s var(--ease-out) forwards;
@@ -213,12 +212,12 @@ ul { list-style: none; }
   transform: scale(1.03);
 }
 .navbar-logo:hover .logo-border {
-  stroke: #FF6B35;
-  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
+  stroke: var(--color-accent-secondary);
+  filter: drop-shadow(0 0 8px var(--color-glow-logo, rgba(245, 158, 11, 0.8)));
 }
 .navbar-logo:hover .logo-text {
   fill: #FFFFFF;
-  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.9));
+  filter: drop-shadow(0 0 10px var(--color-glow-logo, rgba(245, 158, 11, 0.9)));
   letter-spacing: 4px;
 }
 
@@ -640,7 +639,7 @@ ul { list-style: none; }
   border-radius: var(--radius-full);
   font-size: 0.8rem;
   font-weight: 500;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted-on-surface, var(--color-text-muted));
   margin-bottom: 32px;
 }
 .hero-badge .dot {
@@ -826,13 +825,14 @@ ul { list-style: none; }
   flex: 1 1 180px;
   max-width: 210px;
   height: 80px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 14px;
   overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
@@ -843,8 +843,9 @@ ul { list-style: none; }
 
 .brand-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3), 0 0 15px var(--glow-color);
 }
 
 .brand-card .brand-glow {
@@ -919,7 +920,7 @@ ul { list-style: none; }
   font-family: var(--font-display);
   font-size: 1.15rem;
   font-weight: 700;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted-on-surface, var(--color-text-muted));
   letter-spacing: 0.05em;
   text-transform: uppercase;
   transition: color var(--transition-fast), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -927,7 +928,7 @@ ul { list-style: none; }
 }
 
 .brand-card:hover .brand-title {
-  color: #ffffff;
+  color: var(--accent-text-color, #ffffff);
   transform: scale(1.05);
 }
 
@@ -982,14 +983,14 @@ ul { list-style: none; }
 .products-tabs {
   position: relative;
   display: inline-flex;
-  background: rgba(18, 18, 18, 0.7);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   padding: 5px;
   border-radius: var(--radius-full);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   z-index: 5;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 .tab-indicator {
   position: absolute;
@@ -1008,7 +1009,7 @@ ul { list-style: none; }
   font-family: var(--font-display);
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted-on-surface, var(--color-text-muted));
   border-radius: var(--radius-full);
   z-index: 2;
   transition: color 0.3s ease;
@@ -1018,7 +1019,7 @@ ul { list-style: none; }
   cursor: pointer;
 }
 .tab-btn:hover {
-  color: var(--color-text);
+  color: var(--color-text-on-surface, var(--color-text));
 }
 .tab-btn.active {
   color: #000000;
@@ -1085,14 +1086,14 @@ ul { list-style: none; }
   padding-top: 100%;
   overflow: hidden;
   /* Carbon fiber & dot texture */
-  background-color: #0f0f0f;
+  background-color: var(--color-surface-hover);
   background-image: 
-    radial-gradient(rgba(245, 158, 11, 0.08) 1.5px, transparent 1.5px),
-    linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+    radial-gradient(var(--color-glow) 1.5px, transparent 1.5px),
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
   background-size: 16px 16px, 8px 8px, 8px 8px;
   background-position: 0 0, 0 0, 0 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--color-border);
 }
 
 /* Orange Radial Glow Aura behind the tool */
@@ -1156,10 +1157,11 @@ ul { list-style: none; }
   font-weight: 600;
   margin-bottom: 6px;
   line-height: 1.3;
+  color: var(--color-text-on-surface, var(--color-text));
 }
 .product-desc {
   font-size: 0.85rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted-on-surface, var(--color-text-muted));
   margin-bottom: 16px;
   line-height: 1.5;
   display: -webkit-box;
@@ -1174,7 +1176,7 @@ ul { list-style: none; }
   padding: 10px 20px;
   background: transparent;
   border: 1px solid var(--color-border);
-  color: var(--color-text);
+  color: var(--color-text-on-surface, var(--color-text));
   font-weight: 600;
   font-size: 0.8rem;
   border-radius: var(--radius-sm);
@@ -1235,7 +1237,7 @@ ul { list-style: none; }
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  color: var(--color-text);
+  color: var(--color-text-on-surface, var(--color-text));
   font-family: var(--font-body);
   font-size: 0.95rem;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
@@ -1311,7 +1313,7 @@ ul { list-style: none; }
   transition: all var(--transition-fast);
 }
 .contact-alt-item:hover .icon { border-color: var(--color-accent); background: rgba(245,158,11,0.08); }
-.contact-alt-item .icon svg { width: 18px; height: 18px; color: var(--color-text-muted); }
+.contact-alt-item .icon svg { width: 18px; height: 18px; color: var(--color-text-muted-on-surface, var(--color-text-muted)); }
 .contact-alt-item span { font-size: 0.8rem; color: var(--color-text-muted); }
 
 /* ============================================
@@ -1635,7 +1637,7 @@ ul { list-style: none; }
   padding: 10px 14px;
   background: transparent;
   border: 1px solid var(--color-border);
-  color: var(--color-text);
+  color: var(--color-text-on-surface, var(--color-text));
   font-weight: 600;
   font-size: 0.78rem;
   border-radius: var(--radius-sm);
@@ -1647,8 +1649,8 @@ ul { list-style: none; }
 }
 
 .product-action-btn.btn-details {
-  border-color: rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--color-border);
+  background: transparent;
 }
 
 .product-action-btn.btn-details:hover {
@@ -1658,14 +1660,15 @@ ul { list-style: none; }
 }
 
 .product-action-btn.btn-whatsapp {
-  border-color: rgba(37, 211, 102, 0.35);
+  background: var(--color-whatsapp);
+  border-color: var(--color-whatsapp);
   color: #fff;
 }
 
 .product-action-btn.btn-whatsapp:hover {
-  border-color: var(--color-whatsapp);
-  color: var(--color-whatsapp);
-  background: rgba(37, 211, 102, 0.08);
+  background: var(--color-whatsapp-hover, #1ebe56);
+  border-color: var(--color-whatsapp-hover, #1ebe56);
+  color: #fff;
 }
 
 .product-action-btn svg {
@@ -1707,10 +1710,10 @@ ul { list-style: none; }
   max-width: 92vw;
   height: auto;
   max-height: 88vh;
-  background: rgba(13, 13, 13, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.95);
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.4);
   z-index: 10001;
   display: flex;
   flex-direction: column;
@@ -1736,8 +1739,8 @@ ul { list-style: none; }
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   color: var(--color-text);
   display: flex;
   align-items: center;
@@ -1748,7 +1751,7 @@ ul { list-style: none; }
 }
 
 .modal-close-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--color-surface-hover);
   border-color: var(--color-accent);
   transform: rotate(90deg);
   color: var(--color-accent);
@@ -1926,16 +1929,16 @@ ul { list-style: none; }
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   padding: 8px 12px;
   transition: all var(--transition-fast);
 }
 
 .trust-badge-card:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(245, 158, 11, 0.2);
+  background: var(--color-surface-hover);
+  border-color: var(--color-accent);
   transform: translateX(2px);
 }
 
@@ -1962,7 +1965,7 @@ ul { list-style: none; }
   font-family: var(--font-display);
   font-size: 0.78rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-text-on-surface, var(--color-text));
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin: 0;
@@ -1970,7 +1973,7 @@ ul { list-style: none; }
 
 .trust-badge-desc {
   font-size: 0.72rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted-on-surface, var(--color-text-muted));
   line-height: 1.35;
   margin: 0;
 }
@@ -2051,7 +2054,7 @@ ul { list-style: none; }
   font-family: var(--font-display);
   font-size: 1.7rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-text-on-surface, var(--color-text));
   line-height: 1.25;
   letter-spacing: -0.01em;
 }
@@ -2070,7 +2073,7 @@ ul { list-style: none; }
 
 .modal-description {
   font-size: 0.88rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted-on-surface, var(--color-text-muted));
   line-height: 1.6;
   margin-bottom: 12px;
 }
@@ -2088,20 +2091,20 @@ ul { list-style: none; }
   justify-content: space-between;
   align-items: flex-start;
   padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.015);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  background: transparent;
+  border-bottom: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   transition: background var(--transition-fast);
   gap: 16px;
 }
 
 .spec-row:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(128, 128, 128, 0.03);
 }
 
 .spec-label {
   font-size: 0.84rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted-on-surface, var(--color-text-muted));
   font-weight: 500;
   flex: 0 0 auto;
   max-width: 140px;
@@ -2109,7 +2112,7 @@ ul { list-style: none; }
 
 .spec-value {
   font-size: 0.84rem;
-  color: #fff;
+  color: var(--color-text-on-surface, var(--color-text));
   font-weight: 600;
   flex: 1;
   text-align: right;
@@ -2139,7 +2142,7 @@ ul { list-style: none; }
 }
 
 .modal-action-cta:hover {
-  background: #1ebe56;
+  background: var(--color-whatsapp-hover, #1ebe56);
   transform: translateY(-2px);
   box-shadow: 0 12px 30px rgba(37, 211, 102, 0.35);
 }

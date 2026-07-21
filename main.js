@@ -284,6 +284,64 @@ function applyTheme() {
     const g = parseInt(hex.substring(2, 4), 16) || 158;
     const b = parseInt(hex.substring(4, 6), 16) || 11;
     root.style.setProperty('--color-glow', `rgba(${r}, ${g}, ${b}, 0.15)`);
+    root.style.setProperty('--color-glow-logo', `rgba(${r}, ${g}, ${b}, 0.85)`);
+  }
+
+  // Dynamic Contrast / Theme Toggling based on background luminosity
+  if (colors.bg) {
+    const hex = colors.bg.replace('#', '');
+    let r = 10, g = 10, b = 10;
+    if (hex.length === 3) {
+      r = parseInt(hex[0] + hex[0], 16);
+      g = parseInt(hex[1] + hex[1], 16);
+      b = parseInt(hex[2] + hex[2], 16);
+    } else if (hex.length === 6) {
+      r = parseInt(hex.substring(0, 2), 16);
+      g = parseInt(hex.substring(2, 4), 16);
+      b = parseInt(hex.substring(4, 6), 16);
+    }
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+
+    if (yiq >= 150) { // Background is light
+      root.classList.add('theme-light');
+      root.classList.remove('theme-dark');
+      if (!colors.border) {
+        root.style.setProperty('--color-border', 'rgba(0, 0, 0, 0.08)');
+      }
+    } else { // Background is dark
+      root.classList.add('theme-dark');
+      root.classList.remove('theme-light');
+      if (!colors.border) {
+        root.style.setProperty('--color-border', 'rgba(255, 255, 255, 0.06)');
+      }
+    }
+  }
+
+  // Dynamic Contrast for Surface-colored elements (cards, tabs, badges)
+  if (colors.surface) {
+    const hex = colors.surface.replace('#', '');
+    let r = 20, g = 20, b = 20;
+    if (hex.length === 3) {
+      r = parseInt(hex[0] + hex[0], 16);
+      g = parseInt(hex[1] + hex[1], 16);
+      b = parseInt(hex[2] + hex[2], 16);
+    } else if (hex.length === 6) {
+      r = parseInt(hex.substring(0, 2), 16);
+      g = parseInt(hex.substring(2, 4), 16);
+      b = parseInt(hex.substring(4, 6), 16);
+    }
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+
+    if (yiq >= 150) { // Surface is light
+      root.style.setProperty('--color-text-on-surface', '#0A0A0A');
+      root.style.setProperty('--color-text-muted-on-surface', '#6B7280');
+    } else { // Surface is dark
+      root.style.setProperty('--color-text-on-surface', '#FFFFFF');
+      root.style.setProperty('--color-text-muted-on-surface', '#9CA3AF');
+    }
+  } else {
+    root.style.setProperty('--color-text-on-surface', 'var(--color-text)');
+    root.style.setProperty('--color-text-muted-on-surface', 'var(--color-text-muted)');
   }
 }
 
@@ -311,11 +369,11 @@ function hydrateDOM() {
   
   // Fallbacks de los SVG originales del sitio
   const defaultNavbarSvg = `
-    <svg class="logo-svg" viewBox="0 0 200 46" width="200" height="46">
+    <svg class="logo-svg" viewBox="-12 -12 224 70" width="224" height="70">
       <defs>
         <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#FF6B35" />
-          <stop offset="100%" stop-color="#F59E0B" />
+          <stop offset="0%" stop-color="var(--color-accent-secondary)" />
+          <stop offset="100%" stop-color="var(--color-accent)" />
         </linearGradient>
       </defs>
       <rect class="logo-border" x="2" y="2" width="196" height="42" rx="4" fill="none" stroke="url(#orangeGrad)" stroke-width="2.5" />
@@ -324,11 +382,11 @@ function hydrateDOM() {
   `;
 
   const defaultFooterSvg = `
-    <svg class="logo-svg" viewBox="0 0 200 46" width="160" height="37">
+    <svg class="logo-svg" viewBox="-12 -12 224 70" width="180" height="56">
       <defs>
         <linearGradient id="orangeGradFooter" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#FF6B35" />
-          <stop offset="100%" stop-color="#F59E0B" />
+          <stop offset="0%" stop-color="var(--color-accent-secondary)" />
+          <stop offset="100%" stop-color="var(--color-accent)" />
         </linearGradient>
       </defs>
       <rect class="logo-border" x="2" y="2" width="196" height="42" rx="4" fill="none" stroke="url(#orangeGradFooter)" stroke-width="2.5" />
@@ -410,9 +468,12 @@ function hydrateDOM() {
       const g = parseInt(hex.slice(3, 5), 16) || 107;
       const blue = parseInt(hex.slice(5, 7), 16) || 53;
       const glowColor = `rgba(${r}, ${g}, ${blue}, 0.3)`;
+      
+      const yiq = ((r * 299) + (g * 587) + (blue * 114)) / 1000;
+      const accentTextColor = yiq >= 150 ? '#0A0A0A' : '#FFFFFF';
 
       return `
-        <div class="brand-card reveal reveal-delay-${(i % 5) + 1}" data-brand="${b.name.toLowerCase().replace(/\s+/g, '-')}" style="--glow-color: ${glowColor}; --accent-color: ${hex};">
+        <div class="brand-card reveal reveal-delay-${(i % 5) + 1}" data-brand="${b.name.toLowerCase().replace(/\s+/g, '-')}" style="--glow-color: ${glowColor}; --accent-color: ${hex}; --accent-text-color: ${accentTextColor};">
           <div class="brand-glow"></div>
           <div class="brand-card-content">
             <h3 class="brand-title">${b.name}</h3>

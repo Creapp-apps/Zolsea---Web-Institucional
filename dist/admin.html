@@ -63,6 +63,26 @@
       background: var(--accent);
     }
 
+    .btn-focus-preview {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      width: 32px;
+      height: 32px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      border-radius: var(--radius-sm);
+    }
+    .btn-focus-preview:hover {
+      color: #000;
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+    }
+
     /* Main Container Layout */
     .admin-wrapper {
       display: flex;
@@ -1366,7 +1386,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-Ox-cdtiC.js"></script>
+  <script type="module" crossorigin src="/assets/admin-CaJ6j2Dj.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -1869,6 +1889,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Botones, badges, logo e iconos primarios.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('accent')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-accent" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('accent')">
                       <input type="color" id="picker-accent" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('accent')">
                     </div>
@@ -1880,6 +1903,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Gradientes y detalles decorativos.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('accent-secondary')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-accent-secondary" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('accent-secondary')">
                       <input type="color" id="picker-accent-secondary" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('accent-secondary')">
                     </div>
@@ -1891,6 +1917,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Estado activo al posar cursor en botones.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('accent-hover')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-accent-hover" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('accent-hover')">
                       <input type="color" id="picker-accent-hover" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('accent-hover')">
                     </div>
@@ -1909,6 +1938,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Color de fondo general de la web.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('bg')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-bg" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('bg')">
                       <input type="color" id="picker-bg" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('bg')">
                     </div>
@@ -1920,6 +1952,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Color para tarjetas de productos y modales.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('surface')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-surface" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('surface')">
                       <input type="color" id="picker-surface" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('surface')">
                     </div>
@@ -1931,6 +1966,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Efecto interactivo al posar cursor sobre tarjetas.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('surface-hover')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-surface-hover" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('surface-hover')">
                       <input type="color" id="picker-surface-hover" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('surface-hover')">
                     </div>
@@ -1949,6 +1987,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Títulos y contenidos de alta lectura.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('text')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-text" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('text')">
                       <input type="color" id="picker-text" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('text')">
                     </div>
@@ -1960,6 +2001,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Fichas técnicas y descripciones secundarias.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('text-muted')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-text-muted" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('text-muted')">
                       <input type="color" id="picker-text-muted" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('text-muted')">
                     </div>
@@ -1978,6 +2022,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Líneas de división y contornos de tarjetas.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('border')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-border" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('border')">
                       <input type="color" id="picker-border" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('border')">
                     </div>
@@ -2002,52 +2049,20 @@
               Este es un boceto del sitio que refleja instantáneamente los cambios en tu paleta antes de guardarlos.
             </p>
             
-            <!-- Mockup container with customizable variables -->
-            <div id="theme-mockup-container" style="border-radius: var(--radius-lg); padding: 24px; font-family: var(--font-body); border: 1px solid var(--border-col, #1f1f1f); background: var(--bg-col, #0a0a0a); transition: all 0.3s ease;">
-              
-              <!-- Mock Header -->
-              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--border-col, #1f1f1f); margin-bottom: 20px;">
-                <div style="display: flex; align-items: center; gap: 8px; color: var(--accent-col, #F59E0B);">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg>
-                  <span style="font-weight: 800; font-size: 13px; letter-spacing: 1px;">ZOLSEA</span>
+            <!-- Interactive Live Site Preview IFrame -->
+            <div id="theme-mockup-container" style="border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-col, rgba(255,255,255,0.06)); background: #0A0A0A; box-shadow: 0 20px 45px rgba(0,0,0,0.6); display: flex; flex-direction: column; transition: all 0.3s ease;">
+              <!-- Mini Header for the Browser Frame -->
+              <div style="background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 10px 16px; display: flex; align-items: center; gap: 8px;">
+                <div style="display: flex; gap: 6px;">
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #EF4444; display: block; opacity: 0.85;"></span>
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #F59E0B; display: block; opacity: 0.85;"></span>
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #10B981; display: block; opacity: 0.85;"></span>
                 </div>
-                <div style="display: flex; gap: 10px;">
-                  <span style="font-size: 11px; color: var(--text-muted-col, #9CA3AF); font-weight: 500;">Productos</span>
-                  <span style="font-size: 11px; color: var(--text-muted-col, #9CA3AF); font-weight: 500;">Marcas</span>
-                </div>
-              </div>
-
-              <!-- Mock Hero Banner -->
-              <div style="padding: 16px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--surface-col, #141414), var(--bg-col, #0A0A0A)); border: 1px solid var(--border-col, #1f1f1f); margin-bottom: 20px;">
-                <span style="border: 1px solid var(--accent-col, #F59E0B); color: var(--accent-col, #F59E0B); padding: 3px 8px; border-radius: 99px; font-size: 10px; font-weight: 600; display: inline-block; margin-bottom: 10px;">MercadoLíder Platinum</span>
-                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-col, #F5F5F5); margin-bottom: 8px; line-height: 1.2;">HERRAMIENTAS QUE <span style="color: var(--accent-col, #F59E0B);">CONSTRUYEN</span></h3>
-                <p style="font-size: 11px; color: var(--text-muted-col, #9CA3AF); margin-bottom: 12px;">Distribuidores oficiales de las mejores marcas.</p>
-                <div style="display: flex; gap: 8px;">
-                  <button type="button" style="background: var(--accent-col, #F59E0B); color: #000; padding: 6px 14px; font-weight: 700; border-radius: 6px; font-size: 10px; border: none; cursor: default;">Catálogo</button>
-                  <button type="button" style="border: 1px solid var(--border-col, #1f1f1f); color: var(--text-col, #F5F5F5); padding: 6px 14px; font-weight: 600; border-radius: 6px; font-size: 10px; background: transparent; cursor: default;">Contacto</button>
+                <div style="flex: 1; text-align: center; font-size: 11px; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 4px 24px; border-radius: 6px; font-family: monospace; letter-spacing: 0.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60%; margin: 0 auto; border: 1px solid rgba(255,255,255,0.03);">
+                  zolsea.com.ar/inicio
                 </div>
               </div>
-
-              <!-- Mock Grid Card -->
-              <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
-                <div id="mockup-product-card" style="border-radius: var(--radius-md); border: 1px solid var(--border-col, #1f1f1f); background: var(--surface-col, #141414); padding: 14px; display: flex; gap: 12px; align-items: center; transition: background 0.2s;">
-                  <div style="width: 48px; height: 48px; border-radius: 8px; background: var(--bg-col, #0a0a0a); border: 1px solid var(--border-col, #1f1f1f); display: flex; align-items: center; justify-content: center; color: var(--accent-col, #F59E0B);">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>
-                  </div>
-                  <div style="flex: 1;">
-                    <span style="font-size: 9px; color: var(--accent-secondary-col, #FF6B35); font-weight: 700; text-transform: uppercase;">Gladiator PRO</span>
-                    <h4 style="font-size: 12px; font-weight: 700; color: var(--text-col, #F5F5F5); margin: 2px 0 4px;">Soldadora MIG 200A</h4>
-                    <p style="font-size: 10px; color: var(--text-muted-col, #9CA3AF); margin: 0;">220V · Inverter IGBT · Profesional</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Mock Hover Preview Trigger -->
-              <div style="margin-top: 15px; text-align: center;">
-                <span id="btn-preview-hover-state" style="font-size: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-col, #1f1f1f); color: var(--text-muted-col, #9CA3AF); padding: 4px 8px; border-radius: 4px; cursor: pointer; display: inline-block; transition: all 0.2s;" onmouseenter="toggleMockHover(true)" onmouseleave="toggleMockHover(false)">
-                  Apoya aquí para simular Hover en tarjeta
-                </span>
-              </div>
+              <iframe id="theme-preview-iframe" src="/" style="width: 100%; height: 500px; border: none; background: #0A0A0A;"></iframe>
             </div>
           </div>
         </div>

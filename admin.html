@@ -63,6 +63,26 @@
       background: var(--accent);
     }
 
+    .btn-focus-preview {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      width: 32px;
+      height: 32px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      border-radius: var(--radius-sm);
+    }
+    .btn-focus-preview:hover {
+      color: #000;
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+    }
+
     /* Main Container Layout */
     .admin-wrapper {
       display: flex;
@@ -1798,16 +1818,34 @@
                 <div style="display: grid; grid-template-columns: 240px 1fr; gap: 20px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border); padding: 24px; border-radius: var(--radius-lg); backdrop-filter: blur(10px); box-shadow: var(--shadow-premium);">
                   
                   <!-- Left: Logo Preview Box -->
-                  <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.4); border: 1px dashed rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: 20px; min-height: 180px; position: relative; overflow: hidden; text-align: center;">
+                  <div style="display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.4); border: 1px dashed rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: 16px; min-height: 180px; position: relative; overflow: hidden; text-align: center;">
                     <!-- Checkerboard pattern for transparency representation -->
                     <div style="position: absolute; inset: 0; opacity: 0.05; pointer-events: none; background-image: radial-gradient(#fff 20%, transparent 20%), radial-gradient(#fff 20%, transparent 20%); background-size: 8px 8px; background-position: 0 0, 4px 4px;"></div>
                     
                     <div style="max-width: 100%; max-height: 80px; display: flex; align-items: center; justify-content: center; z-index: 1;">
-                      <span id="logo-preview-placeholder" style="font-size: 11px; color: var(--text-muted); font-weight: 500; line-height: 1.4;">Sin Logo Cargado<br><span style="font-size:9px; opacity:0.7;">(Vectorial original)</span></span>
+                      <div id="logo-preview-placeholder" style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                        <svg class="logo-svg" viewBox="-12 -12 224 70" width="140" height="44" style="max-width: 100%;">
+                          <defs>
+                            <linearGradient id="orangeGradAdminPrev" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stop-color="#F59E0B" />
+                              <stop offset="50%" stop-color="#EF4444" />
+                              <stop offset="100%" stop-color="#B91C1C" />
+                            </linearGradient>
+                          </defs>
+                          <rect class="logo-border" x="2" y="2" width="196" height="42" rx="4" fill="none" stroke="url(#orangeGradAdminPrev)" stroke-width="2.5" />
+                          <text class="logo-text" x="100" y="31" font-family="'Space Grotesk', sans-serif" font-size="25" font-weight="900" font-style="italic" fill="url(#orangeGradAdminPrev)" text-anchor="middle" letter-spacing="3">ZOLSEA</text>
+                        </svg>
+                        <span style="font-size: 10px; color: var(--accent); font-weight: 600;">(Logo tipográfico por defecto)</span>
+                      </div>
                       <img id="logo-preview-img" src="" style="max-width: 100%; max-height: 80px; object-fit: contain; display: none; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));" alt="Logo Vista Previa">
                     </div>
                     
-                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-top: 10px; z-index: 1;">Vista Previa</span>
+                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); z-index: 1;">Vista Previa</span>
+                    
+                    <button type="button" id="btn-delete-logo" onclick="removeUploadedLogo()" style="display: none; z-index: 2; margin-top: 2px; padding: 5px 12px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; align-items: center; gap: 5px;">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                      Eliminar Logo Subido
+                    </button>
                   </div>
                   
                   <!-- Right: Drag & Drop Zone -->
@@ -1867,6 +1905,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Botones, badges, logo e iconos primarios.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('accent')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-accent" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('accent')">
                       <input type="color" id="picker-accent" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('accent')">
                     </div>
@@ -1878,6 +1919,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Gradientes y detalles decorativos.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('accent-secondary')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-accent-secondary" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('accent-secondary')">
                       <input type="color" id="picker-accent-secondary" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('accent-secondary')">
                     </div>
@@ -1889,6 +1933,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Estado activo al posar cursor en botones.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('accent-hover')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-accent-hover" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('accent-hover')">
                       <input type="color" id="picker-accent-hover" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('accent-hover')">
                     </div>
@@ -1907,6 +1954,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Color de fondo general de la web.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('bg')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-bg" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('bg')">
                       <input type="color" id="picker-bg" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('bg')">
                     </div>
@@ -1918,6 +1968,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Color para tarjetas de productos y modales.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('surface')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-surface" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('surface')">
                       <input type="color" id="picker-surface" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('surface')">
                     </div>
@@ -1929,6 +1982,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Efecto interactivo al posar cursor sobre tarjetas.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('surface-hover')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-surface-hover" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('surface-hover')">
                       <input type="color" id="picker-surface-hover" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('surface-hover')">
                     </div>
@@ -1947,6 +2003,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Títulos y contenidos de alta lectura.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('text')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-text" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('text')">
                       <input type="color" id="picker-text" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('text')">
                     </div>
@@ -1958,6 +2017,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Fichas técnicas y descripciones secundarias.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('text-muted')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-text-muted" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('text-muted')">
                       <input type="color" id="picker-text-muted" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('text-muted')">
                     </div>
@@ -1976,6 +2038,9 @@
                       <span style="font-size: 11px; color: var(--text-muted);">Líneas de división y contornos de tarjetas.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('border')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
                       <input type="text" id="hex-border" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('border')">
                       <input type="color" id="picker-border" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('border')">
                     </div>
@@ -2000,52 +2065,20 @@
               Este es un boceto del sitio que refleja instantáneamente los cambios en tu paleta antes de guardarlos.
             </p>
             
-            <!-- Mockup container with customizable variables -->
-            <div id="theme-mockup-container" style="border-radius: var(--radius-lg); padding: 24px; font-family: var(--font-body); border: 1px solid var(--border-col, #1f1f1f); background: var(--bg-col, #0a0a0a); transition: all 0.3s ease;">
-              
-              <!-- Mock Header -->
-              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--border-col, #1f1f1f); margin-bottom: 20px;">
-                <div style="display: flex; align-items: center; gap: 8px; color: var(--accent-col, #F59E0B);">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg>
-                  <span style="font-weight: 800; font-size: 13px; letter-spacing: 1px;">ZOLSEA</span>
+            <!-- Interactive Live Site Preview IFrame -->
+            <div id="theme-mockup-container" style="border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-col, rgba(255,255,255,0.06)); background: #0A0A0A; box-shadow: 0 20px 45px rgba(0,0,0,0.6); display: flex; flex-direction: column; transition: all 0.3s ease;">
+              <!-- Mini Header for the Browser Frame -->
+              <div style="background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 10px 16px; display: flex; align-items: center; gap: 8px;">
+                <div style="display: flex; gap: 6px;">
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #EF4444; display: block; opacity: 0.85;"></span>
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #F59E0B; display: block; opacity: 0.85;"></span>
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #10B981; display: block; opacity: 0.85;"></span>
                 </div>
-                <div style="display: flex; gap: 10px;">
-                  <span style="font-size: 11px; color: var(--text-muted-col, #9CA3AF); font-weight: 500;">Productos</span>
-                  <span style="font-size: 11px; color: var(--text-muted-col, #9CA3AF); font-weight: 500;">Marcas</span>
-                </div>
-              </div>
-
-              <!-- Mock Hero Banner -->
-              <div style="padding: 16px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--surface-col, #141414), var(--bg-col, #0A0A0A)); border: 1px solid var(--border-col, #1f1f1f); margin-bottom: 20px;">
-                <span style="border: 1px solid var(--accent-col, #F59E0B); color: var(--accent-col, #F59E0B); padding: 3px 8px; border-radius: 99px; font-size: 10px; font-weight: 600; display: inline-block; margin-bottom: 10px;">MercadoLíder Platinum</span>
-                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-col, #F5F5F5); margin-bottom: 8px; line-height: 1.2;">HERRAMIENTAS QUE <span style="color: var(--accent-col, #F59E0B);">CONSTRUYEN</span></h3>
-                <p style="font-size: 11px; color: var(--text-muted-col, #9CA3AF); margin-bottom: 12px;">Distribuidores oficiales de las mejores marcas.</p>
-                <div style="display: flex; gap: 8px;">
-                  <button type="button" style="background: var(--accent-col, #F59E0B); color: #000; padding: 6px 14px; font-weight: 700; border-radius: 6px; font-size: 10px; border: none; cursor: default;">Catálogo</button>
-                  <button type="button" style="border: 1px solid var(--border-col, #1f1f1f); color: var(--text-col, #F5F5F5); padding: 6px 14px; font-weight: 600; border-radius: 6px; font-size: 10px; background: transparent; cursor: default;">Contacto</button>
+                <div style="flex: 1; text-align: center; font-size: 11px; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 4px 24px; border-radius: 6px; font-family: monospace; letter-spacing: 0.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60%; margin: 0 auto; border: 1px solid rgba(255,255,255,0.03);">
+                  zolsea.com.ar/inicio
                 </div>
               </div>
-
-              <!-- Mock Grid Card -->
-              <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
-                <div id="mockup-product-card" style="border-radius: var(--radius-md); border: 1px solid var(--border-col, #1f1f1f); background: var(--surface-col, #141414); padding: 14px; display: flex; gap: 12px; align-items: center; transition: background 0.2s;">
-                  <div style="width: 48px; height: 48px; border-radius: 8px; background: var(--bg-col, #0a0a0a); border: 1px solid var(--border-col, #1f1f1f); display: flex; align-items: center; justify-content: center; color: var(--accent-col, #F59E0B);">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>
-                  </div>
-                  <div style="flex: 1;">
-                    <span style="font-size: 9px; color: var(--accent-secondary-col, #FF6B35); font-weight: 700; text-transform: uppercase;">Gladiator PRO</span>
-                    <h4 style="font-size: 12px; font-weight: 700; color: var(--text-col, #F5F5F5); margin: 2px 0 4px;">Soldadora MIG 200A</h4>
-                    <p style="font-size: 10px; color: var(--text-muted-col, #9CA3AF); margin: 0;">220V · Inverter IGBT · Profesional</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Mock Hover Preview Trigger -->
-              <div style="margin-top: 15px; text-align: center;">
-                <span id="btn-preview-hover-state" style="font-size: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-col, #1f1f1f); color: var(--text-muted-col, #9CA3AF); padding: 4px 8px; border-radius: 4px; cursor: pointer; display: inline-block; transition: all 0.2s;" onmouseenter="toggleMockHover(true)" onmouseleave="toggleMockHover(false)">
-                  Apoya aquí para simular Hover en tarjeta
-                </span>
-              </div>
+              <iframe id="theme-preview-iframe" src="/" style="width: 100%; height: 500px; border: none; background: #0A0A0A;"></iframe>
             </div>
           </div>
         </div>
@@ -3311,18 +3344,21 @@
       document.getElementById('input-logo-url').value = logoUrl;
       const previewImg = document.getElementById('logo-preview-img');
       const placeholder = document.getElementById('logo-preview-placeholder');
+      const deleteBtn = document.getElementById('btn-delete-logo');
       if (logoUrl) {
         if (previewImg) {
           previewImg.src = logoUrl;
           previewImg.style.display = 'block';
         }
         if (placeholder) placeholder.style.display = 'none';
+        if (deleteBtn) deleteBtn.style.display = 'inline-flex';
       } else {
         if (previewImg) {
           previewImg.src = '';
           previewImg.style.display = 'none';
         }
-        if (placeholder) placeholder.style.display = 'block';
+        if (placeholder) placeholder.style.display = 'flex';
+        if (deleteBtn) deleteBtn.style.display = 'none';
       }
     }
 
@@ -3525,6 +3561,7 @@
           const urlInput = document.getElementById('input-logo-url');
           const previewImg = document.getElementById('logo-preview-img');
           const placeholder = document.getElementById('logo-preview-placeholder');
+          const deleteBtn = document.getElementById('btn-delete-logo');
           
           if (urlInput) urlInput.value = publicUrl;
           if (previewImg) {
@@ -3532,6 +3569,7 @@
             previewImg.style.display = 'block';
           }
           if (placeholder) placeholder.style.display = 'none';
+          if (deleteBtn) deleteBtn.style.display = 'inline-flex';
           
           activeConfig.logo_url = publicUrl;
           showSyncStatus(true);
@@ -3553,22 +3591,46 @@
     function handleLogoUrlInput(url) {
       const previewImg = document.getElementById('logo-preview-img');
       const placeholder = document.getElementById('logo-preview-placeholder');
+      const deleteBtn = document.getElementById('btn-delete-logo');
       if (url.trim()) {
         if (previewImg) {
           previewImg.src = url.trim();
           previewImg.style.display = 'block';
         }
         if (placeholder) placeholder.style.display = 'none';
+        if (deleteBtn) deleteBtn.style.display = 'inline-flex';
         activeConfig.logo_url = url.trim();
       } else {
         if (previewImg) {
           previewImg.src = '';
           previewImg.style.display = 'none';
         }
-        if (placeholder) placeholder.style.display = 'block';
+        if (placeholder) placeholder.style.display = 'flex';
+        if (deleteBtn) deleteBtn.style.display = 'none';
         activeConfig.logo_url = '';
       }
       showSyncStatus(true);
+    }
+
+    function removeUploadedLogo() {
+      const urlInput = document.getElementById('input-logo-url');
+      const previewImg = document.getElementById('logo-preview-img');
+      const placeholder = document.getElementById('logo-preview-placeholder');
+      const deleteBtn = document.getElementById('btn-delete-logo');
+
+      if (urlInput) urlInput.value = '';
+      if (previewImg) {
+        previewImg.src = '';
+        previewImg.style.display = 'none';
+      }
+      if (placeholder) placeholder.style.display = 'flex';
+      if (deleteBtn) deleteBtn.style.display = 'none';
+
+      if (activeConfig) {
+        activeConfig.logo_url = '';
+      }
+      showSyncStatus(true);
+      showToast('Logo Eliminado', 'Se removió el logo subido. Se utilizará el logo tipográfico por defecto ("ZOLSEA").', 'info');
     }
 
     function updateAnalyticsTab() {
@@ -3942,14 +4004,199 @@
       const border = getVal('border');
 
       container.style.setProperty('--bg-col', bg);
-      container.style.setProperty('--surface-col', surface);
-      container.style.setProperty('--surface-elevated-col', surfaceHover);
-      container.style.setProperty('--accent-col', accent);
-      container.style.setProperty('--accent-secondary-col', accentSecondary);
-      container.style.setProperty('--text-col', text);
-      container.style.setProperty('--text-muted-col', textMuted);
       container.style.setProperty('--border-col', border);
+
+      // Access iframe and apply variables to its document
+      const iframe = document.getElementById('theme-preview-iframe');
+      if (iframe && iframe.contentWindow) {
+        try {
+          const docRoot = iframe.contentWindow.document.documentElement;
+          if (docRoot) {
+            docRoot.style.setProperty('--color-bg', bg);
+            docRoot.style.setProperty('--color-surface', surface);
+            docRoot.style.setProperty('--color-surface-hover', surfaceHover);
+            docRoot.style.setProperty('--color-surface-elevated', surfaceHover);
+            docRoot.style.setProperty('--color-accent', accent);
+            docRoot.style.setProperty('--color-accent-secondary', accentSecondary);
+            docRoot.style.setProperty('--color-text', text);
+            docRoot.style.setProperty('--color-text-muted', textMuted);
+            docRoot.style.setProperty('--color-border', border);
+
+            // Compute on-surface text contrast dynamically for iframe
+            if (surface) {
+              const hex = surface.replace('#', '');
+              let r = 20, g = 20, b = 20;
+              if (hex.length === 3) {
+                r = parseInt(hex[0] + hex[0], 16);
+                g = parseInt(hex[1] + hex[1], 16);
+                b = parseInt(hex[2] + hex[2], 16);
+              } else if (hex.length === 6) {
+                r = parseInt(hex.substring(0, 2), 16);
+                g = parseInt(hex.substring(2, 4), 16);
+                b = parseInt(hex.substring(4, 6), 16);
+              }
+              const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+
+              if (yiq >= 150) { // Surface is light
+                docRoot.style.setProperty('--color-text-on-surface', '#0A0A0A');
+                docRoot.style.setProperty('--color-text-muted-on-surface', '#6B7280');
+              } else { // Surface is dark
+                docRoot.style.setProperty('--color-text-on-surface', '#FFFFFF');
+                docRoot.style.setProperty('--color-text-muted-on-surface', '#9CA3AF');
+              }
+            } else {
+              docRoot.style.setProperty('--color-text-on-surface', text);
+              docRoot.style.setProperty('--color-text-muted-on-surface', textMuted);
+            }
+
+            // Calculate accent glow for logo in iframe
+            if (accent) {
+              const hex = accent.replace('#', '');
+              let r = 245, g = 158, b = 11;
+              if (hex.length === 3) {
+                r = parseInt(hex[0] + hex[0], 16);
+                g = parseInt(hex[1] + hex[1], 16);
+                b = parseInt(hex[2] + hex[2], 16);
+              } else if (hex.length === 6) {
+                r = parseInt(hex.substring(0, 2), 16);
+                g = parseInt(hex.substring(2, 4), 16);
+                b = parseInt(hex.substring(4, 6), 16);
+              }
+              docRoot.style.setProperty('--color-glow-logo', `rgba(${r}, ${g}, ${b}, 0.85)`);
+            }
+          }
+        } catch (e) {
+          console.debug("Iframe style update waiting for readyState:", e);
+        }
+      }
     }
+
+    function focusPreviewElement(colorKey) {
+      const iframe = document.getElementById('theme-preview-iframe');
+      if (!iframe || !iframe.contentWindow) return;
+
+      let doc;
+      try {
+        doc = iframe.contentWindow.document;
+      } catch (e) {
+        console.error("No se puede acceder al iframe para localizar el elemento:", e);
+        return;
+      }
+
+      // Inyectar estilos de highlight si no existen en el iframe
+      let styleTag = doc.getElementById('focus-highlight-style');
+      if (!styleTag) {
+        styleTag = doc.createElement('style');
+        styleTag.id = 'focus-highlight-style';
+        styleTag.innerHTML = `
+          @keyframes focusPulse {
+            0% { 
+              outline: 3px solid var(--color-accent, #F59E0B); 
+              outline-offset: 4px; 
+              box-shadow: 0 0 15px var(--color-accent, #F59E0B); 
+            }
+            50% { 
+              outline: 6px solid var(--color-accent-secondary, #FF6B35); 
+              outline-offset: 8px; 
+              box-shadow: 0 0 30px var(--color-accent-secondary, #FF6B35); 
+            }
+            100% { 
+              outline: 3px solid var(--color-accent, #F59E0B); 
+              outline-offset: 4px; 
+              box-shadow: 0 0 15px var(--color-accent, #F59E0B); 
+            }
+          }
+          .element-focus-highlight {
+            animation: focusPulse 0.8s ease-in-out 3 !important;
+            transition: all 0.3s ease !important;
+            z-index: 999999 !important;
+            position: relative;
+          }
+        `;
+        doc.head.appendChild(styleTag);
+      }
+
+      // Limpiar highlights previos
+      doc.querySelectorAll('.element-focus-highlight').forEach(el => {
+        el.classList.remove('element-focus-highlight');
+      });
+
+      let targetSelector = '';
+      switch (colorKey) {
+        case 'accent':
+          targetSelector = '.btn-primary, .tab-btn.active, .hero-badge';
+          break;
+        case 'accent-secondary':
+          targetSelector = '.navbar-logo, .section-label, .accent';
+          break;
+        case 'accent-hover':
+          targetSelector = '.btn-primary, .btn-whatsapp';
+          break;
+        case 'bg':
+          targetSelector = 'section.hero, section.products, body';
+          break;
+        case 'surface':
+          targetSelector = '.product-card, #productsGrid, .panel-card';
+          break;
+        case 'surface-hover':
+          targetSelector = '.product-card';
+          break;
+        case 'text':
+          targetSelector = '#heroTitle, .section-title, h1, h2';
+          break;
+        case 'text-muted':
+          targetSelector = '.hero-subtitle, .products-header p, p';
+          break;
+        case 'border':
+          targetSelector = '.products-tabs, .contact-form input, textarea';
+          break;
+      }
+
+      if (!targetSelector) return;
+
+      // Buscar el primer elemento que exista
+      const selectors = targetSelector.split(',');
+      let targetEl = null;
+      let allTargets = [];
+
+      for (let sel of selectors) {
+        const found = doc.querySelectorAll(sel.trim());
+        if (found.length > 0) {
+          allTargets = Array.from(found);
+          targetEl = found[0];
+          break;
+        }
+      }
+
+      if (!targetEl) return;
+
+      // Hacer scroll suave hacia el elemento
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Si es fondo (bg), no hace falta meterle un pulse outline a toda la pantalla
+      if (colorKey !== 'bg') {
+        allTargets.forEach(el => {
+          el.classList.add('element-focus-highlight');
+        });
+
+        // Remover automáticamente el highlight después de que termine la animación (2.4s)
+        setTimeout(() => {
+          allTargets.forEach(el => {
+            el.classList.remove('element-focus-highlight');
+          });
+        }, 2400);
+      }
+    }
+
+    // Setup iframe load listener to apply preview colors automatically on load
+    document.addEventListener('DOMContentLoaded', () => {
+      const iframe = document.getElementById('theme-preview-iframe');
+      if (iframe) {
+        iframe.addEventListener('load', () => {
+          updateThemePreview();
+        });
+      }
+    });
 
     function toggleMockHover(isHover) {
       const card = document.getElementById('mockup-product-card');
@@ -4067,6 +4314,7 @@
     window.closeLogoCropModal = closeLogoCropModal;
     window.applyLogoCropAndUpload = applyLogoCropAndUpload;
     window.handleLogoUrlInput = handleLogoUrlInput;
+    window.removeUploadedLogo = removeUploadedLogo;
     window.saveAnalytics = saveAnalytics;
     window.updateAnalyticsTab = updateAnalyticsTab;
     window.copyConfigJson = copyConfigJson;
@@ -4077,6 +4325,7 @@
     window.closeBrandDrawer = closeBrandDrawer;
     window.saveBrand = saveBrand;
     window.deleteBrand = deleteBrand;
+    window.focusPreviewElement = focusPreviewElement;
 
     // Admin Authentication Handlers
     const RECOVERY_KEY = 'ZOLSEA-RECOVERY-9F8E-2A1B-5D3C';

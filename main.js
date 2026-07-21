@@ -287,6 +287,46 @@ function applyTheme() {
     root.style.setProperty('--color-glow-logo', `rgba(${r}, ${g}, ${b}, 0.85)`);
   }
 
+  // Handle cursor glow parameters (Color, Opacity, Size, Blur, Scope)
+  const glowColorSource = colors.cursor_glow || colors.accent_secondary || colors.accent || '#FF6B35';
+  const glowOpacity = (colors.cursor_glow_opacity !== undefined && colors.cursor_glow_opacity !== '') ? parseFloat(colors.cursor_glow_opacity) : 25;
+  const glowSize = (colors.cursor_glow_size !== undefined && colors.cursor_glow_size !== '') ? parseInt(colors.cursor_glow_size) : 650;
+  const glowBlur = (colors.cursor_glow_blur !== undefined && colors.cursor_glow_blur !== '') ? parseInt(colors.cursor_glow_blur) : 50;
+  const glowScope = colors.cursor_glow_scope || 'global';
+
+  if (glowColorSource) {
+    const hex = glowColorSource.replace('#', '');
+    let r = 255, g = 107, b = 53;
+    if (hex.length === 3) {
+      r = parseInt(hex[0] + hex[0], 16);
+      g = parseInt(hex[1] + hex[1], 16);
+      b = parseInt(hex[2] + hex[2], 16);
+    } else if (hex.length === 6) {
+      r = parseInt(hex.substring(0, 2), 16);
+      g = parseInt(hex.substring(2, 4), 16);
+      b = parseInt(hex.substring(4, 6), 16);
+    }
+
+    const centerAlpha = (glowOpacity / 100).toFixed(2);
+    const softAlpha = (glowOpacity / 400).toFixed(2);
+
+    root.style.setProperty('--color-cursor-glow', `rgba(${r}, ${g}, ${b}, ${centerAlpha})`);
+    root.style.setProperty('--color-cursor-glow-soft', `rgba(${r}, ${g}, ${b}, ${softAlpha})`);
+    root.style.setProperty('--cursor-glow-size', `${glowSize}px`);
+    root.style.setProperty('--cursor-glow-blur', `${glowBlur}px`);
+  }
+
+  // Update Body Scope Class
+  if (document.body) {
+    if (glowScope === 'hero') {
+      document.body.classList.add('scope-hero-only');
+      document.body.classList.remove('scope-global');
+    } else {
+      document.body.classList.add('scope-global');
+      document.body.classList.remove('scope-hero-only');
+    }
+  }
+
   // Dynamic Contrast / Theme Toggling based on background luminosity
   if (colors.bg) {
     const hex = colors.bg.replace('#', '');
@@ -356,6 +396,7 @@ function hydrateDOM() {
       accent: '#F59E0B',
       accent_hover: '#D97706',
       accent_secondary: '#FF6B35',
+      cursor_glow: '#FF6B35',
       text: '#F5F5F5',
       text_muted: '#9CA3AF',
       border: '#1F1F1F'
@@ -523,6 +564,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await initSiteData();
 
   initHeroEditorial();
+  initGlobalCursorGlow();
   initProductsGrid();
   initSplitTextReveal(); // Divide los títulos antes de observar el scroll
   initScrollReveal();
@@ -537,6 +579,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   // init3DCardTilt();        // DISABLED — investigating freeze
   // initBrandCardTilt();     // DISABLED — investigating freeze
 });
+
+// ── Global Site-Wide Cursor Glow Tracking ──
+function initGlobalCursorGlow() {
+  const globalGlow = document.getElementById('globalCursorGlow');
+  if (!globalGlow) return;
+
+  if (window.innerWidth > 768) {
+    document.addEventListener('mousemove', (e) => {
+      gsap.to(globalGlow, {
+        left: `${e.clientX}px`,
+        top: `${e.clientY}px`,
+        duration: 0.6,
+        ease: "power2.out"
+      });
+    });
+  }
+}
 
 // ── Hero Editorial Tipográfico & Parallax Multicapa ──
 function initHeroEditorial() {

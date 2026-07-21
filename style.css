@@ -341,20 +341,47 @@ ul { list-style: none; }
   overflow: hidden;
 }
 
-/* Capa 1: Glow Interactivo (Fondo Lumínico) */
+/* Capa 1: Glow Interactivo del Cursor (Global / Hero) */
+.global-cursor-glow {
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
+  width: var(--cursor-glow-size, 650px);
+  height: var(--cursor-glow-size, 650px);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-cursor-glow, rgba(255, 107, 53, 0.25)) 0%, var(--color-cursor-glow-soft, rgba(245, 158, 11, 0.05)) 50%, transparent 75%);
+  filter: blur(var(--cursor-glow-blur, 50px));
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  mix-blend-mode: screen;
+  will-change: transform, left, top;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+body.scope-hero-only .global-cursor-glow {
+  display: none !important;
+}
+
 .hero-interactive-glow {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 600px;
-  height: 600px;
+  width: var(--cursor-glow-size, 650px);
+  height: var(--cursor-glow-size, 650px);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 107, 53, 0.14) 0%, rgba(245, 158, 11, 0.03) 50%, transparent 100%);
-  filter: blur(50px);
+  background: radial-gradient(circle, var(--color-cursor-glow, rgba(255, 107, 53, 0.25)) 0%, var(--color-cursor-glow-soft, rgba(245, 158, 11, 0.05)) 50%, transparent 75%);
+  filter: blur(var(--cursor-glow-blur, 50px));
   pointer-events: none;
   transform: translate(-50%, -50%);
-  z-index: 1;
+  z-index: 3;
+  mix-blend-mode: screen;
   will-change: transform;
+}
+
+body.scope-global .hero-interactive-glow {
+  display: none !important;
 }
 
 /* Capa 2: Tipografía Monumental (Fondo) - Ocultada para un diseño limpio y minimalista */

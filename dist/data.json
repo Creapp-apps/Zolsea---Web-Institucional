@@ -1,6 +1,7 @@
 {
   "whatsapp_number": "5491100000000",
   "logo_url": "",
+  "hero_image_url": "",
   "google_analytics_id": "",
   "hero_badge": "MercadoLíder Platinum · +1.900 seguidores",
   "hero_title": "HERRAMIENTAS QUE <span class=\"accent\">CONSTRUYEN</span>",
@@ -20,6 +21,11 @@
     "accent": "#F59E0B",
     "accent_hover": "#D97706",
     "accent_secondary": "#FF6B35",
+    "cursor_glow": "#FF6B35",
+    "cursor_glow_opacity": 25,
+    "cursor_glow_size": 650,
+    "cursor_glow_blur": 50,
+    "cursor_glow_scope": "global",
     "text": "#F5F5F5",
     "text_muted": "#9CA3AF",
     "border": "#1F1F1F"

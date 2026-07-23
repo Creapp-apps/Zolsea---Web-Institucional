@@ -175,6 +175,8 @@ const SUPABASE_ANON_KEY = __SUPABASE_ANON_KEY__;
 
 let siteConfig = {
   whatsapp_number: WHATSAPP_NUMBER,
+  logo_url: "",
+  hero_image_url: "",
   google_analytics_id: "",
   hero_badge: "MercadoLíder Platinum · +1.900 seguidores",
   hero_title: 'HERRAMIENTAS QUE <span class="accent">CONSTRUYEN</span>',
@@ -407,6 +409,23 @@ function hydrateDOM() {
   // Actualizar Logo del Navbar y Footer
   const navbarLogoLink = document.querySelector('.navbar-logo');
   const footerLogoContainer = document.querySelector('.footer-logo');
+  
+  // Actualizar Imagen Principal del Hero Banner
+  const heroMainImg = document.querySelector('.hero-product-image.ecosystem-img');
+  const heroMainSource = document.querySelector('.hero-product-picture source');
+  if (heroMainImg) {
+    if (siteConfig.hero_image_url) {
+      heroMainImg.src = siteConfig.hero_image_url;
+      if (heroMainSource) {
+        heroMainSource.srcset = siteConfig.hero_image_url;
+      }
+    } else {
+      heroMainImg.src = '/assets/images/hero_ecosystem.png';
+      if (heroMainSource) {
+        heroMainSource.srcset = '/assets/images/mobile_ecosystem.jpeg';
+      }
+    }
+  }
   
   // Fallbacks de los SVG originales del sitio
   const defaultNavbarSvg = `
@@ -946,10 +965,6 @@ function initProductsGrid() {
           <button class="product-action-btn btn-details" data-index="${i}">
             Ver Más
           </button>
-          <button class="product-action-btn btn-whatsapp" data-product="${p.name}">
-            ${WA_ICON}
-            Consultar
-          </button>
         </div>
       </div>
     </article>
@@ -960,16 +975,6 @@ function initProductsGrid() {
     card.addEventListener('click', () => {
       const index = parseInt(card.dataset.index);
       openProductModal(index);
-    });
-  });
-
-  // Click en "Consultar" (WhatsApp directo)
-  grid.querySelectorAll('.btn-whatsapp').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const product = btn.dataset.product;
-      const msg = encodeURIComponent(`Hola! Me interesa el producto: ${product}. ¿Podrían darme más información?`);
-      window.open(`https://wa.me/${siteConfig.whatsapp_number}?text=${msg}`, '_blank');
     });
   });
 
@@ -1568,19 +1573,25 @@ function openProductModal(index) {
           ${specRowsHtml}
         </div>
         <button class="modal-action-cta" id="modalCtaBtn" data-product="${p.name}">
-          ${WA_ICON}
-          Consultar por WhatsApp
+          Solicitar Asesoramiento
         </button>
       </div>
     </div>
   `;
 
-  // Attach WhatsApp CTA inside modal
+  // Attach CTA inside modal (Close modal & smooth scroll to contact section)
   const ctaBtn = document.getElementById('modalCtaBtn');
   if (ctaBtn) {
     ctaBtn.addEventListener('click', () => {
-      const msg = encodeURIComponent(`Hola! Me interesa el producto: ${p.name}. ¿Podrían darme más información detallada sobre las especificaciones técnicas?`);
-      window.open(`https://wa.me/${siteConfig.whatsapp_number}?text=${msg}`, '_blank');
+      closeProductModal();
+      const msgInput = document.getElementById('contactMessage');
+      if (msgInput) {
+        msgInput.value = `Hola! Me interesa recibir más información sobre el producto: ${p.name}`;
+      }
+      const contactSection = document.getElementById('contacto');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
     });
   }
 

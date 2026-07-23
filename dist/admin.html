@@ -1386,7 +1386,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-CaJ6j2Dj.js"></script>
+  <script type="module" crossorigin src="/assets/admin-DqDpgK_o.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -1820,16 +1820,34 @@
                 <div style="display: grid; grid-template-columns: 240px 1fr; gap: 20px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border); padding: 24px; border-radius: var(--radius-lg); backdrop-filter: blur(10px); box-shadow: var(--shadow-premium);">
                   
                   <!-- Left: Logo Preview Box -->
-                  <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.4); border: 1px dashed rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: 20px; min-height: 180px; position: relative; overflow: hidden; text-align: center;">
+                  <div style="display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.4); border: 1px dashed rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: 16px; min-height: 180px; position: relative; overflow: hidden; text-align: center;">
                     <!-- Checkerboard pattern for transparency representation -->
                     <div style="position: absolute; inset: 0; opacity: 0.05; pointer-events: none; background-image: radial-gradient(#fff 20%, transparent 20%), radial-gradient(#fff 20%, transparent 20%); background-size: 8px 8px; background-position: 0 0, 4px 4px;"></div>
                     
                     <div style="max-width: 100%; max-height: 80px; display: flex; align-items: center; justify-content: center; z-index: 1;">
-                      <span id="logo-preview-placeholder" style="font-size: 11px; color: var(--text-muted); font-weight: 500; line-height: 1.4;">Sin Logo Cargado<br><span style="font-size:9px; opacity:0.7;">(Vectorial original)</span></span>
+                      <div id="logo-preview-placeholder" style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                        <svg class="logo-svg" viewBox="-12 -12 224 70" width="140" height="44" style="max-width: 100%;">
+                          <defs>
+                            <linearGradient id="orangeGradAdminPrev" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stop-color="#F59E0B" />
+                              <stop offset="50%" stop-color="#EF4444" />
+                              <stop offset="100%" stop-color="#B91C1C" />
+                            </linearGradient>
+                          </defs>
+                          <rect class="logo-border" x="2" y="2" width="196" height="42" rx="4" fill="none" stroke="url(#orangeGradAdminPrev)" stroke-width="2.5" />
+                          <text class="logo-text" x="100" y="31" font-family="'Space Grotesk', sans-serif" font-size="25" font-weight="900" font-style="italic" fill="url(#orangeGradAdminPrev)" text-anchor="middle" letter-spacing="3">ZOLSEA</text>
+                        </svg>
+                        <span style="font-size: 10px; color: var(--accent); font-weight: 600;">(Logo tipográfico por defecto)</span>
+                      </div>
                       <img id="logo-preview-img" src="" style="max-width: 100%; max-height: 80px; object-fit: contain; display: none; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));" alt="Logo Vista Previa">
                     </div>
                     
-                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-top: 10px; z-index: 1;">Vista Previa</span>
+                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); z-index: 1;">Vista Previa</span>
+                    
+                    <button type="button" id="btn-delete-logo" onclick="removeUploadedLogo()" style="display: none; z-index: 2; margin-top: 2px; padding: 5px 12px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; align-items: center; gap: 5px;">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                      Eliminar Logo Subido
+                    </button>
                   </div>
                   
                   <!-- Right: Drag & Drop Zone -->
@@ -1859,6 +1877,61 @@
                 <div style="margin-top: 16px; display: flex; align-items: center; gap: 12px; background: rgba(0, 0, 0, 0.2); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--border);">
                   <label for="input-logo-url" style="font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 0; white-space: nowrap;">URL Directa Alternativa:</label>
                   <input type="text" id="input-logo-url" placeholder="https://ejemplo.com/logo.png" style="flex: 1; margin-bottom: 0; font-size: 13px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); color: var(--text-main); padding: 8px 12px; border-radius: var(--radius-sm);" oninput="handleLogoUrlInput(this.value)">
+                </div>
+              </div>
+
+              <!-- Hero Main Banner Image -->
+              <div class="form-group full-width" style="margin-top: 24px; border-top: 1px dashed rgba(255, 255, 255, 0.1); padding-top: 24px;">
+                <label style="font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin-bottom: 12px; display: block;">Imagen Principal del Banner / Hero (Formatos sugeridos: PNG, WebP, JPG)</label>
+                
+                <div style="display: grid; grid-template-columns: 280px 1fr; gap: 20px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border); padding: 24px; border-radius: var(--radius-lg); backdrop-filter: blur(10px); box-shadow: var(--shadow-premium);">
+                  
+                  <!-- Left: Hero Preview Box -->
+                  <div style="display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.4); border: 1px dashed rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: 16px; min-height: 200px; position: relative; overflow: hidden; text-align: center;">
+                    <div style="position: absolute; inset: 0; opacity: 0.05; pointer-events: none; background-image: radial-gradient(#fff 20%, transparent 20%), radial-gradient(#fff 20%, transparent 20%); background-size: 8px 8px; background-position: 0 0, 4px 4px;"></div>
+                    
+                    <div style="max-width: 100%; max-height: 120px; display: flex; align-items: center; justify-content: center; z-index: 1;">
+                      <div id="hero-preview-placeholder" style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                        <img src="/assets/hero_ecosystem-Bk8byXNt.png" style="max-width: 100%; max-height: 90px; object-fit: contain; opacity: 0.7;" alt="Imagen Hero por defecto">
+                        <span style="font-size: 10px; color: var(--accent); font-weight: 600;">(Imagen Ecosistema por defecto)</span>
+                      </div>
+                      <img id="hero-preview-img" src="" style="max-width: 100%; max-height: 120px; object-fit: contain; display: none; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));" alt="Hero Vista Previa">
+                    </div>
+                    
+                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); z-index: 1;">Vista Previa Banner</span>
+                    
+                    <button type="button" id="btn-delete-hero-img" onclick="removeUploadedHeroImage()" style="display: none; z-index: 2; margin-top: 4px; padding: 5px 12px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; align-items: center; gap: 5px;">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                      Restablecer Imagen por Defecto
+                    </button>
+                  </div>
+                  
+                  <!-- Right: Drag & Drop Zone -->
+                  <div id="hero-dropzone" style="display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed rgba(245, 158, 11, 0.25); border-radius: var(--radius-md); padding: 30px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(255, 255, 255, 0.01); text-align: center; position: relative;" ondragover="handleHeroDragOver(event)" ondragleave="handleHeroDragLeave(event)" ondrop="handleHeroDrop(event)" onclick="triggerHeroImageUpload()">
+                    
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(245, 158, 11, 0.08); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; border: 1px solid rgba(245, 158, 11, 0.15); transition: all 0.3s ease;">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                      </svg>
+                    </div>
+                    
+                    <h3 style="font-family: var(--font-title); font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">Arrastra y suelta la foto principal del hero aquí</h3>
+                    <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 16px; max-width: 340px;">Se subirá automáticamente a Supabase Storage y se aplicará inmediatamente al banner de inicio.</p>
+                    
+                    <div id="hero-upload-btn-text" style="font-size: 11px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(245, 158, 11, 0.1); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(245, 158, 11, 0.2);">Buscar Imagen</div>
+                    
+                    <!-- Hidden File Input -->
+                    <input type="file" id="hero-file-input" accept="image/*" style="display: none;" onchange="handleHeroFileSelect(event)">
+                  </div>
+                  
+                </div>
+                
+                <!-- Manual Direct URL Input -->
+                <div style="margin-top: 16px; display: flex; align-items: center; gap: 12px; background: rgba(0, 0, 0, 0.2); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                  <label for="input-hero-image-url" style="font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 0; white-space: nowrap;">URL Directa Alternativa:</label>
+                  <input type="text" id="input-hero-image-url" placeholder="https://ejemplo.com/imagen_hero.png" style="flex: 1; margin-bottom: 0; font-size: 13px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); color: var(--text-main); padding: 8px 12px; border-radius: var(--radius-sm);" oninput="handleHeroUrlInput(this.value)">
                 </div>
               </div>
 
@@ -1923,6 +1996,69 @@
                       <input type="text" id="hex-accent-hover" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('accent-hover')">
                       <input type="color" id="picker-accent-hover" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('accent-hover')">
                     </div>
+                  </div>
+                  <!-- Glow del Cursor / Iluminación de Fondo -->
+                  <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Glow del Cursor (Iluminación)</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Luz interactiva que sigue el cursor en el fondo.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('cursor-glow')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
+                      <input type="text" id="hex-cursor-glow" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('cursor-glow')">
+                      <input type="color" id="picker-cursor-glow" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('cursor-glow')">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Grupo: Ajustes Avanzados del Glow del Cursor -->
+              <div class="color-section-group" style="margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
+                <h4 style="font-family: var(--font-title); font-size: 14px; color: var(--accent); margin-bottom: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg>
+                  Controles de Iluminación del Cursor (Medida & Potencia)
+                </h4>
+                
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                  <!-- Alcance del Efecto (Global vs Hero) -->
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; background: rgba(0,0,0,0.2); padding: 12px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Alcance en la Web</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Define dónde se desplaza la luz del mouse.</span>
+                    </div>
+                    <select id="select-cursor-glow-scope" style="background: #18181b; border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; outline: none;" onchange="updateThemePreview()">
+                      <option value="global">🌐 En todo el sitio web (Global)</option>
+                      <option value="hero">🎯 Solo en la sección Hero</option>
+                    </select>
+                  </div>
+
+                  <!-- Potencia / Opacidad Slider -->
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span style="font-size: 12px; font-weight: 600; color: var(--text-main);">Potencia / Intensidad (<span id="val-glow-opacity">25</span>%)</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Suave (5%) — Intenso (80%)</span>
+                    </div>
+                    <input type="range" id="range-cursor-glow-opacity" min="5" max="80" value="25" step="1" style="accent-color: var(--accent); cursor: pointer;" oninput="document.getElementById('val-glow-opacity').innerText = this.value; updateThemePreview();">
+                  </div>
+
+                  <!-- Tamaño del Glow Slider -->
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span style="font-size: 12px; font-weight: 600; color: var(--text-main);">Tamaño del Halo (<span id="val-glow-size">650</span>px)</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Compacto (300px) — Expansivo (1000px)</span>
+                    </div>
+                    <input type="range" id="range-cursor-glow-size" min="300" max="1000" value="650" step="25" style="accent-color: var(--accent); cursor: pointer;" oninput="document.getElementById('val-glow-size').innerText = this.value; updateThemePreview();">
+                  </div>
+
+                  <!-- Blur / Difuminado Slider -->
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span style="font-size: 12px; font-weight: 600; color: var(--text-main);">Difuminado / Suavidad Blur (<span id="val-glow-blur">50</span>px)</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Enfocado (20px) — Ultra Suave (100px)</span>
+                    </div>
+                    <input type="range" id="range-cursor-glow-blur" min="20" max="100" value="50" step="5" style="accent-color: var(--accent); cursor: pointer;" oninput="document.getElementById('val-glow-blur').innerText = this.value; updateThemePreview();">
                   </div>
                 </div>
               </div>

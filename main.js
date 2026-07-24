@@ -220,23 +220,29 @@ async function fetchFromSupabase() {
 }
 
 async function initSiteData() {
-  // 1. Try reading from localStorage (for instant admin previews)
+  let hasStorage = false;
+
+  // 1. Lectura síncrona instantánea desde localStorage (0ms retardo)
   const saved = localStorage.getItem('zolsea_web_config');
   if (saved) {
     try {
       siteConfig = JSON.parse(saved);
       hydrateDOM();
-      return;
+      setPreloaderProgress(70);
+      hasStorage = true;
     } catch(e) {
       console.error("Error loading config from localStorage:", e);
     }
   }
 
-  // 2. Try fetching from Supabase Database
+  // 2. Consulta en segundo plano a Supabase (Stale-While-Revalidate)
   try {
     const supaData = await fetchFromSupabase();
     if (supaData) {
       siteConfig = supaData;
+      try {
+        localStorage.setItem('zolsea_web_config', JSON.stringify(siteConfig));
+      } catch(e) {}
       hydrateDOM();
       return;
     }
@@ -244,17 +250,44 @@ async function initSiteData() {
     console.warn("Could not fetch from Supabase, trying data.json", e);
   }
 
-  // 3. Otherwise fetch from data.json
+  // 3. Respaldo local desde data.json
   try {
     const res = await fetch('/data.json');
     if (res.ok) {
       siteConfig = await res.json();
+      try {
+        localStorage.setItem('zolsea_web_config', JSON.stringify(siteConfig));
+      } catch(e) {}
     }
   } catch(e) {
     console.warn("Could not fetch data.json, using static fallback", e);
   }
 
   hydrateDOM();
+}
+
+function setPreloaderProgress(percent) {
+  const barFill = document.getElementById('preloaderBarFill');
+  if (barFill) {
+    barFill.style.width = `${percent}%`;
+  }
+}
+
+function hidePreloader() {
+  const preloader = document.getElementById('sitePreloader');
+  if (!preloader) return;
+
+  setPreloaderProgress(100);
+
+  // Permite que la animación de la barra complete al 100% en el centro antes de desvanecerse
+  setTimeout(() => {
+    preloader.classList.add('loaded');
+    setTimeout(() => {
+      if (preloader.parentNode) {
+        preloader.parentNode.removeChild(preloader);
+      }
+    }, 550);
+  }, 400);
 }
 
 function applyTheme() {
@@ -597,6 +630,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initButtonGlowTracker();
   // init3DCardTilt();        // DISABLED — investigating freeze
   // initBrandCardTilt();     // DISABLED — investigating freeze
+
+  hidePreloader();
 });
 
 // ── Global Site-Wide Cursor Glow Tracking ──

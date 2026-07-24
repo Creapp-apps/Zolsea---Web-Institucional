@@ -5,8 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ZolSea Herramientas — Distribuidores de Herramientas Profesionales en Argentina</title>
   <meta name="description" content="ZolSea Import S.R.L. — Distribuidores oficiales de herramientas profesionales en Argentina. Gladiator PRO, KTO y más. Soldadoras, herramientas inalámbricas, jardín y sets profesionales." />
+  <!-- Google Fonts Preconnect & Styling -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css" />
   <link rel="icon" type="image/png" href="/logozolsea.png" />
+
+  <!-- Early Instant Theme Hydration Script (Prevent FOUC) -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('zolsea_web_config');
+        if (saved) {
+          var cfg = JSON.parse(saved);
+          if (cfg && cfg.colors) {
+            var c = cfg.colors;
+            var r = document.documentElement;
+            if (c.bg) r.style.setProperty('--color-bg', c.bg);
+            if (c.surface) r.style.setProperty('--color-surface', c.surface);
+            if (c.surface_hover) r.style.setProperty('--color-surface-hover', c.surface_hover);
+            if (c.accent) r.style.setProperty('--color-accent', c.accent);
+            if (c.accent_hover) r.style.setProperty('--color-accent-hover', c.accent_hover);
+            if (c.accent_secondary) r.style.setProperty('--color-accent-secondary', c.accent_secondary);
+            if (c.text) r.style.setProperty('--color-text', c.text);
+            if (c.text_muted) r.style.setProperty('--color-text-muted', c.text_muted);
+            if (c.border) r.style.setProperty('--color-border', c.border);
+
+            if (c.bg) {
+              var hex = c.bg.replace('#', '');
+              var cr = 10, cg = 10, cb = 10;
+              if (hex.length === 3) {
+                cr = parseInt(hex[0] + hex[0], 16);
+                cg = parseInt(hex[1] + hex[1], 16);
+                cb = parseInt(hex[2] + hex[2], 16);
+              } else if (hex.length === 6) {
+                cr = parseInt(hex.substring(0, 2), 16);
+                cg = parseInt(hex.substring(2, 4), 16);
+                cb = parseInt(hex.substring(4, 6), 16);
+              }
+              var yiq = ((cr * 299) + (cg * 587) + (cb * 114)) / 1000;
+              if (yiq >= 150) {
+                r.classList.add('theme-light');
+                r.classList.remove('theme-dark');
+              } else {
+                r.classList.add('theme-dark');
+                r.classList.remove('theme-light');
+              }
+            }
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website" />
@@ -23,6 +74,27 @@
   <meta property="twitter:image" content="/assets/images/social_preview.png" />
 </head>
 <body>
+  <!-- ===== SITE PRELOADER (SMOOTH TRANSITION SHIELD) ===== -->
+  <div id="sitePreloader" class="site-preloader">
+    <div class="preloader-content">
+      <div class="preloader-logo-badge">
+        <svg class="preloader-logo-svg" viewBox="0 0 200 50" width="200" height="50">
+          <defs>
+            <linearGradient id="preloaderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--color-accent-secondary, #FF6B35)" />
+              <stop offset="100%" stop-color="var(--color-accent, #F59E0B)" />
+            </linearGradient>
+          </defs>
+          <rect x="2" y="2" width="196" height="46" rx="6" fill="none" stroke="url(#preloaderGrad)" stroke-width="2.5" />
+          <text x="100" y="32" font-family="'Space Grotesk', system-ui, -apple-system, sans-serif" font-size="24" font-weight="900" font-style="italic" fill="url(#preloaderGrad)" text-anchor="middle" letter-spacing="3">ZOLSEA</text>
+        </svg>
+      </div>
+      <div class="preloader-bar-container">
+        <div class="preloader-bar-fill" id="preloaderBarFill"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ===== GLOBAL CURSOR AMBIENT GLOW ===== -->
   <div id="globalCursorGlow" class="global-cursor-glow"></div>
 

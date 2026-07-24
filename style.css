@@ -3,8 +3,6 @@
    Aesthetic: Industrial Premium
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-
 /* --- Tokens --- */
 :root {
   --color-bg: #0A0A0A;
@@ -32,6 +30,65 @@
   --transition-fast: 0.2s var(--ease-out);
   --transition-base: 0.4s var(--ease-out);
   --transition-slow: 0.7s var(--ease-out);
+}
+
+/* --- Site Preloader (Smooth Transition Shield) --- */
+.site-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background-color: var(--color-bg, #0A0A0A);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s ease;
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  pointer-events: auto;
+}
+.site-preloader.loaded {
+  opacity: 0;
+  transform: scale(1.02);
+  visibility: hidden;
+  pointer-events: none;
+}
+.preloader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+.preloader-logo-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: preloaderPulse 1.8s infinite ease-in-out;
+}
+.preloader-logo-svg {
+  display: block;
+  overflow: visible;
+}
+.preloader-bar-container {
+  width: 140px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+.preloader-bar-fill {
+  height: 100%;
+  width: 25%;
+  background: linear-gradient(90deg, var(--color-accent-secondary, #FF6B35), var(--color-accent, #F59E0B));
+  border-radius: 99px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes preloaderPulse {
+  0%, 100% { transform: scale(1); opacity: 0.92; }
+  50% { transform: scale(1.04); opacity: 1; }
 }
 
 /* --- Reset --- */

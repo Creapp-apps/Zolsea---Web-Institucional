@@ -1386,7 +1386,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-DqDpgK_o.js"></script>
+  <script type="module" crossorigin src="/assets/admin-D3cFsoMK.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -2426,6 +2426,22 @@
           </div>
           <div class="code-box-wrapper">
             <textarea id="config-json-output" readonly></textarea>
+          </div>
+        </div>
+
+        <div class="form-card" style="margin-bottom: 32px; background: rgba(37, 99, 235, 0.04); border: 1px solid rgba(37, 99, 235, 0.2);">
+          <h3 style="font-family: var(--font-title); font-size: 16px; color: var(--text-main); font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Sincronización Automática con Vercel (Deploy Hook)
+          </h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;">
+            Ingresa tu URL de Deploy Hook de Vercel. Cada vez que presiones <strong>"Publicar en Supabase"</strong>, el panel enviará automáticamente una señal a Vercel para reconstruir y publicar los archivos estáticos en la nube.
+          </p>
+          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <input type="url" id="vercel-deploy-hook-input" placeholder="https://api.vercel.com/v1/integrations/deploy/..." style="flex: 1; min-width: 280px; padding: 10px 14px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); color: var(--text-main); font-size: 13px; outline: none;" />
+            <button class="btn-add" onclick="saveVercelDeployHook()" style="padding: 10px 18px; font-size: 13px; background: #2563eb; color: #fff; border: none; border-radius: var(--radius-md); font-weight: 600;">
+              Guardar Hook
+            </button>
           </div>
         </div>
 

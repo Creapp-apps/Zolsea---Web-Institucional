@@ -190,15 +190,15 @@ let siteConfig = {
     { name: "DeWalt", accent_color: "#eab308" }
   ],
   colors: {
-    bg: '#0A0A0A',
-    surface: '#141414',
-    surface_hover: '#242424',
-    accent: '#F59E0B',
-    accent_hover: '#D97706',
-    accent_secondary: '#FF6B35',
-    text: '#F5F5F5',
-    text_muted: '#9CA3AF',
-    border: '#1F1F1F'
+    bg: '#FFFFFF',
+    surface: '#F8FAFC',
+    surface_hover: '#E2E8F0',
+    accent: '#2563EB',
+    accent_hover: '#1D4ED8',
+    accent_secondary: '#0047AB',
+    text: '#0F172A',
+    text_muted: '#64748B',
+    border: 'rgba(0, 0, 0, 0.08)'
   },
   products: PRODUCTS
 };

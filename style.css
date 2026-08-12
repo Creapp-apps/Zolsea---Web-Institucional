@@ -5,18 +5,18 @@
 
 /* --- Tokens --- */
 :root {
-  --color-bg: #0A0A0A;
-  --color-surface: #141414;
-  --color-surface-elevated: #1C1C1C;
-  --color-surface-hover: #242424;
-  --color-accent: #F59E0B;
-  --color-accent-hover: #D97706;
-  --color-accent-secondary: #FF6B35;
-  --color-text: #F5F5F5;
-  --color-text-muted: #9CA3AF;
-  --color-text-subtle: #6B7280;
-  --color-border: rgba(255,255,255,0.06);
-  --color-glow: rgba(245,158,11,0.15);
+  --color-bg: #FFFFFF;
+  --color-surface: #F8FAFC;
+  --color-surface-elevated: #F1F5F9;
+  --color-surface-hover: #E2E8F0;
+  --color-accent: #2563EB;
+  --color-accent-hover: #1D4ED8;
+  --color-accent-secondary: #0047AB;
+  --color-text: #0F172A;
+  --color-text-muted: #64748B;
+  --color-text-subtle: #94A3B8;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-glow: rgba(37, 99, 235, 0.15);
   --color-whatsapp: #25D366;
   --color-whatsapp-hover: #1EBE57;
   --font-display: 'Space Grotesk', sans-serif;
@@ -74,7 +74,7 @@
 .preloader-bar-container {
   width: 140px;
   height: 3px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(148, 163, 184, 0.2);
   border-radius: 99px;
   overflow: hidden;
   position: relative;
@@ -82,7 +82,7 @@
 .preloader-bar-fill {
   height: 100%;
   width: 25%;
-  background: linear-gradient(90deg, var(--color-accent-secondary, #FF6B35), var(--color-accent, #F59E0B));
+  background: linear-gradient(90deg, var(--color-accent-secondary, #0047AB), var(--color-accent, #2563EB));
   border-radius: 99px;
   transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }

@@ -1386,7 +1386,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-D3cFsoMK.js"></script>
+  <script type="module" crossorigin src="/assets/admin-DwPltVeP.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -1959,7 +1959,7 @@
                   <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
                     <div>
                       <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Acento Principal</span>
-                      <span style="font-size: 11px; color: var(--text-muted);">Botones, badges, logo e iconos primarios.</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Botones, pestañas de categorías activas (tabs), badges e iconos.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
                       <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('accent')" title="Localizar en previsualización">
@@ -1973,7 +1973,7 @@
                   <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
                     <div>
                       <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Acento Secundario</span>
-                      <span style="font-size: 11px; color: var(--text-muted);">Gradientes y detalles decorativos.</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Gradiente del selector de categorías (tabs) y detalles decorativos.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
                       <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('accent-secondary')" title="Localizar en previsualización">
@@ -2116,11 +2116,39 @@
               <div class="color-section-group" style="margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
                 <h4 style="font-family: var(--font-title); font-size: 15px; color: var(--text-main); margin-bottom: 16px;">Colores de Texto</h4>
                 <div style="display: flex; flex-direction: column; gap: 12px;">
-                  <!-- Texto Principal -->
+                  <!-- Título del Hero -->
                   <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
                     <div>
-                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Texto Principal</span>
-                      <span style="font-size: 11px; color: var(--text-muted);">Títulos y contenidos de alta lectura.</span>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Título del Hero (Header)</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Título principal del encabezado o banner.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('hero-text')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
+                      <input type="text" id="hex-hero-text" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('hero-text')">
+                      <input type="color" id="picker-hero-text" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('hero-text')">
+                    </div>
+                  </div>
+                  <!-- Subtítulo del Hero -->
+                  <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Subtítulo del Hero (Header)</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Bajada descriptiva del encabezado.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('hero-subtitle')" title="Localizar en previsualización">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2m0 20v-4"/></svg>
+                      </button>
+                      <input type="text" id="hex-hero-subtitle" class="color-hex-input" style="width: 90px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('hero-subtitle')">
+                      <input type="color" id="picker-hero-subtitle" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('hero-subtitle')">
+                    </div>
+                  </div>
+                  <!-- Texto Principal Secciones -->
+                  <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div>
+                      <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Texto Principal (Secciones)</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">Títulos de categorías, marcas y contenidos de alta lectura.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
                       <button type="button" class="btn-focus-preview" onclick="focusPreviewElement('text')" title="Localizar en previsualización">

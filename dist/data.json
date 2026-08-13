@@ -27,6 +27,8 @@
     "cursor_glow_blur": 50,
     "cursor_glow_scope": "global",
     "text": "#0F172A",
+    "hero_text": "#0F172A",
+    "hero_subtitle": "#64748B",
     "text_muted": "#64748B",
     "border": "rgba(0, 0, 0, 0.08)"
   },

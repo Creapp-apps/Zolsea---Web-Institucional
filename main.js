@@ -197,6 +197,8 @@ let siteConfig = {
     accent_hover: '#1D4ED8',
     accent_secondary: '#0047AB',
     text: '#0F172A',
+    hero_text: '#0F172A',
+    hero_subtitle: '#64748B',
     text_muted: '#64748B',
     border: 'rgba(0, 0, 0, 0.08)'
   },
@@ -302,6 +304,8 @@ function applyTheme() {
   if (colors.accent_hover) root.style.setProperty('--color-accent-hover', colors.accent_hover);
   if (colors.accent_secondary) root.style.setProperty('--color-accent-secondary', colors.accent_secondary);
   if (colors.text) root.style.setProperty('--color-text', colors.text);
+  if (colors.hero_text) root.style.setProperty('--color-hero-text', colors.hero_text);
+  if (colors.hero_subtitle) root.style.setProperty('--color-hero-subtitle', colors.hero_subtitle);
   if (colors.text_muted) root.style.setProperty('--color-text-muted', colors.text_muted);
   
   if (colors.border) {
@@ -315,11 +319,25 @@ function applyTheme() {
   
   if (colors.accent) {
     const hex = colors.accent.replace('#', '');
-    const r = parseInt(hex.substring(0, 2), 16) || 245;
-    const g = parseInt(hex.substring(2, 4), 16) || 158;
-    const b = parseInt(hex.substring(4, 6), 16) || 11;
-    root.style.setProperty('--color-glow', `rgba(${r}, ${g}, ${b}, 0.15)`);
+    let r = 245, g = 158, b = 11;
+    if (hex.length === 3) {
+      r = parseInt(hex[0] + hex[0], 16);
+      g = parseInt(hex[1] + hex[1], 16);
+      b = parseInt(hex[2] + hex[2], 16);
+    } else if (hex.length === 6) {
+      r = parseInt(hex.substring(0, 2), 16);
+      g = parseInt(hex.substring(2, 4), 16);
+      b = parseInt(hex.substring(4, 6), 16);
+    }
+    root.style.setProperty('--color-glow', `rgba(${r}, ${g}, ${b}, 0.25)`);
     root.style.setProperty('--color-glow-logo', `rgba(${r}, ${g}, ${b}, 0.85)`);
+
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    if (yiq >= 150) {
+      root.style.setProperty('--color-text-on-accent', '#000000');
+    } else {
+      root.style.setProperty('--color-text-on-accent', '#FFFFFF');
+    }
   }
 
   // Handle cursor glow parameters (Color, Opacity, Size, Blur, Scope)
@@ -433,6 +451,8 @@ function hydrateDOM() {
       accent_secondary: '#FF6B35',
       cursor_glow: '#FF6B35',
       text: '#F5F5F5',
+      hero_text: '#F5F5F5',
+      hero_subtitle: '#9CA3AF',
       text_muted: '#9CA3AF',
       border: '#1F1F1F'
     };

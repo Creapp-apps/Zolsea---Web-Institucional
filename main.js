@@ -473,9 +473,9 @@ function hydrateDOM() {
         heroMainSource.srcset = siteConfig.hero_image_url;
       }
     } else {
-      heroMainImg.src = '/assets/images/hero_ecosystem.png';
+      heroMainImg.src = '/images/hero_ecosystem.png';
       if (heroMainSource) {
-        heroMainSource.srcset = '/assets/images/mobile_ecosystem.jpeg';
+        heroMainSource.srcset = '/images/mobile_ecosystem.jpeg';
       }
     }
   }

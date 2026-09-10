@@ -304,13 +304,61 @@ function applyTheme() {
   if (colors.accent_hover) root.style.setProperty('--color-accent-hover', colors.accent_hover);
   if (colors.accent_secondary) root.style.setProperty('--color-accent-secondary', colors.accent_secondary);
   if (colors.text) root.style.setProperty('--color-text', colors.text);
+  if (colors.text_muted) root.style.setProperty('--color-text-muted', colors.text_muted);
+
+  // Section-specific typography colors
+  if (colors.brands_label) root.style.setProperty('--color-brands-label', colors.brands_label);
+  if (colors.brands_title) root.style.setProperty('--color-brands-title', colors.brands_title);
+  if (colors.brands_subtitle) root.style.setProperty('--color-brands-subtitle', colors.brands_subtitle);
+  if (colors.brands_intro) root.style.setProperty('--color-brands-intro', colors.brands_intro);
+
+  if (colors.hero_badge) root.style.setProperty('--color-hero-badge', colors.hero_badge);
   if (colors.hero_text) root.style.setProperty('--color-hero-text', colors.hero_text);
   if (colors.hero_subtitle) root.style.setProperty('--color-hero-subtitle', colors.hero_subtitle);
-  if (colors.text_muted) root.style.setProperty('--color-text-muted', colors.text_muted);
+
+  if (colors.catalog_label) root.style.setProperty('--color-catalog-label', colors.catalog_label);
+  if (colors.catalog_title) root.style.setProperty('--color-catalog-title', colors.catalog_title);
+  if (colors.catalog_subtitle) root.style.setProperty('--color-catalog-subtitle', colors.catalog_subtitle);
+
+  if (colors.contact_label) root.style.setProperty('--color-contact-label', colors.contact_label);
+  if (colors.contact_title) root.style.setProperty('--color-contact-title', colors.contact_title);
+  if (colors.contact_subtitle) root.style.setProperty('--color-contact-subtitle', colors.contact_subtitle);
+
+  if (colors.footer_text) root.style.setProperty('--color-footer-text', colors.footer_text);
   
   if (colors.border) {
     root.style.setProperty('--color-border', colors.border);
   }
+
+  // Button Color & Style Tokens
+  if (colors.btn_primary_bg) root.style.setProperty('--color-btn-primary-bg', colors.btn_primary_bg);
+  if (colors.btn_primary_text) root.style.setProperty('--color-btn-primary-text', colors.btn_primary_text);
+  if (colors.btn_primary_hover_bg) root.style.setProperty('--color-btn-primary-hover-bg', colors.btn_primary_hover_bg);
+  if (colors.btn_primary_hover_text) root.style.setProperty('--color-btn-primary-hover-text', colors.btn_primary_hover_text);
+  if (colors.btn_secondary_bg) root.style.setProperty('--color-btn-secondary-bg', colors.btn_secondary_bg);
+  if (colors.btn_secondary_border) root.style.setProperty('--color-btn-secondary-border', colors.btn_secondary_border);
+  if (colors.btn_secondary_text) root.style.setProperty('--color-btn-secondary-text', colors.btn_secondary_text);
+  if (colors.btn_secondary_hover_bg) root.style.setProperty('--color-btn-secondary-hover-bg', colors.btn_secondary_hover_bg);
+  if (colors.btn_secondary_hover_border) root.style.setProperty('--color-btn-secondary-hover-border', colors.btn_secondary_hover_border);
+  if (colors.btn_secondary_hover_text) root.style.setProperty('--color-btn-secondary-hover-text', colors.btn_secondary_hover_text);
+  if (colors.btn_radius) root.style.setProperty('--btn-radius', colors.btn_radius);
+
+  // Gradient & Transition Tokens
+  const grad = siteConfig.gradient_settings || {};
+  const topEnabled = grad.top_enabled !== false ? 1 : 0;
+  const topStrength = grad.top_strength !== undefined ? (parseFloat(grad.top_strength) / 100) : 1;
+  const topHeight = grad.top_height !== undefined ? parseInt(grad.top_height) : 140;
+
+  const bottomEnabled = grad.bottom_enabled !== false ? 1 : 0;
+  const bottomStrength = grad.bottom_strength !== undefined ? (parseFloat(grad.bottom_strength) / 100) : 1;
+  const bottomHeight = grad.bottom_height !== undefined ? parseInt(grad.bottom_height) : 140;
+
+  root.style.setProperty('--hero-gradient-top-enabled', topEnabled);
+  root.style.setProperty('--hero-gradient-top-opacity', topStrength);
+  root.style.setProperty('--hero-gradient-top-height', `${topHeight}px`);
+  root.style.setProperty('--hero-gradient-bottom-enabled', bottomEnabled);
+  root.style.setProperty('--hero-gradient-bottom-opacity', bottomStrength);
+  root.style.setProperty('--hero-gradient-bottom-height', `${bottomHeight}px`);
 
   // Handle derived variables (glow and surface-elevated)
   if (colors.surface_hover) {
@@ -529,13 +577,30 @@ function hydrateDOM() {
     }
   }
 
-  // Actualizar Badge del Hero
+  // 1. SECCIÓN MARCAS
+  const brandsLabel = document.querySelector('.brands-header .section-label');
+  if (brandsLabel && siteConfig.brands_label) {
+    brandsLabel.textContent = siteConfig.brands_label;
+  }
+  const brandsTitle = document.querySelector('.brands-header .section-title');
+  if (brandsTitle && siteConfig.brands_title) {
+    brandsTitle.textContent = siteConfig.brands_title;
+  }
+  const brandsSubtitle = document.querySelector('.brands-header p:not(.brands-intro-text):not(.section-label)');
+  if (brandsSubtitle && siteConfig.brands_subtitle) {
+    brandsSubtitle.textContent = siteConfig.brands_subtitle;
+  }
+  const brandsIntro = document.querySelector('.brands-intro-text');
+  if (brandsIntro && siteConfig.brands_intro_text) {
+    brandsIntro.textContent = siteConfig.brands_intro_text;
+  }
+
+  // 2. SECCIÓN PORTADA / HERO
   const heroBadge = document.querySelector('.hero-badge');
   if (heroBadge && siteConfig.hero_badge) {
     heroBadge.innerHTML = `<span class="dot"></span>${siteConfig.hero_badge}`;
   }
 
-  // Actualizar Título del Hero
   const heroTitle = document.getElementById('heroTitle');
   if (heroTitle && siteConfig.hero_title) {
     let titleText = siteConfig.hero_title.trim();
@@ -552,16 +617,43 @@ function hydrateDOM() {
     heroTitle.innerHTML = titleText;
   }
 
-  // Actualizar Subtítulo del Hero
   const heroSubtitle = document.querySelector('.hero-subtitle');
   if (heroSubtitle && siteConfig.hero_subtitle) {
     heroSubtitle.textContent = siteConfig.hero_subtitle;
   }
 
-  // Actualizar Texto de Presentación de Marcas
-  const brandsIntro = document.querySelector('.brands-intro-text');
-  if (brandsIntro && siteConfig.brands_intro_text) {
-    brandsIntro.textContent = siteConfig.brands_intro_text;
+  // 3. SECCIÓN CATÁLOGO DESTACADO
+  const catalogLabel = document.querySelector('.products-header .section-label');
+  if (catalogLabel && siteConfig.catalog_label) {
+    catalogLabel.textContent = siteConfig.catalog_label;
+  }
+  const catalogTitle = document.querySelector('.products-header .section-title');
+  if (catalogTitle && siteConfig.catalog_title) {
+    catalogTitle.textContent = siteConfig.catalog_title;
+  }
+  const catalogSubtitle = document.querySelector('.products-header p:not(.section-label)');
+  if (catalogSubtitle && siteConfig.catalog_subtitle) {
+    catalogSubtitle.textContent = siteConfig.catalog_subtitle;
+  }
+
+  // 4. SECCIÓN CONSÚLTANOS / CONTACTO Y WHATSAPP
+  const contactLabel = document.querySelector('.contact-inner .section-label');
+  if (contactLabel && siteConfig.contact_label) {
+    contactLabel.textContent = siteConfig.contact_label;
+  }
+  const contactTitle = document.querySelector('.contact-inner .section-title');
+  if (contactTitle && siteConfig.contact_title) {
+    contactTitle.textContent = siteConfig.contact_title;
+  }
+  const contactSubtitle = document.querySelector('.contact-inner > p:not(.section-label)');
+  if (contactSubtitle && siteConfig.contact_subtitle) {
+    contactSubtitle.textContent = siteConfig.contact_subtitle;
+  }
+
+  // 5. SECCIÓN PIE DE PÁGINA (FOOTER)
+  const footerText = document.querySelector('.footer-text');
+  if (footerText && siteConfig.footer_text) {
+    footerText.textContent = siteConfig.footer_text;
   }
 
   // Actualizar Marcas en Bento Grid
@@ -595,6 +687,31 @@ function hydrateDOM() {
         </div>
       `;
     }).join('');
+  }
+
+  // Actualizar Textos de Botones
+  if (siteConfig.button_texts) {
+    const heroBtnPrimary = document.querySelector('.hero-actions .btn-primary');
+    if (heroBtnPrimary && siteConfig.button_texts.hero_primary) {
+      const svg = heroBtnPrimary.querySelector('svg');
+      heroBtnPrimary.innerHTML = `<span>${siteConfig.button_texts.hero_primary}</span>`;
+      if (svg) heroBtnPrimary.appendChild(svg);
+    }
+
+    const heroBtnSecondary = document.querySelector('.hero-actions .btn-secondary');
+    if (heroBtnSecondary && siteConfig.button_texts.hero_secondary) {
+      heroBtnSecondary.textContent = siteConfig.button_texts.hero_secondary;
+    }
+
+    const navCta = document.querySelector('.nav-cta-btn');
+    if (navCta && siteConfig.button_texts.whatsapp_nav) {
+      navCta.textContent = siteConfig.button_texts.whatsapp_nav;
+    }
+
+    const waBtn = document.getElementById('whatsappBtn');
+    if (waBtn && siteConfig.button_texts.whatsapp_cta) {
+      waBtn.innerHTML = `<span>${siteConfig.button_texts.whatsapp_cta}</span>`;
+    }
   }
 
   // Inicializar Google Analytics
@@ -1018,7 +1135,7 @@ function initProductsGrid() {
         <p class="product-desc">${p.desc}</p>
         <div class="product-actions">
           <button class="product-action-btn btn-details" data-index="${i}">
-            Ver Más
+            ${(siteConfig && siteConfig.button_texts && siteConfig.button_texts.product_card) ? siteConfig.button_texts.product_card : 'Ver Más'}
           </button>
         </div>
       </div>

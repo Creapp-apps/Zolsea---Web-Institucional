@@ -18,6 +18,8 @@
     "hero_primary": "Consultar Catálogo",
     "hero_secondary": "Ver Marcas Oficiales",
     "product_card": "Ver Más",
+    "nav_presentation": "Presentación",
+    "nav_catalog": "Catálogo",
     "whatsapp_nav": "Consúltanos",
     "whatsapp_cta": "Abrir WhatsApp"
   },
@@ -56,7 +58,18 @@
     "hero_text": "#0F172A",
     "hero_subtitle": "#64748B",
     "text_muted": "#64748B",
-    "border": "rgba(0, 0, 0, 0.08)"
+    "border": "rgba(0, 0, 0, 0.08)",
+    "nav_underline": "#2563EB",
+    "card_bg": "#FFFFFF",
+    "card_border": "rgba(0, 0, 0, 0.08)",
+    "card_title": "#0F172A",
+    "card_desc": "#64748B",
+    "btn_card_bg": "#FFFFFF",
+    "btn_card_text": "#0F172A",
+    "btn_card_border": "rgba(0, 0, 0, 0.08)",
+    "btn_card_hover_bg": "#F1F5F9",
+    "btn_card_hover_border": "#2563EB",
+    "btn_card_hover_text": "#2563EB"
   },
   "products": [
     {

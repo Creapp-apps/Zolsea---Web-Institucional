@@ -305,6 +305,7 @@ function applyTheme() {
   if (colors.accent_secondary) root.style.setProperty('--color-accent-secondary', colors.accent_secondary);
   if (colors.text) root.style.setProperty('--color-text', colors.text);
   if (colors.text_muted) root.style.setProperty('--color-text-muted', colors.text_muted);
+  if (colors.nav_underline) root.style.setProperty('--color-nav-underline', colors.nav_underline);
 
   // Section-specific typography colors
   if (colors.brands_label) root.style.setProperty('--color-brands-label', colors.brands_label);
@@ -342,6 +343,19 @@ function applyTheme() {
   if (colors.btn_secondary_hover_border) root.style.setProperty('--color-btn-secondary-hover-border', colors.btn_secondary_hover_border);
   if (colors.btn_secondary_hover_text) root.style.setProperty('--color-btn-secondary-hover-text', colors.btn_secondary_hover_text);
   if (colors.btn_radius) root.style.setProperty('--btn-radius', colors.btn_radius);
+
+  // Product Card & Card Button Tokens
+  if (colors.card_bg) root.style.setProperty('--color-card-bg', colors.card_bg);
+  if (colors.card_border) root.style.setProperty('--color-card-border', colors.card_border);
+  if (colors.card_title) root.style.setProperty('--color-card-title', colors.card_title);
+  if (colors.card_desc) root.style.setProperty('--color-card-desc', colors.card_desc);
+
+  if (colors.btn_card_bg) root.style.setProperty('--color-btn-card-bg', colors.btn_card_bg);
+  if (colors.btn_card_text) root.style.setProperty('--color-btn-card-text', colors.btn_card_text);
+  if (colors.btn_card_border) root.style.setProperty('--color-btn-card-border', colors.btn_card_border);
+  if (colors.btn_card_hover_bg) root.style.setProperty('--color-btn-card-hover-bg', colors.btn_card_hover_bg);
+  if (colors.btn_card_hover_text) root.style.setProperty('--color-btn-card-hover-text', colors.btn_card_hover_text);
+  if (colors.btn_card_hover_border) root.style.setProperty('--color-btn-card-hover-border', colors.btn_card_hover_border);
 
   // Gradient & Transition Tokens
   const grad = siteConfig.gradient_settings || {};
@@ -700,10 +714,22 @@ function hydrateDOM() {
 
     const heroBtnSecondary = document.querySelector('.hero-actions .btn-secondary');
     if (heroBtnSecondary && siteConfig.button_texts.hero_secondary) {
-      heroBtnSecondary.textContent = siteConfig.button_texts.hero_secondary;
+      const svg = heroBtnSecondary.querySelector('svg');
+      heroBtnSecondary.innerHTML = `<span>${siteConfig.button_texts.hero_secondary}</span>`;
+      if (svg) heroBtnSecondary.appendChild(svg);
     }
 
-    const navCta = document.querySelector('.nav-cta-btn');
+    const navPres = document.querySelector('#navLinks a[href="#hero"]');
+    if (navPres && siteConfig.button_texts.nav_presentation) {
+      navPres.textContent = siteConfig.button_texts.nav_presentation;
+    }
+
+    const navCat = document.querySelector('#navLinks a[href="#products"]');
+    if (navCat && siteConfig.button_texts.nav_catalog) {
+      navCat.textContent = siteConfig.button_texts.nav_catalog;
+    }
+
+    const navCta = document.querySelector('.nav-cta-btn, .navbar-cta');
     if (navCta && siteConfig.button_texts.whatsapp_nav) {
       navCta.textContent = siteConfig.button_texts.whatsapp_nav;
     }

@@ -1915,6 +1915,102 @@
       min-height: 80px;
     }
 
+    /* Universal Color Hex Input & Color Picker Styling */
+    .color-hex-input {
+      background: rgba(0, 0, 0, 0.45) !important;
+      border: 1px solid var(--border) !important;
+      color: #FFFFFF !important;
+      padding: 7px 10px !important;
+      border-radius: 8px !important;
+      font-family: 'SF Mono', Menlo, Monaco, Consolas, monospace !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.5px !important;
+      outline: none !important;
+      transition: all 0.2s ease !important;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .color-hex-input:focus {
+      border-color: var(--primary) !important;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2), inset 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+      background: rgba(0, 0, 0, 0.65) !important;
+    }
+
+    .color-input-picker {
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+      width: 32px !important;
+      height: 32px !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+      border-radius: 8px !important;
+      padding: 0 !important;
+      background: transparent !important;
+      cursor: pointer !important;
+      outline: none !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+      transition: all 0.2s ease !important;
+      flex-shrink: 0 !important;
+    }
+
+    .color-input-picker:hover {
+      transform: scale(1.08) !important;
+      border-color: var(--primary) !important;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4) !important;
+    }
+
+    .color-input-picker::-webkit-color-swatch-wrapper {
+      padding: 2px !important;
+      border-radius: 7px !important;
+    }
+
+    .color-input-picker::-webkit-color-swatch {
+      border: none !important;
+      border-radius: 5px !important;
+    }
+
+    .color-input-picker::-moz-color-swatch {
+      border: none !important;
+      border-radius: 5px !important;
+    }
+
+    /* Interactive Navbar Link Simulator */
+    .sim-nav-item {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 0;
+      color: #94A3B8;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .sim-nav-item:hover,
+    .sim-nav-item.active {
+      color: #FFFFFF;
+    }
+
+    .sim-nav-item .sim-nav-underline {
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--sim-nav-underline-color, #2563EB);
+      border-radius: 2px;
+      transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sim-nav-item:hover .sim-nav-underline,
+    .sim-nav-item.active .sim-nav-underline {
+      width: 100%;
+    }
+
     .btn-save-container {
       display: flex;
       justify-content: flex-end;
@@ -4295,7 +4391,7 @@
               </div>
             </div>
 
-            <!-- SUBTAB 4: BOTONES Y ACCIONES (NUEVO REQUERIMIENTO) -->
+            <!-- SUBTAB 4: BOTONES Y ACCIONES (SECTORIZADO POR UBICACIÓN) -->
             <div class="subtab-content" id="subtab-buttons">
               <div class="settings-card">
                 <div class="settings-card-header">
@@ -4304,176 +4400,516 @@
                   </div>
                   <div class="card-header-text">
                     <h3>Personalización de Botones y Acciones (CTAs)</h3>
-                    <p>Control total de llamadas a la acción: modifica los textos, la paleta de colores activa y en hover, y prueba su interacción en el simulador en vivo.</p>
-                  </div>
-                </div>
-
-                <!-- SIMULADOR INTERACTIVO DE BOTONES -->
-                <div class="interactive-simulator-box" style="margin-bottom: 28px;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                    <div>
-                      <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent);">SIMULADOR EN VIVO</span>
-                      <h4 style="font-family: var(--font-title); font-size: 15px; color: var(--text-main); margin: 2px 0 0 0;">Prueba de Botones (Pasa el cursor por encima)</h4>
-                    </div>
-                    <span style="font-size: 11px; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 20px;">Interactivo</span>
-                  </div>
-
-                  <div id="buttons-simulator-canvas" style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center; background: rgba(0,0,0,0.5); padding: 24px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.06);">
-                    <!-- Simulated Primary Button -->
-                    <button type="button" id="sim-btn-primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; font-weight: 700; font-size: 14px; cursor: pointer; border: 1px solid transparent; transition: all 0.2s ease;">
-                      <span id="sim-text-primary">Consultar Catálogo</span>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
-                    </button>
-
-                    <!-- Simulated Secondary Button -->
-                    <button type="button" id="sim-btn-secondary" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s ease;">
-                      <span id="sim-text-secondary">Ver Marcas Oficiales</span>
-                    </button>
-
-                    <!-- Simulated Product Card Button -->
-                    <button type="button" id="sim-btn-card" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; font-weight: 600; font-size: 13px; cursor: pointer; border: 1px solid var(--border); transition: all 0.2s ease;">
-                      <span id="sim-text-card">Ver Más</span>
-                    </button>
+                    <p>Configura las llamadas a la acción organizadas por su ubicación exacta en el sitio web. Cada sector cuenta con su propia ventana de simulación interactiva en tiempo real.</p>
                   </div>
                 </div>
 
                 <form id="buttons-form" onsubmit="saveButtons(event)">
-                  <!-- 1. Textos / Copys de Botones -->
-                  <div style="margin-bottom: 28px;">
-                    <h4 style="font-family: var(--font-title); font-size: 15px; color: var(--accent); margin-bottom: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                      1. Textos y Llamadas a la Acción (Copys)
-                    </h4>
 
-                    <div class="form-grid">
-                      <div class="form-group">
-                        <label for="input-btn-hero-primary">Texto Botón Primario (Hero)</label>
-                        <input type="text" id="input-btn-hero-primary" placeholder="Ej: Consultar Catálogo" oninput="updateButtonPreview()">
-                        <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">Botón principal de impacto en el banner inicial.</span>
+                  <!-- ============================================== -->
+                  <!-- SECTOR 1: PORTADA / HERO (BOTÓN PRIMARIO Y SECUNDARIO) -->
+                  <!-- ============================================== -->
+                  <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 18px; padding: 22px; margin-bottom: 26px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 7px; background: rgba(59, 130, 246, 0.2); color: #60a5fa; font-weight: 800; font-size: 13px;">1</span>
+                        <div>
+                          <h4 style="font-family: var(--font-title); font-size: 16px; color: #ffffff; margin: 0;">Portada / Banner Hero (Botones de Impacto)</h4>
+                          <span style="font-size: 11px; color: var(--text-muted);">Los dos botones principales que recibe el cliente al ingresar a la web.</span>
+                        </div>
+                      </div>
+                      <span style="font-size: 11px; font-weight: 700; color: #38bdf8; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.25); padding: 3px 12px; border-radius: 20px; text-transform: uppercase;">1° Pantalla (Hero)</span>
+                    </div>
+
+                    <!-- Ventana de Preview Sector 1 (Simulador Hero con Alto Contraste) -->
+                    <div style="margin-bottom: 20px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 28px rgba(0,0,0,0.35);">
+                      <div style="background: #1e293b; padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                          <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; opacity: 0.8;"></span>
+                          <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; opacity: 0.8;"></span>
+                          <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; opacity: 0.8;"></span>
+                          <span style="font-size: 11px; color: #94a3b8; margin-left: 8px; font-family: monospace;">Vista Previa: Portada Hero en Vivo</span>
+                        </div>
+                        <span style="font-size: 10px; color: #60a5fa; background: rgba(59, 130, 246, 0.15); padding: 2px 8px; border-radius: 12px; font-weight: 600;">Interactivo (Pasa el cursor)</span>
                       </div>
 
-                      <div class="form-group">
-                        <label for="input-btn-hero-secondary">Texto Botón Secundario (Hero)</label>
-                        <input type="text" id="input-btn-hero-secondary" placeholder="Ej: Ver Marcas Oficiales" oninput="updateButtonPreview()">
-                        <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">Botón secundario contorneado en el banner.</span>
+                      <div id="sim-hero-canvas" style="padding: 28px 24px; position: relative; transition: background 0.3s ease; background: #FFFFFF; color: #0F172A;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.08); padding: 4px 10px; border-radius: 20px; font-size: 11px; margin-bottom: 12px; font-weight: 500;">
+                          <span style="width: 6px; height: 6px; border-radius: 50%; background: #2563EB;"></span>
+                          MercadoLíder Platinum · +1.900 seguidores
+                        </div>
+                        <div id="sim-hero-title-text" style="font-family: var(--font-title); font-size: 20px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 6px; text-transform: uppercase;">
+                          HERRAMIENTAS QUE <span style="color: #2563EB;">CONSTRUYEN</span>
+                        </div>
+                        <div id="sim-hero-subtitle-text" style="font-size: 12px; margin-bottom: 20px; max-width: 440px; line-height: 1.5; color: #64748B;">
+                          Distribuidores oficiales de las mejores marcas de herramientas en Argentina.
+                        </div>
+
+                        <!-- Botones Hero Lado a Lado con Badges Indicadores -->
+                        <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
+                          <!-- Botón Primario Hero -->
+                          <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #2563EB; letter-spacing: 0.06em; display: flex; align-items: center; gap: 4px;">
+                              <span style="width: 7px; height: 7px; border-radius: 50%; background: #2563EB;"></span>
+                              Botón Primario (Hero)
+                            </span>
+                            <button type="button" id="sim-btn-primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; font-weight: 700; font-size: 13px; cursor: pointer; border: 1px solid transparent; transition: all 0.2s ease; outline: none;">
+                              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                              <span id="sim-text-primary">Consultar Catálogo</span>
+                            </button>
+                          </div>
+
+                          <!-- Botón Secundario Hero -->
+                          <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #475569; letter-spacing: 0.06em; display: flex; align-items: center; gap: 4px;">
+                              <span style="width: 7px; height: 7px; border-radius: 50%; background: #64748B;"></span>
+                              Botón Secundario (Hero)
+                            </span>
+                            <button type="button" id="sim-btn-secondary" style="display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s ease; outline: none;">
+                              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                              <span id="sim-text-secondary">Ver Marcas Oficiales</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Controles Específicos del Sector 1: Divididos en Botón Primario vs Botón Secundario -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+                      <!-- Bloque A: Botón Primario Hero -->
+                      <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 14px; padding: 16px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                          <span style="font-size: 13px; font-weight: 700; color: #60a5fa;">Ajustes: Botón Hero Primario</span>
+                          <span style="font-size: 10px; background: rgba(59,130,246,0.15); color: #60a5fa; padding: 2px 6px; border-radius: 4px; font-weight: 700;">CTA 1</span>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 12px;">
+                          <label for="input-btn-hero-primary" style="font-size: 12px;">Texto del Botón Primario</label>
+                          <input type="text" id="input-btn-hero-primary" placeholder="Ej: Consultar Catálogo" oninput="updateButtonPreview()">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                          <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                            <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Fondo Normal</span>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <input type="text" id="hex-btn-primary-bg" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('btn-primary-bg'); updateButtonPreview();">
+                              <input type="color" id="picker-btn-primary-bg" class="color-input-picker" oninput="syncHexInput('btn-primary-bg'); updateButtonPreview();">
+                            </div>
+                          </div>
+
+                          <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                            <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Texto Normal</span>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <input type="text" id="hex-btn-primary-text" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('btn-primary-text'); updateButtonPreview();">
+                              <input type="color" id="picker-btn-primary-text" class="color-input-picker" oninput="syncHexInput('btn-primary-text'); updateButtonPreview();">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                          <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                            <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Fondo Hover</span>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <input type="text" id="hex-btn-primary-hover-bg" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('btn-primary-hover-bg'); updateButtonPreview();">
+                              <input type="color" id="picker-btn-primary-hover-bg" class="color-input-picker" oninput="syncHexInput('btn-primary-hover-bg'); updateButtonPreview();">
+                            </div>
+                          </div>
+
+                          <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                            <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Texto Hover</span>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <input type="text" id="hex-btn-primary-hover-text" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('btn-primary-hover-text'); updateButtonPreview();">
+                              <input type="color" id="picker-btn-primary-hover-text" class="color-input-picker" oninput="syncHexInput('btn-primary-hover-text'); updateButtonPreview();">
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
-                      <div class="form-group">
-                        <label for="input-btn-product-card">Texto Botón en Fichas de Producto</label>
-                        <input type="text" id="input-btn-product-card" placeholder="Ej: Ver Más" oninput="updateButtonPreview()">
-                        <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">Botón dentro de cada tarjeta del catálogo general.</span>
+                      <!-- Bloque B: Botón Secundario Hero -->
+                      <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 14px; padding: 16px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                          <span style="font-size: 13px; font-weight: 700; color: #cbd5e1;">Ajustes: Botón Hero Secundario</span>
+                          <span style="font-size: 10px; background: rgba(148,163,184,0.15); color: #cbd5e1; padding: 2px 6px; border-radius: 4px; font-weight: 700;">CTA 2</span>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 12px;">
+                          <label for="input-btn-hero-secondary" style="font-size: 12px;">Texto del Botón Secundario</label>
+                          <input type="text" id="input-btn-hero-secondary" placeholder="Ej: Ver Marcas Oficiales" oninput="updateButtonPreview()">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                          <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                            <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Borde Normal</span>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <input type="text" id="hex-btn-secondary-border" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('btn-secondary-border'); updateButtonPreview();">
+                              <input type="color" id="picker-btn-secondary-border" class="color-input-picker" oninput="syncHexInput('btn-secondary-border'); updateButtonPreview();">
+                            </div>
+                          </div>
+
+                          <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                            <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Texto Normal</span>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <input type="text" id="hex-btn-secondary-text" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('btn-secondary-text'); updateButtonPreview();">
+                              <input type="color" id="picker-btn-secondary-text" class="color-input-picker" oninput="syncHexInput('btn-secondary-text'); updateButtonPreview();">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                          <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                            <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Fondo Hover</span>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <input type="text" id="hex-btn-secondary-hover-bg" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('btn-secondary-hover-bg'); updateButtonPreview();">
+                              <input type="color" id="picker-btn-secondary-hover-bg" class="color-input-picker" oninput="syncHexInput('btn-secondary-hover-bg'); updateButtonPreview();">
+                            </div>
+                          </div>
+
+                          <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                            <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Borde/Texto Hover</span>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <input type="text" id="hex-btn-secondary-hover-border" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('btn-secondary-hover-border'); updateButtonPreview();">
+                              <input type="color" id="picker-btn-secondary-hover-border" class="color-input-picker" oninput="syncHexInput('btn-secondary-hover-border'); updateButtonPreview();">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ============================================== -->
+                  <!-- SECTOR 2: BARRA DE NAVEGACIÓN SUPERIOR         -->
+                  <!-- ============================================== -->
+                  <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 18px; padding: 22px; margin-bottom: 26px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 7px; background: rgba(16, 185, 129, 0.2); color: #34d399; font-weight: 800; font-size: 13px;">2</span>
+                        <div>
+                          <h4 style="font-family: var(--font-title); font-size: 16px; color: #ffffff; margin: 0;">Barra de Navegación Superior (Navbar & Acciones)</h4>
+                          <span style="font-size: 11px; color: var(--text-muted);">Enlaces de navegación y botón de contacto que acompañan al usuario en todo momento.</span>
+                        </div>
+                      </div>
+                      <span style="font-size: 11px; font-weight: 700; color: #34d399; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); padding: 3px 12px; border-radius: 20px; text-transform: uppercase;">Cabecera Web</span>
+                    </div>
+
+                    <!-- Ventana de Preview Sector 2 (Navbar Mockup Interactivo con Enlaces y Subrayado) -->
+                    <div style="margin-bottom: 20px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 24px rgba(0,0,0,0.3);">
+                      <div style="background: #1e293b; padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                          <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; opacity: 0.8;"></span>
+                          <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; opacity: 0.8;"></span>
+                          <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; opacity: 0.8;"></span>
+                          <span style="font-size: 11px; color: #94a3b8; margin-left: 8px; font-family: monospace;">Vista Previa Interactiva: Cabecera con Enlaces y Subrayado Animado</span>
+                        </div>
+                        <span style="font-size: 10px; color: #34d399; background: rgba(16, 185, 129, 0.15); padding: 2px 8px; border-radius: 12px; font-weight: 600;">Interactivo (Pasa el cursor)</span>
                       </div>
 
-                      <div class="form-group">
-                        <label for="input-btn-whatsapp-nav">Texto Botón Superior WhatsApp</label>
-                        <input type="text" id="input-btn-whatsapp-nav" placeholder="Ej: Consúltanos" oninput="updateButtonPreview()">
-                        <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">Botón destacado ubicado en la barra de navegación.</span>
+                      <div style="background: #0B0F19; padding: 22px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+                        <!-- Logo Simulado -->
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                          <span style="font-family: var(--font-title); font-size: 18px; font-weight: 900; letter-spacing: 2px; color: #38BDF8; font-style: italic;">ZOLSEA</span>
+                        </div>
+
+                        <!-- Menú de Enlaces Interactivos + Botón WhatsApp Nav -->
+                        <div style="display: flex; align-items: center; gap: 28px;">
+                          <div id="sim-nav-pres" class="sim-nav-item active" style="--sim-nav-underline-color: #2563EB;">
+                            <span id="sim-text-nav-pres">Presentación</span>
+                            <span class="sim-nav-underline" id="sim-underline-pres"></span>
+                          </div>
+                          <div id="sim-nav-cat" class="sim-nav-item" style="--sim-nav-underline-color: #2563EB;">
+                            <span id="sim-text-nav-cat">Catálogo</span>
+                            <span class="sim-nav-underline" id="sim-underline-cat"></span>
+                          </div>
+                          <button type="button" id="sim-btn-nav" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 22px; background: #2563EB; color: #000000; font-weight: 700; font-size: 13px; border-radius: 9999px; border: none; cursor: pointer; transition: all 0.2s ease; outline: none;">
+                            <span id="sim-text-nav">Consúltanos</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Controles Sector 2 en 2 Bloques Claros -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+                      <!-- Bloque A: Enlaces de Menú & Subrayado Animado -->
+                      <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 14px; padding: 16px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                          <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">Enlaces de Menú y Subrayado</span>
+                          <span style="font-size: 10px; background: rgba(56,189,248,0.15); color: #38bdf8; padding: 2px 6px; border-radius: 4px; font-weight: 700;">NAV LINKS</span>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+                          <div class="form-group" style="margin: 0;">
+                            <label for="input-btn-nav-presentation" style="font-size: 12px;">Texto Enlace 1</label>
+                            <input type="text" id="input-btn-nav-presentation" placeholder="Presentación" oninput="updateButtonPreview()">
+                          </div>
+                          <div class="form-group" style="margin: 0;">
+                            <label for="input-btn-nav-catalog" style="font-size: 12px;">Texto Enlace 2</label>
+                            <input type="text" id="input-btn-nav-catalog" placeholder="Catálogo" oninput="updateButtonPreview()">
+                          </div>
+                        </div>
+
+                        <!-- Color Subrayado Animado -->
+                        <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                          <div>
+                            <span style="font-size: 12px; font-weight: 600; display: block; color: var(--text-main);">Color Subrayado Animado</span>
+                            <span style="font-size: 11px; color: var(--text-muted);">Línea dinámica que se desliza al pasar el cursor sobre los enlaces.</span>
+                          </div>
+                          <div style="display: flex; align-items: center; gap: 8px;">
+                            <input type="text" id="hex-nav-underline" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('nav-underline'); updateButtonPreview();">
+                            <input type="color" id="picker-nav-underline" class="color-input-picker" oninput="syncHexInput('nav-underline'); updateButtonPreview();">
+                          </div>
+                        </div>
                       </div>
 
-                      <div class="form-group full-width">
+                      <!-- Bloque B: Botón CTA WhatsApp Navbar -->
+                      <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                            <span style="font-size: 13px; font-weight: 700; color: #34d399;">Botón Directo (CTA)</span>
+                            <span style="font-size: 10px; background: rgba(16,185,129,0.15); color: #34d399; padding: 2px 6px; border-radius: 4px; font-weight: 700;">WHATSAPP</span>
+                          </div>
+
+                          <div class="form-group" style="margin-bottom: 10px;">
+                            <label for="input-btn-whatsapp-nav" style="font-size: 12px;">Texto del Botón Superior</label>
+                            <input type="text" id="input-btn-whatsapp-nav" placeholder="Consúltanos" oninput="updateButtonPreview()">
+                          </div>
+                        </div>
+                        <span style="font-size: 11px; color: var(--text-muted); line-height: 1.4; display: block; margin-top: 8px;">Botón con formato pastilla en el extremo derecho de la cabecera fija. Utiliza el color principal configurado.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ============================================== -->
+                  <!-- SECTOR 3: CATÁLOGO Y FICHAS DE PRODUCTO       -->
+                  <!-- ============================================== -->
+                  <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 18px; padding: 22px; margin-bottom: 26px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 7px; background: rgba(59, 130, 246, 0.2); color: #60a5fa; font-weight: 800; font-size: 13px;">3</span>
+                        <div>
+                          <h4 style="font-family: var(--font-title); font-size: 16px; color: #ffffff; margin: 0;">Catálogo General (Fichas y Tarjetas de Producto)</h4>
+                          <span style="font-size: 11px; color: var(--text-muted);">Personalización 100% de la ficha: fondo, bordes, tipografía del producto y estilo del botón interactivo.</span>
+                        </div>
+                      </div>
+                      <span style="font-size: 11px; font-weight: 700; color: #60a5fa; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.25); padding: 3px 12px; border-radius: 20px; text-transform: uppercase;">Grilla Catálogo</span>
+                    </div>
+
+                    <!-- Layout: Izquierda Preview Fiel a la Web / Derecha Controles -->
+                    <div style="display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start;">
+                      
+                      <!-- Ventana de Preview Sector 3 (Fiel Representación Web) -->
+                      <div style="border-radius: 16px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 12px 32px rgba(0,0,0,0.35);">
+                        <!-- Header de la ventana -->
+                        <div style="background: #1e293b; padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+                          <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; opacity: 0.8;"></span>
+                            <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; opacity: 0.8;"></span>
+                            <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; opacity: 0.8;"></span>
+                            <span style="font-size: 11px; color: #94a3b8; margin-left: 8px; font-family: monospace;">Vista Previa Fiel</span>
+                          </div>
+                          <span style="font-size: 10px; color: #60a5fa; background: rgba(59, 130, 246, 0.15); padding: 2px 8px; border-radius: 12px; font-weight: 600;">En Vivo</span>
+                        </div>
+
+                        <!-- Canvas que simula el fondo del sitio -->
+                        <div id="sim-catalog-canvas" style="background: #FFFFFF; padding: 24px; display: flex; align-items: center; justify-content: center; transition: background 0.3s ease;">
+                          
+                          <!-- Mini Tarjeta de Producto Idéntica a la Web -->
+                          <div id="sim-product-card" style="width: 100%; max-width: 270px; background: #FFFFFF; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 14px; overflow: hidden; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06); transition: all 0.3s ease;">
+                            
+                            <!-- Wrapper de Imagen Real -->
+                            <div id="sim-card-img-wrap" style="width: 100%; height: 190px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; padding: 14px; position: relative;">
+                              <img id="sim-product-img" src="/images/soldadora-mig.png" alt="Soldadora inverter 200A NEXT" style="max-height: 165px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.08)); transition: transform 0.3s ease;">
+                            </div>
+
+                            <!-- Info del Producto -->
+                            <div style="padding: 16px 18px 20px 18px;">
+                              <h4 id="sim-product-title" style="font-family: var(--font-title); font-size: 16px; font-weight: 700; margin: 0 0 6px 0; line-height: 1.3; color: #0F172A; transition: color 0.2s ease;">Soldadora inverter 200A NEXT</h4>
+                              <p id="sim-product-desc" style="font-size: 12px; color: #64748B; margin: 0 0 16px 0; line-height: 1.4; transition: color 0.2s ease;">Pantalla led y función Lift-Tig</p>
+                              
+                              <!-- Botón Interactivo de la Ficha -->
+                              <button type="button" id="sim-btn-card" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 16px; font-weight: 600; font-size: 13px; cursor: pointer; border: 1px solid rgba(0, 0, 0, 0.08); background: #FFFFFF; color: #0F172A; border-radius: 8px; transition: all 0.2s ease; outline: none;">
+                                <span id="sim-text-card">Ver Más</span>
+                              </button>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Controles Sector 3: 2 Bloques Completos para Personalización 100% -->
+                      <div style="display: flex; flex-direction: column; gap: 16px;">
+                        
+                        <!-- Bloque A: Superficie y Tipografía de la Ficha -->
+                        <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 14px; padding: 18px;">
+                          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                            <span style="font-size: 13px; font-weight: 700; color: #60a5fa;">Ajustes: Superficie y Textos de la Ficha</span>
+                            <span style="font-size: 10px; background: rgba(59,130,246,0.15); color: #60a5fa; padding: 2px 6px; border-radius: 4px; font-weight: 700;">TARJETA</span>
+                          </div>
+
+                          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <!-- Fondo Tarjeta -->
+                            <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                              <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Fondo Tarjeta</span>
+                              <div style="display: flex; align-items: center; gap: 6px;">
+                                <input type="text" id="hex-card-bg" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('card-bg'); updateButtonPreview();">
+                                <input type="color" id="picker-card-bg" class="color-input-picker" oninput="syncHexInput('card-bg'); updateButtonPreview();">
+                              </div>
+                            </div>
+
+                            <!-- Borde Tarjeta -->
+                            <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                              <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Borde Tarjeta</span>
+                              <div style="display: flex; align-items: center; gap: 6px;">
+                                <input type="text" id="hex-card-border" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('card-border'); updateButtonPreview();">
+                                <input type="color" id="picker-card-border" class="color-input-picker" oninput="syncHexInput('card-border'); updateButtonPreview();">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <!-- Título Producto -->
+                            <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                              <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Color Título</span>
+                              <div style="display: flex; align-items: center; gap: 6px;">
+                                <input type="text" id="hex-card-title" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('card-title'); updateButtonPreview();">
+                                <input type="color" id="picker-card-title" class="color-input-picker" oninput="syncHexInput('card-title'); updateButtonPreview();">
+                              </div>
+                            </div>
+
+                            <!-- Descripción Producto -->
+                            <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                              <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Color Descripción</span>
+                              <div style="display: flex; align-items: center; gap: 6px;">
+                                <input type="text" id="hex-card-desc" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('card-desc'); updateButtonPreview();">
+                                <input type="color" id="picker-card-desc" class="color-input-picker" oninput="syncHexInput('card-desc'); updateButtonPreview();">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Bloque B: Botón de la Ficha ("Ver Más") -->
+                        <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 14px; padding: 18px;">
+                          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                            <span style="font-size: 13px; font-weight: 700; color: #a5b4fc;">Ajustes: Botón de la Ficha ("Ver Más")</span>
+                            <span style="font-size: 10px; background: rgba(99,102,241,0.15); color: #a5b4fc; padding: 2px 6px; border-radius: 4px; font-weight: 700;">BOTÓN CTA</span>
+                          </div>
+
+                          <div class="form-group" style="margin-bottom: 12px;">
+                            <label for="input-btn-product-card" style="font-size: 12px;">Texto del Botón de la Ficha</label>
+                            <input type="text" id="input-btn-product-card" placeholder="Ej: Ver Más" oninput="updateButtonPreview()">
+                          </div>
+
+                          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <!-- Fondo Normal -->
+                            <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px;">
+                              <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Fondo Normal</span>
+                              <div style="display: flex; align-items: center; gap: 6px;">
+                                <input type="text" id="hex-btn-card-bg" class="color-hex-input" style="width: 68px;" oninput="syncColorPicker('btn-card-bg'); updateButtonPreview();">
+                                <input type="color" id="picker-btn-card-bg" class="color-input-picker" oninput="syncHexInput('btn-card-bg'); updateButtonPreview();">
+                              </div>
+                            </div>
+
+                            <!-- Texto Normal -->
+                            <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px;">
+                              <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Texto Normal</span>
+                              <div style="display: flex; align-items: center; gap: 6px;">
+                                <input type="text" id="hex-btn-card-text" class="color-hex-input" style="width: 68px;" oninput="syncColorPicker('btn-card-text'); updateButtonPreview();">
+                                <input type="color" id="picker-btn-card-text" class="color-input-picker" oninput="syncHexInput('btn-card-text'); updateButtonPreview();">
+                              </div>
+                            </div>
+
+                            <!-- Borde Normal -->
+                            <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px;">
+                              <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Borde Normal</span>
+                              <div style="display: flex; align-items: center; gap: 6px;">
+                                <input type="text" id="hex-btn-card-border" class="color-hex-input" style="width: 68px;" oninput="syncColorPicker('btn-card-border'); updateButtonPreview();">
+                                <input type="color" id="picker-btn-card-border" class="color-input-picker" oninput="syncHexInput('btn-card-border'); updateButtonPreview();">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <!-- Fondo Hover -->
+                            <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                              <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Fondo Hover</span>
+                              <div style="display: flex; align-items: center; gap: 6px;">
+                                <input type="text" id="hex-btn-card-hover-bg" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('btn-card-hover-bg'); updateButtonPreview();">
+                                <input type="color" id="picker-btn-card-hover-bg" class="color-input-picker" oninput="syncHexInput('btn-card-hover-bg'); updateButtonPreview();">
+                              </div>
+                            </div>
+
+                            <!-- Borde/Texto Hover -->
+                            <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                              <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Borde/Texto Hover</span>
+                              <div style="display: flex; align-items: center; gap: 6px;">
+                                <input type="text" id="hex-btn-card-hover-border" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('btn-card-hover-border'); updateButtonPreview();">
+                                <input type="color" id="picker-btn-card-hover-border" class="color-input-picker" oninput="syncHexInput('btn-card-hover-border'); updateButtonPreview();">
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <!-- ============================================== -->
+                  <!-- SECTOR 4: SECCIÓN DE CONTACTO DIRECTO         -->
+                  <!-- ============================================== -->
+                  <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(37, 211, 102, 0.25); border-radius: 18px; padding: 22px; margin-bottom: 26px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 7px; background: rgba(37, 211, 102, 0.2); color: #4ade80; font-weight: 800; font-size: 13px;">4</span>
+                        <div>
+                          <h4 style="font-family: var(--font-title); font-size: 16px; color: #ffffff; margin: 0;">Sección de Contacto (Botón Directo WhatsApp CTA)</h4>
+                          <span style="font-size: 11px; color: var(--text-muted);">Botón principal de contacto al final del sitio web con animación de pulso continuo.</span>
+                        </div>
+                      </div>
+                      <span style="font-size: 11px; font-weight: 700; color: #4ade80; background: rgba(37, 211, 102, 0.12); border: 1px solid rgba(37, 211, 102, 0.25); padding: 3px 12px; border-radius: 20px; text-transform: uppercase;">Pie de Sitio</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: center;">
+                      <!-- Ventana de Preview Sector 4 (Banner Contacto) -->
+                      <div style="background: #0B0F19; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 18px 20px; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.3);">
+                        <div style="font-size: 10px; font-weight: 800; color: #38BDF8; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px;">CONSÚLTANOS</div>
+                        <div style="font-size: 14px; font-weight: 800; color: #FFFFFF; margin-bottom: 6px;">¿TENÉS UNA CONSULTA?</div>
+                        <div style="font-size: 11px; color: #94A3B8; margin-bottom: 14px; line-height: 1.4;">Respondemos al instante por WhatsApp comercial oficial.</div>
+                        <button type="button" id="sim-btn-whatsapp-cta" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; background: #25D366; color: #FFFFFF; font-weight: 700; font-size: 13px; border: none; cursor: pointer; box-shadow: 0 4px 16px rgba(37, 211, 102, 0.35); transition: all 0.2s ease; outline: none; width: 100%;">
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+                          <span id="sim-text-whatsapp-cta">Abrir WhatsApp</span>
+                        </button>
+                      </div>
+
+                      <!-- Control Sector 4 -->
+                      <div class="form-group" style="margin: 0; background: rgba(0, 0, 0, 0.2); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05);">
                         <label for="input-btn-whatsapp-cta">Texto Botón de Contacto / Cotización</label>
                         <input type="text" id="input-btn-whatsapp-cta" placeholder="Ej: Abrir WhatsApp" oninput="updateButtonPreview()">
-                        <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">Texto del botón de apertura directa en la sección de contacto.</span>
+                        <span style="font-size: 11px; color: var(--text-muted); margin-top: 6px; display: block; line-height: 1.5;">Texto del botón verde en el bloque de contacto que abre la conversación directa en WhatsApp.</span>
                       </div>
                     </div>
                   </div>
 
-                  <!-- 2. Colores y Estados de Botones -->
-                  <div style="margin-bottom: 28px; border-top: 1px solid var(--border); padding-top: 24px;">
-                    <h4 style="font-family: var(--font-title); font-size: 15px; color: var(--accent); margin-bottom: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 8 4 4-4 4"/></svg>
-                      2. Paleta de Colores de Botones y Hover
-                    </h4>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                      <!-- Primario Normal -->
-                      <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; background: rgba(255,255,255,0.02); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border);">
-                        <div>
-                          <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Fondo Primario</span>
-                          <span style="font-size: 11px; color: var(--text-muted);">Color principal del botón.</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                          <input type="text" id="hex-btn-primary-bg" class="color-hex-input" style="width: 85px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('btn-primary-bg'); updateButtonPreview();">
-                          <input type="color" id="picker-btn-primary-bg" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('btn-primary-bg'); updateButtonPreview();">
-                        </div>
+                  <!-- ============================================== -->
+                  <!-- SECTOR 5: GEOMETRÍA Y REDONDEO GLOBAL          -->
+                  <!-- ============================================== -->
+                  <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 18px; padding: 20px; margin-bottom: 26px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                    <div>
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 14px; font-weight: 700; color: #ffffff;">Geometría y Radio de Esquinas (Todos los Botones)</span>
+                        <span style="font-size: 10px; background: rgba(255,255,255,0.08); color: #cbd5e1; padding: 2px 6px; border-radius: 4px; font-weight: 700;">Global</span>
                       </div>
-
-                      <!-- Texto Primario -->
-                      <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; background: rgba(255,255,255,0.02); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border);">
-                        <div>
-                          <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Texto Primario</span>
-                          <span style="font-size: 11px; color: var(--text-muted);">Color de las letras del botón.</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                          <input type="text" id="hex-btn-primary-text" class="color-hex-input" style="width: 85px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('btn-primary-text'); updateButtonPreview();">
-                          <input type="color" id="picker-btn-primary-text" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('btn-primary-text'); updateButtonPreview();">
-                        </div>
-                      </div>
-
-                      <!-- Primario Hover Fondo -->
-                      <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; background: rgba(255,255,255,0.02); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border);">
-                        <div>
-                          <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Fondo Hover Primario</span>
-                          <span style="font-size: 11px; color: var(--text-muted);">Al posar el mouse sobre el botón.</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                          <input type="text" id="hex-btn-primary-hover-bg" class="color-hex-input" style="width: 85px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('btn-primary-hover-bg'); updateButtonPreview();">
-                          <input type="color" id="picker-btn-primary-hover-bg" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('btn-primary-hover-bg'); updateButtonPreview();">
-                        </div>
-                      </div>
-
-                      <!-- Primario Hover Texto -->
-                      <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; background: rgba(255,255,255,0.02); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border);">
-                        <div>
-                          <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Texto Hover Primario</span>
-                          <span style="font-size: 11px; color: var(--text-muted);">Letras al posar el mouse.</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                          <input type="text" id="hex-btn-primary-hover-text" class="color-hex-input" style="width: 85px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('btn-primary-hover-text'); updateButtonPreview();">
-                          <input type="color" id="picker-btn-primary-hover-text" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('btn-primary-hover-text'); updateButtonPreview();">
-                        </div>
-                      </div>
-
-                      <!-- Secundario Borde -->
-                      <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; background: rgba(255,255,255,0.02); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border);">
-                        <div>
-                          <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Borde Secundario</span>
-                          <span style="font-size: 11px; color: var(--text-muted);">Contorno del botón alternativo.</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                          <input type="text" id="hex-btn-secondary-border" class="color-hex-input" style="width: 85px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('btn-secondary-border'); updateButtonPreview();">
-                          <input type="color" id="picker-btn-secondary-border" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('btn-secondary-border'); updateButtonPreview();">
-                        </div>
-                      </div>
-
-                      <!-- Secundario Texto -->
-                      <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; background: rgba(255,255,255,0.02); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border);">
-                        <div>
-                          <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Texto Secundario</span>
-                          <span style="font-size: 11px; color: var(--text-muted);">Letras del botón alternativo.</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                          <input type="text" id="hex-btn-secondary-text" class="color-hex-input" style="width: 85px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('btn-secondary-text'); updateButtonPreview();">
-                          <input type="color" id="picker-btn-secondary-text" class="color-input-picker" style="width: 34px; height: 34px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('btn-secondary-text'); updateButtonPreview();">
-                        </div>
-                      </div>
+                      <span style="font-size: 12px; color: var(--text-muted); margin-top: 3px; display: block;">Modifica la curvatura de esquinas aplicada simultáneamente a todos los botones del sitio web.</span>
                     </div>
 
-                    <!-- Redondeo de bordes -->
-                    <div style="margin-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: rgba(255,255,255,0.02); padding: 14px 18px; border-radius: 12px; border: 1px solid var(--border);">
-                      <div>
-                        <span style="font-size: 13px; font-weight: 600; display: block; color: var(--text-main);">Geometría y Redondeo de Botones</span>
-                        <span style="font-size: 11px; color: var(--text-muted);">Forma visual de las esquinas en todas las llamadas a la acción.</span>
-                      </div>
-                      <select id="select-btn-radius" style="background: #18181b; border: 1px solid var(--border); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; outline: none;" onchange="updateButtonPreview()">
-                        <option value="8px">Industrial Recto (8px)</option>
-                        <option value="12px">Curvo Suave (12px)</option>
-                        <option value="20px">Redondeado Moderno (20px)</option>
-                        <option value="9999px">Pastilla Completa Pill (9999px)</option>
-                      </select>
-                    </div>
+                    <select id="select-btn-radius" style="background: #18181b; border: 1px solid var(--border); color: #fff; padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; outline: none; min-width: 220px;" onchange="updateButtonPreview()">
+                      <option value="8px">Industrial Recto (8px)</option>
+                      <option value="12px">Curvo Suave (12px)</option>
+                      <option value="20px">Redondeado Moderno (20px)</option>
+                      <option value="9999px">Pastilla Completa Pill (9999px)</option>
+                    </select>
                   </div>
 
+                  <!-- BOTONES DE ACCIÓN AL PIE -->
                   <div class="btn-save-container" style="margin-top: 24px; display: flex; gap: 12px;">
                     <button type="button" class="btn-preview" onclick="resetButtonsToDefault()">
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
@@ -5861,7 +6297,10 @@
         'hero-badge', 'hero-text', 'hero-subtitle',
         'catalog-label', 'catalog-title', 'catalog-subtitle',
         'contact-label', 'contact-title', 'contact-subtitle',
-        'footer-text'
+        'footer-text',
+        'nav-underline',
+        'card-bg', 'card-border', 'card-title', 'card-desc',
+        'btn-card-bg', 'btn-card-text', 'btn-card-border', 'btn-card-hover-bg', 'btn-card-hover-border'
       ];
       colorIds.forEach(cid => {
         const hexInput = document.getElementById(`hex-${cid}`);
@@ -5875,6 +6314,8 @@
       if (document.getElementById('input-btn-hero-primary')) current.button_texts.hero_primary = readVal('input-btn-hero-primary');
       if (document.getElementById('input-btn-hero-secondary')) current.button_texts.hero_secondary = readVal('input-btn-hero-secondary');
       if (document.getElementById('input-btn-product-card')) current.button_texts.product_card = readVal('input-btn-product-card');
+      if (document.getElementById('input-btn-nav-presentation')) current.button_texts.nav_presentation = readVal('input-btn-nav-presentation');
+      if (document.getElementById('input-btn-nav-catalog')) current.button_texts.nav_catalog = readVal('input-btn-nav-catalog');
       if (document.getElementById('input-btn-whatsapp-nav')) current.button_texts.whatsapp_nav = readVal('input-btn-whatsapp-nav');
       if (document.getElementById('input-btn-whatsapp-cta')) current.button_texts.whatsapp_cta = readVal('input-btn-whatsapp-cta');
 
@@ -5956,13 +6397,28 @@
       checkField('Paleta General', '🎨', 'Color de Acento', curColors.accent, defColors.accent || '#2563EB', true);
       checkField('Paleta General', '🎨', 'Color Acento Secundario', curColors.accent_secondary, defColors.accent_secondary || '#38BDF8', true);
 
-      // Botones
+      // Botones y Fichas de Producto
       const curBtns = current.button_texts || {};
       const defBtns = defaultConfig.button_texts || {};
       checkField('Botones y Acciones', '🔘', 'Botón Hero Primario', curBtns.hero_primary, defBtns.hero_primary || 'Consultar Catálogo');
       checkField('Botones y Acciones', '🔘', 'Botón Hero Secundario', curBtns.hero_secondary, defBtns.hero_secondary || 'Ver Marcas Oficiales');
       checkField('Botones y Acciones', '🔘', 'Botón Ficha Producto', curBtns.product_card, defBtns.product_card || 'Ver Más');
+      checkField('Botones y Acciones', '🔘', 'Enlace Navbar 1 (Hero)', curBtns.nav_presentation, defBtns.nav_presentation || 'Presentación');
+      checkField('Botones y Acciones', '🔘', 'Enlace Navbar 2 (Catálogo)', curBtns.nav_catalog, defBtns.nav_catalog || 'Catálogo');
       checkField('Botones y Acciones', '🔘', 'Botón WhatsApp Nav', curBtns.whatsapp_nav, defBtns.whatsapp_nav || 'Consúltanos');
+      checkField('Botones y Acciones', '🔘', 'Botón WhatsApp CTA', curBtns.whatsapp_cta, defBtns.whatsapp_cta || 'Abrir WhatsApp');
+      checkField('Botones y Acciones', '🎨', 'Subrayado Animado Navbar', curColors.nav_underline, defColors.nav_underline || defColors.accent || '#2563EB', true);
+
+      // Ficha de Producto y Botón Catálogo (Sector 3)
+      checkField('Ficha de Producto', '🎨', 'Fondo Tarjeta', curColors.card_bg, defColors.card_bg || '#FFFFFF', true);
+      checkField('Ficha de Producto', '🎨', 'Borde Tarjeta', curColors.card_border, defColors.card_border || 'rgba(0, 0, 0, 0.08)', true);
+      checkField('Ficha de Producto', '🎨', 'Color Título Ficha', curColors.card_title, defColors.card_title || '#0F172A', true);
+      checkField('Ficha de Producto', '🎨', 'Color Descripción Ficha', curColors.card_desc, defColors.card_desc || '#64748B', true);
+      checkField('Ficha de Producto', '🎨', 'Fondo Botón Normal', curColors.btn_card_bg, defColors.btn_card_bg || '#FFFFFF', true);
+      checkField('Ficha de Producto', '🎨', 'Texto Botón Normal', curColors.btn_card_text, defColors.btn_card_text || '#0F172A', true);
+      checkField('Ficha de Producto', '🎨', 'Borde Botón Normal', curColors.btn_card_border, defColors.btn_card_border || 'rgba(0, 0, 0, 0.08)', true);
+      checkField('Ficha de Producto', '🎨', 'Fondo Botón Hover', curColors.btn_card_hover_bg, defColors.btn_card_hover_bg || '#F1F5F9', true);
+      checkField('Ficha de Producto', '🎨', 'Borde/Texto Botón Hover', curColors.btn_card_hover_border, defColors.btn_card_hover_border || '#2563EB', true);
 
       // Identidad
       checkField('Identidad y Logos', '🖼️', 'URL de Logotipo', current.logo_url, defaultConfig.logo_url);
@@ -8214,7 +8670,7 @@
     }
 
     // ============================================
-    // 🎯 BOTONES Y ACCIONES
+    // 🎯 BOTONES Y ACCIONES (SECTORIZADO)
     // ============================================
     function populateButtonsForm() {
       if (!activeConfig) return;
@@ -8231,6 +8687,12 @@
       if (document.getElementById('input-btn-product-card')) {
         document.getElementById('input-btn-product-card').value = texts.product_card || 'Ver Más';
       }
+      if (document.getElementById('input-btn-nav-presentation')) {
+        document.getElementById('input-btn-nav-presentation').value = texts.nav_presentation || 'Presentación';
+      }
+      if (document.getElementById('input-btn-nav-catalog')) {
+        document.getElementById('input-btn-nav-catalog').value = texts.nav_catalog || 'Catálogo';
+      }
       if (document.getElementById('input-btn-whatsapp-nav')) {
         document.getElementById('input-btn-whatsapp-nav').value = texts.whatsapp_nav || 'Consúltanos';
       }
@@ -8238,14 +8700,26 @@
         document.getElementById('input-btn-whatsapp-cta').value = texts.whatsapp_cta || 'Abrir WhatsApp';
       }
 
-      // Colores de botones
+      // Colores de botones (Primario + Secundario + Subrayado Navbar + Ficha Catálogo)
       const btnKeys = [
         { id: 'btn-primary-bg', val: colors.btn_primary_bg || colors.accent || '#2563EB' },
         { id: 'btn-primary-text', val: colors.btn_primary_text || '#FFFFFF' },
         { id: 'btn-primary-hover-bg', val: colors.btn_primary_hover_bg || colors.accent_hover || '#1D4ED8' },
         { id: 'btn-primary-hover-text', val: colors.btn_primary_hover_text || '#FFFFFF' },
         { id: 'btn-secondary-border', val: colors.btn_secondary_border || colors.border || 'rgba(0, 0, 0, 0.15)' },
-        { id: 'btn-secondary-text', val: colors.btn_secondary_text || colors.text || '#0F172A' }
+        { id: 'btn-secondary-text', val: colors.btn_secondary_text || colors.text || '#0F172A' },
+        { id: 'btn-secondary-hover-bg', val: colors.btn_secondary_hover_bg || colors.surface_hover || '#F1F5F9' },
+        { id: 'btn-secondary-hover-border', val: colors.btn_secondary_hover_border || colors.accent || '#2563EB' },
+        { id: 'nav-underline', val: colors.nav_underline || colors.accent || '#2563EB' },
+        { id: 'card-bg', val: colors.card_bg || '#FFFFFF' },
+        { id: 'card-border', val: colors.card_border || 'rgba(0, 0, 0, 0.08)' },
+        { id: 'card-title', val: colors.card_title || '#0F172A' },
+        { id: 'card-desc', val: colors.card_desc || '#64748B' },
+        { id: 'btn-card-bg', val: colors.btn_card_bg || '#FFFFFF' },
+        { id: 'btn-card-text', val: colors.btn_card_text || '#0F172A' },
+        { id: 'btn-card-border', val: colors.btn_card_border || 'rgba(0, 0, 0, 0.08)' },
+        { id: 'btn-card-hover-bg', val: colors.btn_card_hover_bg || '#F1F5F9' },
+        { id: 'btn-card-hover-border', val: colors.btn_card_hover_border || colors.accent || '#2563EB' }
       ];
 
       btnKeys.forEach(item => {
@@ -8265,33 +8739,65 @@
     function updateButtonPreview() {
       const primaryText = document.getElementById('input-btn-hero-primary')?.value.trim() || 'Consultar Catálogo';
       const secondaryText = document.getElementById('input-btn-hero-secondary')?.value.trim() || 'Ver Marcas Oficiales';
+      const navPresText = document.getElementById('input-btn-nav-presentation')?.value.trim() || 'Presentación';
+      const navCatText = document.getElementById('input-btn-nav-catalog')?.value.trim() || 'Catálogo';
+      const navText = document.getElementById('input-btn-whatsapp-nav')?.value.trim() || 'Consúltanos';
       const cardText = document.getElementById('input-btn-product-card')?.value.trim() || 'Ver Más';
+      const ctaText = document.getElementById('input-btn-whatsapp-cta')?.value.trim() || 'Abrir WhatsApp';
 
+      // Actualizar textos en los simuladores sectorizados
       const simTextPrimary = document.getElementById('sim-text-primary');
       const simTextSecondary = document.getElementById('sim-text-secondary');
+      const simTextNavPres = document.getElementById('sim-text-nav-pres');
+      const simTextNavCat = document.getElementById('sim-text-nav-cat');
+      const simTextNav = document.getElementById('sim-text-nav');
       const simTextCard = document.getElementById('sim-text-card');
+      const simTextCta = document.getElementById('sim-text-whatsapp-cta');
 
       if (simTextPrimary) simTextPrimary.textContent = primaryText;
       if (simTextSecondary) simTextSecondary.textContent = secondaryText;
+      if (simTextNavPres) simTextNavPres.textContent = navPresText;
+      if (simTextNavCat) simTextNavCat.textContent = navCatText;
+      if (simTextNav) simTextNav.textContent = navText;
       if (simTextCard) simTextCard.textContent = cardText;
+      if (simTextCta) simTextCta.textContent = ctaText;
 
-      const primaryBg = document.getElementById('hex-btn-primary-bg')?.value.trim() || '#2563EB';
+      // Colores de configuración
+      const primaryBg = document.getElementById('hex-btn-primary-bg')?.value.trim() || activeConfig?.colors?.accent || '#2563EB';
       const primaryColor = document.getElementById('hex-btn-primary-text')?.value.trim() || '#FFFFFF';
-      const primaryHoverBg = document.getElementById('hex-btn-primary-hover-bg')?.value.trim() || '#1D4ED8';
+      const primaryHoverBg = document.getElementById('hex-btn-primary-hover-bg')?.value.trim() || activeConfig?.colors?.accent_hover || '#1D4ED8';
       const primaryHoverColor = document.getElementById('hex-btn-primary-hover-text')?.value.trim() || '#FFFFFF';
 
-      const secBorder = document.getElementById('hex-btn-secondary-border')?.value.trim() || 'rgba(255,255,255,0.2)';
-      const secColor = document.getElementById('hex-btn-secondary-text')?.value.trim() || '#FFFFFF';
+      const secBorder = document.getElementById('hex-btn-secondary-border')?.value.trim() || activeConfig?.colors?.border || 'rgba(0, 0, 0, 0.15)';
+      const secColor = document.getElementById('hex-btn-secondary-text')?.value.trim() || activeConfig?.colors?.text || '#0F172A';
+      const secHoverBg = document.getElementById('hex-btn-secondary-hover-bg')?.value.trim() || activeConfig?.colors?.surface_hover || '#F1F5F9';
+      const secHoverBorder = document.getElementById('hex-btn-secondary-hover-border')?.value.trim() || activeConfig?.colors?.accent || '#2563EB';
+
+      const navUnderlineColor = document.getElementById('hex-nav-underline')?.value.trim() || activeConfig?.colors?.accent || '#2563EB';
+
       const radius = document.getElementById('select-btn-radius')?.value || '8px';
 
-      const simPrimary = document.getElementById('sim-btn-primary');
-      const simSecondary = document.getElementById('sim-btn-secondary');
-      const simCard = document.getElementById('sim-btn-card');
+      // Sincronizar fondo del canvas con el color real del sitio para garantizar contraste óptimo
+      const siteBg = activeConfig?.colors?.bg || '#FFFFFF';
+      const isLightSite = !siteBg.toLowerCase().startsWith('#0') && !siteBg.toLowerCase().startsWith('#1');
 
+      const heroCanvas = document.getElementById('sim-hero-canvas');
+      if (heroCanvas) {
+        heroCanvas.style.background = siteBg;
+        heroCanvas.style.color = isLightSite ? '#0F172A' : '#FFFFFF';
+        const heroTitle = document.getElementById('sim-hero-title-text');
+        if (heroTitle) heroTitle.style.color = isLightSite ? '#0F172A' : '#FFFFFF';
+        const heroSub = document.getElementById('sim-hero-subtitle-text');
+        if (heroSub) heroSub.style.color = isLightSite ? '#64748B' : '#94A3B8';
+      }
+
+      // 1. Sector 1: Botón Primario Hero
+      const simPrimary = document.getElementById('sim-btn-primary');
       if (simPrimary) {
         simPrimary.style.background = primaryBg;
         simPrimary.style.color = primaryColor;
         simPrimary.style.borderRadius = radius;
+        simPrimary.style.boxShadow = `0 4px 14px ${primaryBg}35`;
 
         simPrimary.onmouseenter = () => {
           simPrimary.style.background = primaryHoverBg;
@@ -8305,27 +8811,115 @@
         };
       }
 
+      // 1. Sector 1: Botón Secundario Hero (100% visible y con contraste garantizado)
+      const simSecondary = document.getElementById('sim-btn-secondary');
       if (simSecondary) {
         simSecondary.style.background = 'transparent';
-        simSecondary.style.border = `1px solid ${secBorder}`;
+        simSecondary.style.border = `1.5px solid ${secBorder}`;
         simSecondary.style.color = secColor;
         simSecondary.style.borderRadius = radius;
 
         simSecondary.onmouseenter = () => {
-          simSecondary.style.background = 'rgba(255,255,255,0.08)';
+          simSecondary.style.background = secHoverBg;
+          simSecondary.style.border = `1.5px solid ${secHoverBorder}`;
+          simSecondary.style.color = secHoverBorder;
           simSecondary.style.transform = 'translateY(-2px)';
         };
         simSecondary.onmouseleave = () => {
           simSecondary.style.background = 'transparent';
+          simSecondary.style.border = `1.5px solid ${secBorder}`;
+          simSecondary.style.color = secColor;
           simSecondary.style.transform = 'none';
         };
       }
 
+      // 2. Sector 2: Enlaces Navbar Interactivos y Botón CTA (WhatsApp)
+      const simNavPres = document.getElementById('sim-nav-pres');
+      const simNavCat = document.getElementById('sim-nav-cat');
+      if (simNavPres) simNavPres.style.setProperty('--sim-nav-underline-color', navUnderlineColor);
+      if (simNavCat) simNavCat.style.setProperty('--sim-nav-underline-color', navUnderlineColor);
+
+      const simNav = document.getElementById('sim-btn-nav');
+      if (simNav) {
+        simNav.style.background = primaryBg;
+        simNav.style.borderRadius = radius === '8px' ? '9999px' : radius;
+        simNav.style.color = '#000000';
+
+        simNav.onmouseenter = () => {
+          simNav.style.background = primaryHoverBg;
+          simNav.style.transform = 'scale(1.05)';
+        };
+        simNav.onmouseleave = () => {
+          simNav.style.background = primaryBg;
+          simNav.style.transform = 'scale(1)';
+        };
+      }
+
+      // 3. Sector 3: Ficha de Producto y Botón ("Ver Más")
+      const cardBg = document.getElementById('hex-card-bg')?.value.trim() || activeConfig?.colors?.card_bg || '#FFFFFF';
+      const cardBorder = document.getElementById('hex-card-border')?.value.trim() || activeConfig?.colors?.card_border || 'rgba(0, 0, 0, 0.08)';
+      const cardTitleColor = document.getElementById('hex-card-title')?.value.trim() || activeConfig?.colors?.card_title || '#0F172A';
+      const cardDescColor = document.getElementById('hex-card-desc')?.value.trim() || activeConfig?.colors?.card_desc || '#64748B';
+
+      const btnCardBg = document.getElementById('hex-btn-card-bg')?.value.trim() || activeConfig?.colors?.btn_card_bg || '#FFFFFF';
+      const btnCardText = document.getElementById('hex-btn-card-text')?.value.trim() || activeConfig?.colors?.btn_card_text || '#0F172A';
+      const btnCardBorder = document.getElementById('hex-btn-card-border')?.value.trim() || activeConfig?.colors?.btn_card_border || 'rgba(0, 0, 0, 0.08)';
+      const btnCardHoverBg = document.getElementById('hex-btn-card-hover-bg')?.value.trim() || activeConfig?.colors?.btn_card_hover_bg || '#F1F5F9';
+      const btnCardHoverBorder = document.getElementById('hex-btn-card-hover-border')?.value.trim() || activeConfig?.colors?.btn_card_hover_border || '#2563EB';
+
+      const catalogCanvas = document.getElementById('sim-catalog-canvas');
+      if (catalogCanvas) catalogCanvas.style.background = siteBg;
+
+      const simProductCard = document.getElementById('sim-product-card');
+      if (simProductCard) {
+        simProductCard.style.background = cardBg;
+        simProductCard.style.border = `1px solid ${cardBorder}`;
+      }
+      const simCardImgWrap = document.getElementById('sim-card-img-wrap');
+      if (simCardImgWrap) {
+        simCardImgWrap.style.background = cardBg;
+      }
+      const simProductTitle = document.getElementById('sim-product-title');
+      if (simProductTitle) simProductTitle.style.color = cardTitleColor;
+
+      const simProductDesc = document.getElementById('sim-product-desc');
+      if (simProductDesc) simProductDesc.style.color = cardDescColor;
+
+      const simCard = document.getElementById('sim-btn-card');
       if (simCard) {
-        simCard.style.background = 'transparent';
-        simCard.style.border = `1px solid ${secBorder}`;
-        simCard.style.color = secColor;
         simCard.style.borderRadius = radius;
+        simCard.style.background = btnCardBg;
+        simCard.style.color = btnCardText;
+        simCard.style.border = `1px solid ${btnCardBorder}`;
+
+        simCard.onmouseenter = () => {
+          simCard.style.background = btnCardHoverBg;
+          simCard.style.borderColor = btnCardHoverBorder;
+          simCard.style.color = btnCardHoverBorder;
+          simCard.style.transform = 'translateY(-1px)';
+        };
+        simCard.onmouseleave = () => {
+          simCard.style.background = btnCardBg;
+          simCard.style.borderColor = btnCardBorder;
+          simCard.style.color = btnCardText;
+          simCard.style.transform = 'none';
+        };
+      }
+
+      // 4. Sector 4: Botón WhatsApp Contacto Directo
+      const simCta = document.getElementById('sim-btn-whatsapp-cta');
+      if (simCta) {
+        simCta.style.borderRadius = radius;
+        simCta.onmouseenter = () => {
+          simCta.style.background = '#1EBE57';
+          simCta.style.transform = 'translateY(-2px)';
+          simCta.style.boxShadow = '0 8px 24px rgba(37, 211, 102, 0.45)';
+        };
+        simCta.onmouseleave = () => {
+          simCta.style.background = '#25D366';
+          simCta.style.transform = 'none';
+          simCta.style.boxShadow = '0 4px 16px rgba(37, 211, 102, 0.35)';
+        };
       }
     }
 
@@ -8339,15 +8933,44 @@
       activeConfig.button_texts.hero_primary = document.getElementById('input-btn-hero-primary')?.value.trim() || 'Consultar Catálogo';
       activeConfig.button_texts.hero_secondary = document.getElementById('input-btn-hero-secondary')?.value.trim() || 'Ver Marcas Oficiales';
       activeConfig.button_texts.product_card = document.getElementById('input-btn-product-card')?.value.trim() || 'Ver Más';
+      activeConfig.button_texts.nav_presentation = document.getElementById('input-btn-nav-presentation')?.value.trim() || 'Presentación';
+      activeConfig.button_texts.nav_catalog = document.getElementById('input-btn-nav-catalog')?.value.trim() || 'Catálogo';
       activeConfig.button_texts.whatsapp_nav = document.getElementById('input-btn-whatsapp-nav')?.value.trim() || 'Consúltanos';
       activeConfig.button_texts.whatsapp_cta = document.getElementById('input-btn-whatsapp-cta')?.value.trim() || 'Abrir WhatsApp';
+
+      activeConfig.colors.nav_underline = document.getElementById('hex-nav-underline')?.value.trim() || activeConfig.colors.accent;
 
       activeConfig.colors.btn_primary_bg = document.getElementById('hex-btn-primary-bg')?.value.trim() || activeConfig.colors.accent;
       activeConfig.colors.btn_primary_text = document.getElementById('hex-btn-primary-text')?.value.trim() || '#FFFFFF';
       activeConfig.colors.btn_primary_hover_bg = document.getElementById('hex-btn-primary-hover-bg')?.value.trim() || activeConfig.colors.accent_hover;
       activeConfig.colors.btn_primary_hover_text = document.getElementById('hex-btn-primary-hover-text')?.value.trim() || '#FFFFFF';
+
       activeConfig.colors.btn_secondary_border = document.getElementById('hex-btn-secondary-border')?.value.trim() || activeConfig.colors.border;
       activeConfig.colors.btn_secondary_text = document.getElementById('hex-btn-secondary-text')?.value.trim() || activeConfig.colors.text;
+
+      const secHoverBgInput = document.getElementById('hex-btn-secondary-hover-bg');
+      if (secHoverBgInput && secHoverBgInput.value.trim()) {
+        activeConfig.colors.btn_secondary_hover_bg = secHoverBgInput.value.trim();
+      }
+      const secHoverBorderInput = document.getElementById('hex-btn-secondary-hover-border');
+      if (secHoverBorderInput && secHoverBorderInput.value.trim()) {
+        activeConfig.colors.btn_secondary_hover_border = secHoverBorderInput.value.trim();
+        activeConfig.colors.btn_secondary_hover_text = secHoverBorderInput.value.trim();
+      }
+
+      // Ficha de Producto y Botón Catálogo (Sector 3)
+      activeConfig.colors.card_bg = document.getElementById('hex-card-bg')?.value.trim() || '#FFFFFF';
+      activeConfig.colors.card_border = document.getElementById('hex-card-border')?.value.trim() || 'rgba(0, 0, 0, 0.08)';
+      activeConfig.colors.card_title = document.getElementById('hex-card-title')?.value.trim() || '#0F172A';
+      activeConfig.colors.card_desc = document.getElementById('hex-card-desc')?.value.trim() || '#64748B';
+
+      activeConfig.colors.btn_card_bg = document.getElementById('hex-btn-card-bg')?.value.trim() || '#FFFFFF';
+      activeConfig.colors.btn_card_text = document.getElementById('hex-btn-card-text')?.value.trim() || '#0F172A';
+      activeConfig.colors.btn_card_border = document.getElementById('hex-btn-card-border')?.value.trim() || 'rgba(0, 0, 0, 0.08)';
+      activeConfig.colors.btn_card_hover_bg = document.getElementById('hex-btn-card-hover-bg')?.value.trim() || '#F1F5F9';
+      activeConfig.colors.btn_card_hover_border = document.getElementById('hex-btn-card-hover-border')?.value.trim() || '#2563EB';
+      activeConfig.colors.btn_card_hover_text = document.getElementById('hex-btn-card-hover-border')?.value.trim() || '#2563EB';
+
       activeConfig.colors.btn_radius = document.getElementById('select-btn-radius')?.value || '8px';
 
       saveToStorage();
@@ -8362,6 +8985,8 @@
           if (document.getElementById('input-btn-hero-primary')) document.getElementById('input-btn-hero-primary').value = 'Consultar Catálogo';
           if (document.getElementById('input-btn-hero-secondary')) document.getElementById('input-btn-hero-secondary').value = 'Ver Marcas Oficiales';
           if (document.getElementById('input-btn-product-card')) document.getElementById('input-btn-product-card').value = 'Ver Más';
+          if (document.getElementById('input-btn-nav-presentation')) document.getElementById('input-btn-nav-presentation').value = 'Presentación';
+          if (document.getElementById('input-btn-nav-catalog')) document.getElementById('input-btn-nav-catalog').value = 'Catálogo';
           if (document.getElementById('input-btn-whatsapp-nav')) document.getElementById('input-btn-whatsapp-nav').value = 'Consúltanos';
           if (document.getElementById('input-btn-whatsapp-cta')) document.getElementById('input-btn-whatsapp-cta').value = 'Abrir WhatsApp';
 
@@ -8376,13 +9001,25 @@
             { id: 'btn-primary-hover-bg', val: accentHover },
             { id: 'btn-primary-hover-text', val: '#FFFFFF' },
             { id: 'btn-secondary-border', val: border },
-            { id: 'btn-secondary-text', val: text }
+            { id: 'btn-secondary-text', val: text },
+            { id: 'btn-secondary-hover-bg', val: '#F8FAFC' },
+            { id: 'btn-secondary-hover-border', val: accent },
+            { id: 'nav-underline', val: accent },
+            { id: 'card-bg', val: '#FFFFFF' },
+            { id: 'card-border', val: 'rgba(0, 0, 0, 0.08)' },
+            { id: 'card-title', val: '#0F172A' },
+            { id: 'card-desc', val: '#64748B' },
+            { id: 'btn-card-bg', val: '#FFFFFF' },
+            { id: 'btn-card-text', val: '#0F172A' },
+            { id: 'btn-card-border', val: 'rgba(0, 0, 0, 0.08)' },
+            { id: 'btn-card-hover-bg', val: '#F1F5F9' },
+            { id: 'btn-card-hover-border', val: accent }
           ];
 
           defaults.forEach(item => {
             const textEl = document.getElementById(`hex-${item.id}`);
             const pickerEl = document.getElementById(`picker-${item.id}`);
-            if (textEl) textEl.value = item.val;
+            if (textEl) textEl.value = item.val.toUpperCase();
             if (pickerEl && item.val.startsWith('#')) pickerEl.value = item.val;
           });
 

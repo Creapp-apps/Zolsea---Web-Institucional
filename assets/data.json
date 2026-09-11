@@ -69,7 +69,12 @@
     "btn_card_border": "rgba(0, 0, 0, 0.08)",
     "btn_card_hover_bg": "#F1F5F9",
     "btn_card_hover_border": "#2563EB",
-    "btn_card_hover_text": "#2563EB"
+    "btn_card_hover_text": "#2563EB",
+    "navbar_text": "#0F172A",
+    "navbar_scrolled_bg": "#FFFFFF",
+    "navbar_scrolled_text": "#0F172A",
+    "navbar_scrolled_text_hover": "#2563EB",
+    "navbar_scrolled_border": "rgba(0, 0, 0, 0.08)"
   },
   "products": [
     {

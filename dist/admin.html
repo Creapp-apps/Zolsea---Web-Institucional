@@ -1976,13 +1976,12 @@
       border-radius: 5px !important;
     }
 
-    /* Interactive Navbar Link Simulator */
     .sim-nav-item {
       position: relative;
       display: inline-flex;
       align-items: center;
       padding: 4px 0;
-      color: #94A3B8;
+      color: var(--sim-nav-text-color, #94A3B8);
       font-size: 13px;
       font-weight: 500;
       text-decoration: none;
@@ -1992,7 +1991,7 @@
 
     .sim-nav-item:hover,
     .sim-nav-item.active {
-      color: #FFFFFF;
+      color: var(--sim-nav-text-hover, var(--sim-nav-underline-color, #2563EB));
     }
 
     .sim-nav-item .sim-nav-underline {
@@ -2730,7 +2729,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-DukrTM9y.js"></script>
+  <script type="module" crossorigin src="/assets/admin-DJ5Vzw_g.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -4586,96 +4585,182 @@
                       <div style="display: flex; align-items: center; gap: 10px;">
                         <span style="display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 7px; background: rgba(16, 185, 129, 0.2); color: #34d399; font-weight: 800; font-size: 13px;">2</span>
                         <div>
-                          <h4 style="font-family: var(--font-title); font-size: 16px; color: #ffffff; margin: 0;">Barra de Navegación Superior (Navbar & Acciones)</h4>
-                          <span style="font-size: 11px; color: var(--text-muted);">Enlaces de navegación y botón de contacto que acompañan al usuario en todo momento.</span>
+                          <h4 style="font-family: var(--font-title); font-size: 16px; color: #ffffff; margin: 0;">Barra de Navegación Superior (Navbar & Efecto Scroll)</h4>
+                          <span style="font-size: 11px; color: var(--text-muted);">Personaliza el color de teñido de la barra al hacer scroll, el contraste de los enlaces y las acciones directas.</span>
                         </div>
                       </div>
                       <span style="font-size: 11px; font-weight: 700; color: #34d399; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); padding: 3px 12px; border-radius: 20px; text-transform: uppercase;">Cabecera Web</span>
                     </div>
 
-                    <!-- Ventana de Preview Sector 2 (Navbar Mockup Interactivo con Enlaces y Subrayado) -->
+                    <!-- Ventana de Preview Sector 2 (Navbar Mockup Interactivo con Selector de Estado) -->
                     <div style="margin-bottom: 20px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 24px rgba(0,0,0,0.3);">
-                      <div style="background: #1e293b; padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+                      <div style="background: #1e293b; padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.08); flex-wrap: wrap; gap: 10px;">
                         <div style="display: flex; align-items: center; gap: 6px;">
                           <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; opacity: 0.8;"></span>
                           <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; opacity: 0.8;"></span>
                           <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; opacity: 0.8;"></span>
-                          <span style="font-size: 11px; color: #94a3b8; margin-left: 8px; font-family: monospace;">Vista Previa Interactiva: Cabecera con Enlaces y Subrayado Animado</span>
+                          <span style="font-size: 11px; color: #94a3b8; margin-left: 8px; font-family: monospace;">Simulador de Cabecera</span>
                         </div>
-                        <span style="font-size: 10px; color: #34d399; background: rgba(16, 185, 129, 0.15); padding: 2px 8px; border-radius: 12px; font-weight: 600;">Interactivo (Pasa el cursor)</span>
+                        <!-- Conmutador de Estado de Previsualización: Inicial vs Con Scroll -->
+                        <div style="display: inline-flex; align-items: center; background: rgba(0,0,0,0.45); padding: 3px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); gap: 4px;">
+                          <button type="button" id="btn-nav-mode-initial" style="background: transparent; border: none; color: var(--text-muted); font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease;" onclick="setNavbarPreviewMode('initial')">
+                            ⬆️ Modo Inicial (Sin Scroll)
+                          </button>
+                          <button type="button" id="btn-nav-mode-scrolled" style="background: #2563EB; border: none; color: #FFFFFF; font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(37,99,235,0.4);" onclick="setNavbarPreviewMode('scrolled')">
+                            ⬇️ Con Scroll (Fijo / Flotante)
+                          </button>
+                        </div>
                       </div>
 
-                      <div style="background: #0B0F19; padding: 22px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
-                        <!-- Logo Simulado -->
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                          <span style="font-family: var(--font-title); font-size: 18px; font-weight: 900; letter-spacing: 2px; color: #38BDF8; font-style: italic;">ZOLSEA</span>
-                        </div>
+                      <!-- Canvas que emula el sitio web y envuelve el Navbar -->
+                      <div id="sim-navbar-canvas" style="background: #FFFFFF; padding: 18px; transition: background 0.3s ease;">
+                        <div id="sim-navbar-preview-wrap" style="background: #FFFFFF; padding: 12px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-radius: 10px; transition: all 0.3s ease; border-bottom: 1px solid rgba(0,0,0,0.08);">
+                          <!-- Logo Simulado -->
+                          <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-family: var(--font-title); font-size: 18px; font-weight: 900; letter-spacing: 2px; color: #2563EB; font-style: italic;">ZOLSEA</span>
+                          </div>
 
-                        <!-- Menú de Enlaces Interactivos + Botón WhatsApp Nav -->
-                        <div style="display: flex; align-items: center; gap: 28px;">
-                          <div id="sim-nav-pres" class="sim-nav-item active" style="--sim-nav-underline-color: #2563EB;">
-                            <span id="sim-text-nav-pres">Presentación</span>
-                            <span class="sim-nav-underline" id="sim-underline-pres"></span>
+                          <!-- Menú de Enlaces Interactivos + Botón WhatsApp Nav -->
+                          <div style="display: flex; align-items: center; gap: 28px;">
+                            <div id="sim-nav-pres" class="sim-nav-item active" style="--sim-nav-underline-color: #2563EB;">
+                              <span id="sim-text-nav-pres">Presentación</span>
+                              <span class="sim-nav-underline" id="sim-underline-pres"></span>
+                            </div>
+                            <div id="sim-nav-cat" class="sim-nav-item" style="--sim-nav-underline-color: #2563EB;">
+                              <span id="sim-text-nav-cat">Catálogo</span>
+                              <span class="sim-nav-underline" id="sim-underline-cat"></span>
+                            </div>
+                            <button type="button" id="sim-btn-nav" style="display: inline-flex; align-items: center; justify-content: center; padding: 9px 20px; background: #2563EB; color: #000000; font-weight: 700; font-size: 12.5px; border-radius: 9999px; border: none; cursor: pointer; transition: all 0.2s ease; outline: none;">
+                              <span id="sim-text-nav">Consúltanos</span>
+                            </button>
                           </div>
-                          <div id="sim-nav-cat" class="sim-nav-item" style="--sim-nav-underline-color: #2563EB;">
-                            <span id="sim-text-nav-cat">Catálogo</span>
-                            <span class="sim-nav-underline" id="sim-underline-cat"></span>
-                          </div>
-                          <button type="button" id="sim-btn-nav" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 22px; background: #2563EB; color: #000000; font-weight: 700; font-size: 13px; border-radius: 9999px; border: none; cursor: pointer; transition: all 0.2s ease; outline: none;">
-                            <span id="sim-text-nav">Consúltanos</span>
-                          </button>
                         </div>
                       </div>
                     </div>
 
-                    <!-- Controles Sector 2 en 2 Bloques Claros -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
-                      <!-- Bloque A: Enlaces de Menú & Subrayado Animado -->
-                      <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 14px; padding: 16px;">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
-                          <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">Enlaces de Menú y Subrayado</span>
-                          <span style="font-size: 10px; background: rgba(56,189,248,0.15); color: #38bdf8; padding: 2px 6px; border-radius: 4px; font-weight: 700;">NAV LINKS</span>
-                        </div>
-
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
-                          <div class="form-group" style="margin: 0;">
-                            <label for="input-btn-nav-presentation" style="font-size: 12px;">Texto Enlace 1</label>
-                            <input type="text" id="input-btn-nav-presentation" placeholder="Presentación" oninput="updateButtonPreview()">
-                          </div>
-                          <div class="form-group" style="margin: 0;">
-                            <label for="input-btn-nav-catalog" style="font-size: 12px;">Texto Enlace 2</label>
-                            <input type="text" id="input-btn-nav-catalog" placeholder="Catálogo" oninput="updateButtonPreview()">
-                          </div>
-                        </div>
-
-                        <!-- Color Subrayado Animado -->
-                        <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                          <div>
-                            <span style="font-size: 12px; font-weight: 600; display: block; color: var(--text-main);">Color Subrayado Animado</span>
-                            <span style="font-size: 11px; color: var(--text-muted);">Línea dinámica que se desliza al pasar el cursor sobre los enlaces.</span>
-                          </div>
+                    <!-- Controles Sector 2 en 3 Bloques Estructurados -->
+                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                      
+                      <!-- Bloque A: Efecto al Hacer Scroll (Cabecera Flotante) -->
+                      <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 14px; padding: 18px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
                           <div style="display: flex; align-items: center; gap: 8px;">
-                            <input type="text" id="hex-nav-underline" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('nav-underline'); updateButtonPreview();">
-                            <input type="color" id="picker-nav-underline" class="color-input-picker" oninput="syncHexInput('nav-underline'); updateButtonPreview();">
+                            <span style="font-size: 13px; font-weight: 700; color: #60a5fa;">Efecto al Hacer Scroll (Cabecera Flotante)</span>
+                            <span style="font-size: 10px; background: rgba(59,130,246,0.15); color: #60a5fa; padding: 2px 6px; border-radius: 4px; font-weight: 700;">AL SCROLLEAR</span>
+                          </div>
+                          <span style="font-size: 11px; color: var(--text-muted);">Ajusta el color que adquiere la barra al desplazarse hacia abajo.</span>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                          <!-- Fondo al hacer Scroll -->
+                          <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                            <div>
+                              <span style="font-size: 12px; font-weight: 600; color: #cbd5e1; display: block;">Fondo al hacer Scroll</span>
+                              <span style="font-size: 10.5px; color: var(--text-muted);">Color con el que se tiñe la barra.</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <input type="text" id="hex-navbar-scrolled-bg" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('navbar-scrolled-bg'); updateButtonPreview();">
+                              <input type="color" id="picker-navbar-scrolled-bg" class="color-input-picker" oninput="syncHexInput('navbar-scrolled-bg'); updateButtonPreview();">
+                            </div>
+                          </div>
+
+                          <!-- Borde Inferior al hacer Scroll -->
+                          <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                            <div>
+                              <span style="font-size: 12px; font-weight: 600; color: #cbd5e1; display: block;">Borde al hacer Scroll</span>
+                              <span style="font-size: 10.5px; color: var(--text-muted);">Línea divisoria inferior flotante.</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <input type="text" id="hex-navbar-scrolled-border" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('navbar-scrolled-border'); updateButtonPreview();">
+                              <input type="color" id="picker-navbar-scrolled-border" class="color-input-picker" oninput="syncHexInput('navbar-scrolled-border'); updateButtonPreview();">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                          <!-- Color de Textos al hacer Scroll -->
+                          <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                            <div>
+                              <span style="font-size: 12px; font-weight: 600; color: #cbd5e1; display: block;">Color de Enlaces (Scroll)</span>
+                              <span style="font-size: 10.5px; color: var(--text-muted);">Tono de "Presentación" y "Catálogo".</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <input type="text" id="hex-navbar-scrolled-text" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('navbar-scrolled-text'); updateButtonPreview();">
+                              <input type="color" id="picker-navbar-scrolled-text" class="color-input-picker" oninput="syncHexInput('navbar-scrolled-text'); updateButtonPreview();">
+                            </div>
+                          </div>
+
+                          <!-- Color de Textos Hover al hacer Scroll -->
+                          <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                            <div>
+                              <span style="font-size: 12px; font-weight: 600; color: #cbd5e1; display: block;">Color Hover Enlaces (Scroll)</span>
+                              <span style="font-size: 10.5px; color: var(--text-muted);">Al posar el cursor durante el scroll.</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <input type="text" id="hex-navbar-scrolled-text-hover" class="color-hex-input" style="width: 76px;" oninput="syncColorPicker('navbar-scrolled-text-hover'); updateButtonPreview();">
+                              <input type="color" id="picker-navbar-scrolled-text-hover" class="color-input-picker" oninput="syncHexInput('navbar-scrolled-text-hover'); updateButtonPreview();">
+                            </div>
                           </div>
                         </div>
                       </div>
 
-                      <!-- Bloque B: Botón CTA WhatsApp Navbar -->
-                      <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div>
+                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <!-- Bloque B: Estado Inicial & Enlaces de Menú -->
+                        <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 14px; padding: 18px;">
                           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
-                            <span style="font-size: 13px; font-weight: 700; color: #34d399;">Botón Directo (CTA)</span>
-                            <span style="font-size: 10px; background: rgba(16,185,129,0.15); color: #34d399; padding: 2px 6px; border-radius: 4px; font-weight: 700;">WHATSAPP</span>
+                            <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">Estado Inicial (Sin Scroll) & Enlaces</span>
+                            <span style="font-size: 10px; background: rgba(56,189,248,0.15); color: #38bdf8; padding: 2px 6px; border-radius: 4px; font-weight: 700;">AL INICIO</span>
                           </div>
 
-                          <div class="form-group" style="margin-bottom: 10px;">
-                            <label for="input-btn-whatsapp-nav" style="font-size: 12px;">Texto del Botón Superior</label>
-                            <input type="text" id="input-btn-whatsapp-nav" placeholder="Consúltanos" oninput="updateButtonPreview()">
+                          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <div class="form-group" style="margin: 0;">
+                              <label for="input-btn-nav-presentation" style="font-size: 12px;">Texto Enlace 1</label>
+                              <input type="text" id="input-btn-nav-presentation" placeholder="Presentación" oninput="updateButtonPreview()">
+                            </div>
+                            <div class="form-group" style="margin: 0;">
+                              <label for="input-btn-nav-catalog" style="font-size: 12px;">Texto Enlace 2</label>
+                              <input type="text" id="input-btn-nav-catalog" placeholder="Catálogo" oninput="updateButtonPreview()">
+                            </div>
+                          </div>
+
+                          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <!-- Color Textos Inicial -->
+                            <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px;">
+                              <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Color Enlaces Normal</span>
+                              <div style="display: flex; align-items: center; gap: 6px;">
+                                <input type="text" id="hex-navbar-text" class="color-hex-input" style="width: 70px;" oninput="syncColorPicker('navbar-text'); updateButtonPreview();">
+                                <input type="color" id="picker-navbar-text" class="color-input-picker" oninput="syncHexInput('navbar-text'); updateButtonPreview();">
+                              </div>
+                            </div>
+
+                            <!-- Color Subrayado Animado -->
+                            <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px;">
+                              <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Subrayado Animado</span>
+                              <div style="display: flex; align-items: center; gap: 6px;">
+                                <input type="text" id="hex-nav-underline" class="color-hex-input" style="width: 70px;" oninput="syncColorPicker('nav-underline'); updateButtonPreview();">
+                                <input type="color" id="picker-nav-underline" class="color-input-picker" oninput="syncHexInput('nav-underline'); updateButtonPreview();">
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <span style="font-size: 11px; color: var(--text-muted); line-height: 1.4; display: block; margin-top: 8px;">Botón con formato pastilla en el extremo derecho de la cabecera fija. Utiliza el color principal configurado.</span>
+
+                        <!-- Bloque C: Botón Directo WhatsApp Cabecera -->
+                        <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+                          <div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                              <span style="font-size: 13px; font-weight: 700; color: #34d399;">Botón Directo (CTA)</span>
+                              <span style="font-size: 10px; background: rgba(16,185,129,0.15); color: #34d399; padding: 2px 6px; border-radius: 4px; font-weight: 700;">WHATSAPP</span>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 10px;">
+                              <label for="input-btn-whatsapp-nav" style="font-size: 12px;">Texto del Botón Superior</label>
+                              <input type="text" id="input-btn-whatsapp-nav" placeholder="Consúltanos" oninput="updateButtonPreview()">
+                            </div>
+                          </div>
+                          <span style="font-size: 11px; color: var(--text-muted); line-height: 1.4; display: block; margin-top: 8px;">Botón con formato pastilla en el extremo derecho de la cabecera. Utiliza el color de acento principal configurado.</span>
+                        </div>
                       </div>
+
                     </div>
                   </div>
 

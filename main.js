@@ -357,6 +357,13 @@ function applyTheme() {
   if (colors.btn_card_hover_text) root.style.setProperty('--color-btn-card-hover-text', colors.btn_card_hover_text);
   if (colors.btn_card_hover_border) root.style.setProperty('--color-btn-card-hover-border', colors.btn_card_hover_border);
 
+  // Navbar Colors & Scrolled State Tokens
+  if (colors.navbar_text) root.style.setProperty('--color-navbar-text', colors.navbar_text);
+  if (colors.navbar_scrolled_bg) root.style.setProperty('--color-navbar-scrolled-bg', colors.navbar_scrolled_bg);
+  if (colors.navbar_scrolled_text) root.style.setProperty('--color-navbar-scrolled-text', colors.navbar_scrolled_text);
+  if (colors.navbar_scrolled_text_hover) root.style.setProperty('--color-navbar-scrolled-text-hover', colors.navbar_scrolled_text_hover);
+  if (colors.navbar_scrolled_border) root.style.setProperty('--color-navbar-scrolled-border', colors.navbar_scrolled_border);
+
   // Gradient & Transition Tokens
   const grad = siteConfig.gradient_settings || {};
   const topEnabled = grad.top_enabled !== false ? 1 : 0;

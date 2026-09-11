@@ -4750,9 +4750,20 @@
                               <span style="font-size: 10px; background: rgba(16,185,129,0.15); color: #34d399; padding: 2px 6px; border-radius: 4px; font-weight: 700;">WHATSAPP</span>
                             </div>
 
-                            <div class="form-group" style="margin-bottom: 10px;">
-                              <label for="input-btn-whatsapp-nav" style="font-size: 12px;">Texto del Botón Superior</label>
-                              <input type="text" id="input-btn-whatsapp-nav" placeholder="Consúltanos" oninput="updateButtonPreview()">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                              <div class="form-group" style="margin: 0;">
+                                <label for="input-btn-whatsapp-nav" style="font-size: 12px;">Texto del Botón Superior</label>
+                                <input type="text" id="input-btn-whatsapp-nav" placeholder="Consúltanos" oninput="updateButtonPreview()">
+                              </div>
+
+                              <!-- Color Texto Botón WhatsApp Nav -->
+                              <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px;">
+                                <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Color del Texto</span>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                  <input type="text" id="hex-navbar-cta-text" class="color-hex-input" style="width: 70px;" oninput="syncColorPicker('navbar-cta-text'); updateButtonPreview();">
+                                  <input type="color" id="picker-navbar-cta-text" class="color-input-picker" oninput="syncHexInput('navbar-cta-text'); updateButtonPreview();">
+                                </div>
+                              </div>
                             </div>
                           </div>
                           <span style="font-size: 11px; color: var(--text-muted); line-height: 1.4; display: block; margin-top: 8px;">Botón con formato pastilla en el extremo derecho de la cabecera. Utiliza el color de acento principal configurado.</span>
@@ -6383,7 +6394,7 @@
         'catalog-label', 'catalog-title', 'catalog-subtitle',
         'contact-label', 'contact-title', 'contact-subtitle',
         'footer-text',
-        'nav-underline', 'navbar-text', 'navbar-scrolled-bg', 'navbar-scrolled-text', 'navbar-scrolled-text-hover', 'navbar-scrolled-border',
+        'nav-underline', 'navbar-text', 'navbar-scrolled-bg', 'navbar-scrolled-text', 'navbar-scrolled-text-hover', 'navbar-scrolled-border', 'navbar-cta-text',
         'card-bg', 'card-border', 'card-title', 'card-desc',
         'btn-card-bg', 'btn-card-text', 'btn-card-border', 'btn-card-hover-bg', 'btn-card-hover-border'
       ];
@@ -6498,6 +6509,7 @@
       checkField('Barra de Navegación', '🎨', 'Borde Inferior al Scroll', curColors.navbar_scrolled_border, defColors.navbar_scrolled_border || 'rgba(0, 0, 0, 0.08)', true);
       checkField('Barra de Navegación', '🎨', 'Color Enlaces al Scroll', curColors.navbar_scrolled_text, defColors.navbar_scrolled_text || '#0F172A', true);
       checkField('Barra de Navegación', '🎨', 'Color Hover Enlaces (Scroll)', curColors.navbar_scrolled_text_hover, defColors.navbar_scrolled_text_hover || defColors.accent || '#2563EB', true);
+      checkField('Barra de Navegación', '🎨', 'Color Texto Botón WhatsApp Nav', curColors.navbar_cta_text, defColors.navbar_cta_text || '#000000', true);
 
       // Ficha de Producto y Botón Catálogo (Sector 3)
       checkField('Ficha de Producto', '🎨', 'Fondo Tarjeta', curColors.card_bg, defColors.card_bg || '#FFFFFF', true);
@@ -8217,6 +8229,7 @@
             docRoot.style.setProperty('--color-contact-subtitle', getVal('contact-subtitle') || textMuted);
 
             docRoot.style.setProperty('--color-footer-text', getVal('footer-text') || '#94A3B8');
+            docRoot.style.setProperty('--color-navbar-cta-text', getVal('navbar-cta-text') || activeConfig?.colors?.navbar_cta_text || '#000000');
 
             // Compute on-surface text contrast dynamically for iframe
             if (surface) {
@@ -8507,6 +8520,9 @@
           break;
         case 'border':
           targetSelector = '.products-tabs, .contact-form input, textarea';
+          break;
+        case 'navbar-cta-text':
+          targetSelector = '.navbar-cta';
           break;
       }
 
@@ -8833,6 +8849,7 @@
         { id: 'navbar-scrolled-border', val: colors.navbar_scrolled_border || 'rgba(0, 0, 0, 0.08)' },
         { id: 'navbar-scrolled-text', val: colors.navbar_scrolled_text || '#0F172A' },
         { id: 'navbar-scrolled-text-hover', val: colors.navbar_scrolled_text_hover || colors.accent || '#2563EB' },
+        { id: 'navbar-cta-text', val: colors.navbar_cta_text || '#000000' },
         { id: 'card-bg', val: colors.card_bg || '#FFFFFF' },
         { id: 'card-border', val: colors.card_border || 'rgba(0, 0, 0, 0.08)' },
         { id: 'card-title', val: colors.card_title || '#0F172A' },
@@ -8999,11 +9016,12 @@
         }
       }
 
+      const navCtaColor = document.getElementById('hex-navbar-cta-text')?.value.trim() || activeConfig?.colors?.navbar_cta_text || '#000000';
       const simNav = document.getElementById('sim-btn-nav');
       if (simNav) {
         simNav.style.background = primaryBg;
         simNav.style.borderRadius = radius === '8px' ? '9999px' : radius;
-        simNav.style.color = '#000000';
+        simNav.style.color = navCtaColor;
 
         simNav.onmouseenter = () => {
           simNav.style.background = primaryHoverBg;
@@ -9013,6 +9031,17 @@
           simNav.style.background = primaryBg;
           simNav.style.transform = 'scale(1)';
         };
+      }
+
+      // Sincronizar con el iframe de previsualización en vivo si existe
+      const previewIframe = document.getElementById('theme-preview-iframe');
+      if (previewIframe && previewIframe.contentWindow) {
+        try {
+          const docRoot = previewIframe.contentWindow.document.documentElement;
+          if (docRoot) {
+            docRoot.style.setProperty('--color-navbar-cta-text', navCtaColor);
+          }
+        } catch (e) {}
       }
 
       // 3. Sector 3: Ficha de Producto y Botón ("Ver Más")
@@ -9104,6 +9133,7 @@
       activeConfig.colors.navbar_scrolled_border = document.getElementById('hex-navbar-scrolled-border')?.value.trim() || 'rgba(0, 0, 0, 0.08)';
       activeConfig.colors.navbar_scrolled_text = document.getElementById('hex-navbar-scrolled-text')?.value.trim() || '#0F172A';
       activeConfig.colors.navbar_scrolled_text_hover = document.getElementById('hex-navbar-scrolled-text-hover')?.value.trim() || '#2563EB';
+      activeConfig.colors.navbar_cta_text = document.getElementById('hex-navbar-cta-text')?.value.trim() || '#000000';
 
       activeConfig.colors.btn_primary_bg = document.getElementById('hex-btn-primary-bg')?.value.trim() || activeConfig.colors.accent;
       activeConfig.colors.btn_primary_text = document.getElementById('hex-btn-primary-text')?.value.trim() || '#FFFFFF';
@@ -9175,6 +9205,7 @@
             { id: 'navbar-scrolled-border', val: 'rgba(0, 0, 0, 0.08)' },
             { id: 'navbar-scrolled-text', val: '#0F172A' },
             { id: 'navbar-scrolled-text-hover', val: accent },
+            { id: 'navbar-cta-text', val: '#000000' },
             { id: 'card-bg', val: '#FFFFFF' },
             { id: 'card-border', val: 'rgba(0, 0, 0, 0.08)' },
             { id: 'card-title', val: '#0F172A' },

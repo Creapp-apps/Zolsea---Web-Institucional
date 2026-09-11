@@ -363,6 +363,7 @@ function applyTheme() {
   if (colors.navbar_scrolled_text) root.style.setProperty('--color-navbar-scrolled-text', colors.navbar_scrolled_text);
   if (colors.navbar_scrolled_text_hover) root.style.setProperty('--color-navbar-scrolled-text-hover', colors.navbar_scrolled_text_hover);
   if (colors.navbar_scrolled_border) root.style.setProperty('--color-navbar-scrolled-border', colors.navbar_scrolled_border);
+  if (colors.navbar_cta_text) root.style.setProperty('--color-navbar-cta-text', colors.navbar_cta_text);
 
   // Gradient & Transition Tokens
   const grad = siteConfig.gradient_settings || {};

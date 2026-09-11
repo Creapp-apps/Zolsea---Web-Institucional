@@ -2729,7 +2729,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-DJ5Vzw_g.js"></script>
+  <script type="module" crossorigin src="/assets/admin-UIBcRaqZ.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -4752,9 +4752,20 @@
                               <span style="font-size: 10px; background: rgba(16,185,129,0.15); color: #34d399; padding: 2px 6px; border-radius: 4px; font-weight: 700;">WHATSAPP</span>
                             </div>
 
-                            <div class="form-group" style="margin-bottom: 10px;">
-                              <label for="input-btn-whatsapp-nav" style="font-size: 12px;">Texto del Botón Superior</label>
-                              <input type="text" id="input-btn-whatsapp-nav" placeholder="Consúltanos" oninput="updateButtonPreview()">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                              <div class="form-group" style="margin: 0;">
+                                <label for="input-btn-whatsapp-nav" style="font-size: 12px;">Texto del Botón Superior</label>
+                                <input type="text" id="input-btn-whatsapp-nav" placeholder="Consúltanos" oninput="updateButtonPreview()">
+                              </div>
+
+                              <!-- Color Texto Botón WhatsApp Nav -->
+                              <div class="color-picker-row" style="background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px;">
+                                <span style="font-size: 11px; font-weight: 600; color: #cbd5e1;">Color del Texto</span>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                  <input type="text" id="hex-navbar-cta-text" class="color-hex-input" style="width: 70px;" oninput="syncColorPicker('navbar-cta-text'); updateButtonPreview();">
+                                  <input type="color" id="picker-navbar-cta-text" class="color-input-picker" oninput="syncHexInput('navbar-cta-text'); updateButtonPreview();">
+                                </div>
+                              </div>
                             </div>
                           </div>
                           <span style="font-size: 11px; color: var(--text-muted); line-height: 1.4; display: block; margin-top: 8px;">Botón con formato pastilla en el extremo derecho de la cabecera. Utiliza el color de acento principal configurado.</span>

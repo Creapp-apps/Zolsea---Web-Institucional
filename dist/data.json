@@ -74,7 +74,8 @@
     "navbar_scrolled_bg": "#FFFFFF",
     "navbar_scrolled_text": "#0F172A",
     "navbar_scrolled_text_hover": "#2563EB",
-    "navbar_scrolled_border": "rgba(0, 0, 0, 0.08)"
+    "navbar_scrolled_border": "rgba(0, 0, 0, 0.08)",
+    "navbar_cta_text": "#000000"
   },
   "products": [
     {

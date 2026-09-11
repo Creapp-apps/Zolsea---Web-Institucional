@@ -2634,7 +2634,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-C1Djr2Nq.js"></script>
+  <script type="module" crossorigin src="/assets/admin-pCCd4o7H.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -3485,6 +3485,83 @@
                   </div>
                 </div>
 
+                <!-- SIMULADOR INTERACTIVO DE IDENTIDAD (HEADER Y HERO EN VIVO) -->
+                <div class="interactive-simulator-box" style="margin-bottom: 26px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                      <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-light);">SIMULADOR EN VIVO</span>
+                      <h4 style="font-family: var(--font-title); font-size: 15px; color: var(--text-main); margin: 2px 0 0 0;">Integración en Cabecera y Portada Hero (Reflejo en Tiempo Real)</h4>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span id="branding-sim-logo-type" style="font-size: 11px; font-weight: 700; color: #38bdf8; background: rgba(56,189,248,0.12); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(56,189,248,0.2);">Logo: Predeterminado</span>
+                      <span style="font-size: 11px; font-weight: 700; color: #10b981; background: rgba(16,185,129,0.1); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(16,185,129,0.25); display: inline-flex; align-items: center; gap: 6px;">
+                        <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+                        En Vivo
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Canvas Sandbox Frame -->
+                  <div id="branding-simulator-canvas" style="position: relative; border-radius: 16px; overflow: hidden; background: #070B14; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.4); transition: background 0.2s ease;">
+                    
+                    <!-- Simulated Navbar -->
+                    <div style="background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.08); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                      <div id="sim-navbar-logo-container" style="display: flex; align-items: center; min-height: 38px;">
+                        <!-- Default Logo fallback (Exact Official Typographic Logo) -->
+                        <div id="sim-nav-default-logo" style="display: flex; align-items: center;">
+                          <svg class="logo-svg" viewBox="-12 -12 224 70" width="130" height="42" style="display: block; overflow: visible;">
+                            <defs>
+                              <linearGradient id="simNavLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop id="sim-logo-stop-1" offset="0%" stop-color="#38BDF8" />
+                                <stop id="sim-logo-stop-2" offset="50%" stop-color="#2563EB" />
+                                <stop id="sim-logo-stop-3" offset="100%" stop-color="#1D4ED8" />
+                              </linearGradient>
+                            </defs>
+                            <rect class="logo-border" x="2" y="2" width="196" height="42" rx="4" fill="none" stroke="url(#simNavLogoGrad)" stroke-width="2.5" />
+                            <text class="logo-text" x="100" y="31" font-family="'Space Grotesk', sans-serif" font-size="25" font-weight="900" font-style="italic" fill="url(#simNavLogoGrad)" text-anchor="middle" letter-spacing="3">ZOLSEA</text>
+                          </svg>
+                        </div>
+                        <!-- Uploaded Custom Logo -->
+                        <img id="sim-nav-custom-logo" src="" style="max-height: 34px; max-width: 170px; object-fit: contain; display: none; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));" alt="Logo Web">
+                      </div>
+
+                      <div style="display: flex; align-items: center; gap: 16px; font-size: 12px; color: #94a3b8; font-weight: 500;">
+                        <span style="color: #fff; font-weight: 600;">Inicio</span>
+                        <span>Catálogo</span>
+                        <span>Marcas</span>
+                        <span>Contacto</span>
+                        <div style="background: #2563EB; color: #fff; font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 8px; margin-left: 6px;">WhatsApp</div>
+                      </div>
+                    </div>
+
+                    <!-- Simulated Hero Section -->
+                    <div style="padding: 24px 28px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; align-items: center; position: relative;">
+                      <div style="position: absolute; inset: 0; background: radial-gradient(circle at 75% 50%, rgba(37, 99, 235, 0.12), transparent 60%); pointer-events: none;"></div>
+                      
+                      <!-- Left: Simulated Hero Copy -->
+                      <div style="position: relative; z-index: 2;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px; font-size: 11px; color: #93c5fd; margin-bottom: 10px;">
+                          <span style="width: 5px; height: 5px; border-radius: 50%; background: #3b82f6;"></span>
+                          MercadoLíder Platinum
+                        </div>
+                        <h3 style="font-family: var(--font-title); font-size: 20px; font-weight: 900; color: #fff; margin: 0 0 8px 0; text-transform: uppercase; line-height: 1.2;">HERRAMIENTAS QUE CONSTRUYEN</h3>
+                        <p style="font-size: 12px; color: #94a3b8; line-height: 1.5; margin: 0 0 16px 0;">Distribución mayorista con garantía oficial de fábrica para todo el país.</p>
+                        <div style="display: flex; gap: 10px;">
+                          <span style="background: #2563EB; color: #fff; font-size: 11px; font-weight: 700; padding: 8px 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">Ver Catálogo</span>
+                          <span style="background: rgba(255,255,255,0.06); color: #fff; font-size: 11px; font-weight: 600; padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">Marcas Oficiales</span>
+                        </div>
+                      </div>
+
+                      <!-- Right: Simulated Hero Banner Image -->
+                      <div style="position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; min-height: 140px; background: rgba(0,0,0,0.3); border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; overflow: hidden;">
+                        <img id="sim-hero-banner-img" src="/images/hero_ecosystem.png" style="max-height: 130px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 6px 16px rgba(0,0,0,0.6)); transition: all 0.3s ease;" alt="Hero Preview">
+                        <span id="sim-hero-badge-type" style="position: absolute; bottom: 8px; right: 8px; font-size: 10px; font-weight: 700; color: #93c5fd; background: rgba(11,15,25,0.85); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(59,130,246,0.3);">Banner Predeterminado</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
                 <form id="media-form" onsubmit="saveMedia(event)">
                   <div class="form-grid">
                     <!-- Logo Section -->
@@ -3623,6 +3700,97 @@
                   </div>
                 </div>
 
+                <!-- SIMULADOR INTERACTIVO DE FONDO Y SUPERFICIES -->
+                <div class="interactive-simulator-box" style="margin-bottom: 24px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                      <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-light);">SIMULADOR EN VIVO</span>
+                      <h4 style="font-family: var(--font-title); font-size: 15px; color: var(--text-main); margin: 2px 0 0 0;">Simulación de Superficies (Pasa el cursor sobre la tarjeta de prueba)</h4>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span id="surfaces-sim-hover-badge" style="font-size: 11px; font-weight: 700; color: #94a3b8; background: rgba(255,255,255,0.06); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); display: inline-flex; align-items: center; gap: 6px;">
+                        <span style="width: 6px; height: 6px; border-radius: 50%; background: #94a3b8;"></span>
+                        Estado Normal
+                      </span>
+                      <span style="font-size: 11px; font-weight: 700; color: #10b981; background: rgba(16,185,129,0.1); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(16,185,129,0.25); display: inline-flex; align-items: center; gap: 6px;">
+                        <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+                        En Vivo
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Canvas Sandbox Frame -->
+                  <div id="surfaces-simulator-canvas" style="position: relative; border-radius: 16px; overflow: hidden; background: #0A0A0A; border: 1px solid rgba(255, 255, 255, 0.1); padding: 24px; box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.4); transition: background 0.2s ease, border-color 0.2s ease;">
+                    
+                    <!-- Subtle Background Grid for Depth -->
+                    <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 24px 24px; pointer-events: none;"></div>
+
+                    <div style="position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch;">
+                      
+                      <!-- Card 1: Interactive Product Sample (Hoverable) -->
+                      <div id="sim-surface-card" style="background: #141414; border: 1px solid #1F1F1F; border-radius: 14px; padding: 18px; cursor: pointer; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; justify-content: space-between;" onmouseenter="handleSimSurfaceHover(true)" onmouseleave="handleSimSurfaceHover(false)">
+                        <div>
+                          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <span style="font-size: 10px; font-weight: 800; color: #60a5fa; background: rgba(37,99,235,0.15); border: 1px solid rgba(59,130,246,0.25); padding: 2px 8px; border-radius: 6px; text-transform: uppercase;">DEWALT · 20V MAX</span>
+                            <span style="font-size: 10px; color: #10b981; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+                              <span style="width: 5px; height: 5px; border-radius: 50%; background: #10b981;"></span>
+                              En Stock
+                            </span>
+                          </div>
+                          <h4 style="font-family: var(--font-title); font-size: 14px; font-weight: 700; color: #ffffff; margin: 0 0 6px 0;">Taladro Percutor Inalámbrico Compacto</h4>
+                          <p style="font-size: 11.5px; color: #9ca3af; line-height: 1.4; margin: 0 0 14px 0;">Motor Brushless sin carbones, mandril metálico de 13mm y 2 velocidades mecánicas.</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #1F1F1F;" id="sim-surface-card-divider">
+                          <span style="font-size: 10.5px; font-weight: 600; color: #94a3b8;">Pasa el mouse encima ↗</span>
+                          <span style="font-size: 11px; font-weight: 700; color: #38bdf8; background: rgba(56,189,248,0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(56,189,248,0.2);">Consultar</span>
+                        </div>
+                      </div>
+
+                      <!-- Card 2: Modal / Bento Container Sample -->
+                      <div id="sim-surface-modal" style="background: #141414; border: 1px solid #1F1F1F; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.25s ease;">
+                        <div>
+                          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                            <div style="width: 22px; height: 22px; border-radius: 6px; background: rgba(37,99,235,0.15); display: flex; align-items: center; justify-content: center;">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <span style="font-size: 12px; font-weight: 700; color: #fff;">Garantía y Distribución Oficial</span>
+                          </div>
+                          <p style="font-size: 11.5px; color: #9ca3af; line-height: 1.5; margin: 0 0 12px 0;">Contenedor representativo de modales y fichas técnicas. Demuestra el contraste de lectura sobre la superficie.</p>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.25); border: 1px solid #1F1F1F; padding: 8px 12px; border-radius: 8px; font-size: 11px; color: #94a3b8; display: flex; justify-content: space-between; align-items: center;" id="sim-surface-modal-inner">
+                          <span>Borde contenedor:</span>
+                          <span id="sim-surface-border-pill" style="font-family: monospace; font-size: 10px; color: #cbd5e1;">#1F1F1F</span>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <!-- Bottom Bar: Palette Telemetry -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 11px; color: #94a3b8; flex-wrap: wrap; gap: 8px;">
+                      <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                        <span style="display: inline-flex; align-items: center; gap: 5px;">
+                          <span id="sim-dot-bg" style="width: 9px; height: 9px; border-radius: 50%; background: #0A0A0A; border: 1px solid rgba(255,255,255,0.3);"></span>
+                          Fondo: <strong id="sim-val-bg" style="color: #fff; font-family: monospace;">#0A0A0A</strong>
+                        </span>
+                        <span style="display: inline-flex; align-items: center; gap: 5px;">
+                          <span id="sim-dot-surface" style="width: 9px; height: 9px; border-radius: 50%; background: #141414; border: 1px solid rgba(255,255,255,0.3);"></span>
+                          Superficie: <strong id="sim-val-surface" style="color: #fff; font-family: monospace;">#141414</strong>
+                        </span>
+                        <span style="display: inline-flex; align-items: center; gap: 5px;">
+                          <span id="sim-dot-hover" style="width: 9px; height: 9px; border-radius: 50%; background: #242424; border: 1px solid rgba(255,255,255,0.3);"></span>
+                          Hover: <strong id="sim-val-hover" style="color: #fff; font-family: monospace;">#242424</strong>
+                        </span>
+                        <span style="display: inline-flex; align-items: center; gap: 5px;">
+                          <span id="sim-dot-border" style="width: 9px; height: 9px; border-radius: 50%; background: #1F1F1F; border: 1px solid rgba(255,255,255,0.3);"></span>
+                          Borde: <strong id="sim-val-border" style="color: #fff; font-family: monospace;">#1F1F1F</strong>
+                        </span>
+                      </div>
+                      <span style="font-size: 10.5px; color: #60a5fa;">Sincronizado en tiempo real</span>
+                    </div>
+
+                  </div>
+                </div>
+
                 <div style="display: flex; flex-direction: column; gap: 14px;">
                   <!-- Fondo del Sitio -->
                   <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; background: rgba(255,255,255,0.02); padding: 14px 18px; border-radius: 14px; border: 1px solid var(--border);">
@@ -3631,8 +3799,8 @@
                       <span style="font-size: 12px; color: var(--text-muted);">Color de fondo general de toda la web institucional.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
-                      <input type="text" id="hex-bg" class="color-hex-input" style="width: 95px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 7px 10px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('bg')">
-                      <input type="color" id="picker-bg" class="color-input-picker" style="width: 38px; height: 38px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('bg')">
+                      <input type="text" id="hex-bg" class="color-hex-input" style="width: 95px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 7px 10px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('bg'); if(typeof updateSurfacesSimulator === 'function') updateSurfacesSimulator();">
+                      <input type="color" id="picker-bg" class="color-input-picker" style="width: 38px; height: 38px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('bg'); if(typeof updateSurfacesSimulator === 'function') updateSurfacesSimulator();">
                     </div>
                   </div>
 
@@ -3643,8 +3811,8 @@
                       <span style="font-size: 12px; color: var(--text-muted);">Relleno de las fichas de productos, modales y bloques de marcas.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
-                      <input type="text" id="hex-surface" class="color-hex-input" style="width: 95px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 7px 10px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('surface')">
-                      <input type="color" id="picker-surface" class="color-input-picker" style="width: 38px; height: 38px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('surface')">
+                      <input type="text" id="hex-surface" class="color-hex-input" style="width: 95px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 7px 10px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('surface'); if(typeof updateSurfacesSimulator === 'function') updateSurfacesSimulator();">
+                      <input type="color" id="picker-surface" class="color-input-picker" style="width: 38px; height: 38px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('surface'); if(typeof updateSurfacesSimulator === 'function') updateSurfacesSimulator();">
                     </div>
                   </div>
 
@@ -3655,8 +3823,8 @@
                       <span style="font-size: 12px; color: var(--text-muted);">Tono al pasar el cursor sobre las tarjetas de productos.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
-                      <input type="text" id="hex-surface-hover" class="color-hex-input" style="width: 95px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 7px 10px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('surface-hover')">
-                      <input type="color" id="picker-surface-hover" class="color-input-picker" style="width: 38px; height: 38px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('surface-hover')">
+                      <input type="text" id="hex-surface-hover" class="color-hex-input" style="width: 95px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 7px 10px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('surface-hover'); if(typeof updateSurfacesSimulator === 'function') updateSurfacesSimulator();">
+                      <input type="color" id="picker-surface-hover" class="color-input-picker" style="width: 38px; height: 38px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('surface-hover'); if(typeof updateSurfacesSimulator === 'function') updateSurfacesSimulator();">
                     </div>
                   </div>
 
@@ -3667,8 +3835,8 @@
                       <span style="font-size: 12px; color: var(--text-muted);">Líneas finas divisorias, contorno de tarjetas e inputs.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
-                      <input type="text" id="hex-border" class="color-hex-input" style="width: 95px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 7px 10px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('border')">
-                      <input type="color" id="picker-border" class="color-input-picker" style="width: 38px; height: 38px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('border')">
+                      <input type="text" id="hex-border" class="color-hex-input" style="width: 95px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 7px 10px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('border'); if(typeof updateSurfacesSimulator === 'function') updateSurfacesSimulator();">
+                      <input type="color" id="picker-border" class="color-input-picker" style="width: 38px; height: 38px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('border'); if(typeof updateSurfacesSimulator === 'function') updateSurfacesSimulator();">
                     </div>
                   </div>
                 </div>
@@ -3776,6 +3944,32 @@
                         </div>
                       </div>
                     </div>
+
+                    <!-- PREVIEW EN TIEMPO REAL: SECCIÓN MARCAS -->
+                    <div class="interactive-simulator-box" style="margin-top: 20px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <span style="font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #38bdf8;">PREVIEW EN TIEMPO REAL</span>
+                          <span style="font-size: 11.5px; font-weight: 600; color: #94a3b8;">· Cabecera y Marcas</span>
+                        </div>
+                        <span style="font-size: 10.5px; font-weight: 700; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); padding: 2px 8px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px;">
+                          <span style="width: 5px; height: 5px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981;"></span>
+                          En Vivo
+                        </span>
+                      </div>
+
+                      <div class="typo-section-preview-canvas" style="background: #070B14; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 22px 24px; position: relative; overflow: hidden; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); transition: background 0.2s ease;">
+                        <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none;"></div>
+                        <div style="position: relative; z-index: 2;">
+                          <span id="guide-brands-label" style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #2563EB; display: block; margin-bottom: 6px; transition: color 0.15s ease;">NUESTRAS MARCAS</span>
+                          <h4 id="guide-brands-title" style="font-family: var(--font-title); font-size: 20px; font-weight: 900; margin: 0 0 6px 0; color: #ffffff; text-transform: uppercase; letter-spacing: 0.02em; transition: color 0.15s ease;">MARCAS QUE RESPALDAMOS</h4>
+                          <p id="guide-brands-subtitle" style="font-size: 13.5px; line-height: 1.5; margin: 0 0 12px 0; color: #9ca3af; transition: color 0.15s ease;">Trabajamos con las marcas líderes del mercado</p>
+                          <div style="background: rgba(255,255,255,0.03); border-left: 3px solid #38bdf8; padding: 10px 14px; border-radius: 0 8px 8px 0; max-width: 720px;">
+                            <p id="guide-brands-intro" style="font-size: 12.5px; line-height: 1.6; margin: 0; color: #9ca3af; transition: color 0.15s ease;">Somos una empresa dedicada a la distribución mayorista de herramientas...</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <!-- ============================================== -->
@@ -3834,6 +4028,32 @@
                         <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
                           <input type="text" id="hex-hero-subtitle" class="color-hex-input" style="width: 95px; background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: #fff; padding: 7px 10px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('hero-subtitle')">
                           <input type="color" id="picker-hero-subtitle" class="color-input-picker" style="width: 38px; height: 38px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('hero-subtitle')">
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- PREVIEW EN TIEMPO REAL: PORTADA Y HERO -->
+                    <div class="interactive-simulator-box" style="margin-top: 20px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <span style="font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #60a5fa;">PREVIEW EN TIEMPO REAL</span>
+                          <span style="font-size: 11.5px; font-weight: 600; color: #94a3b8;">· Portada / Hero</span>
+                        </div>
+                        <span style="font-size: 10.5px; font-weight: 700; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); padding: 2px 8px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px;">
+                          <span style="width: 5px; height: 5px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981;"></span>
+                          En Vivo
+                        </span>
+                      </div>
+
+                      <div class="typo-section-preview-canvas" style="background: #070B14; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 22px 24px; position: relative; overflow: hidden; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); transition: background 0.2s ease;">
+                        <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none;"></div>
+                        <div style="position: relative; z-index: 2;">
+                          <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 20px; margin-bottom: 10px;">
+                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #3b82f6; box-shadow: 0 0 8px #3b82f6;"></span>
+                            <span id="guide-hero-badge" style="font-size: 12px; font-weight: 600; color: #9ca3af; transition: color 0.15s ease;">MercadoLíder Platinum · +1.900 seguidores</span>
+                          </div>
+                          <h3 id="guide-hero-title" style="font-family: var(--font-title); font-size: 24px; font-weight: 900; margin: 0 0 8px 0; color: #ffffff; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.2; max-width: 750px; transition: color 0.15s ease;">HERRAMIENTAS QUE CONSTRUYEN</h3>
+                          <p id="guide-hero-subtitle" style="font-size: 13.5px; line-height: 1.6; margin: 0; color: #9ca3af; max-width: 680px; transition: color 0.15s ease;">Somos distribuidores oficiales de las mejores marcas de herramientas en Argentina...</p>
                         </div>
                       </div>
                     </div>
@@ -3898,6 +4118,29 @@
                         </div>
                       </div>
                     </div>
+
+                    <!-- PREVIEW EN TIEMPO REAL: CATÁLOGO DESTACADO -->
+                    <div class="interactive-simulator-box" style="margin-top: 20px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <span style="font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #10b981;">PREVIEW EN TIEMPO REAL</span>
+                          <span style="font-size: 11.5px; font-weight: 600; color: #94a3b8;">· Catálogo de Herramientas</span>
+                        </div>
+                        <span style="font-size: 10.5px; font-weight: 700; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); padding: 2px 8px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px;">
+                          <span style="width: 5px; height: 5px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981;"></span>
+                          En Vivo
+                        </span>
+                      </div>
+
+                      <div class="typo-section-preview-canvas" style="background: #070B14; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 22px 24px; position: relative; overflow: hidden; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); transition: background 0.2s ease;">
+                        <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none;"></div>
+                        <div style="position: relative; z-index: 2;">
+                          <span id="guide-catalog-label" style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #2563EB; display: block; margin-bottom: 6px; transition: color 0.15s ease;">CATÁLOGO DESTACADO</span>
+                          <h4 id="guide-catalog-title" style="font-family: var(--font-title); font-size: 20px; font-weight: 900; margin: 0 0 6px 0; color: #ffffff; text-transform: uppercase; letter-spacing: 0.02em; transition: color 0.15s ease;">NUESTROS DESTACADOS</h4>
+                          <p id="guide-catalog-subtitle" style="font-size: 13.5px; margin: 0; color: #9ca3af; transition: color 0.15s ease;">Los productos más buscados por nuestros clientes</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <!-- ============================================== -->
@@ -3959,6 +4202,29 @@
                         </div>
                       </div>
                     </div>
+
+                    <!-- PREVIEW EN TIEMPO REAL: CONTACTO & WHATSAPP -->
+                    <div class="interactive-simulator-box" style="margin-top: 20px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <span style="font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #25D366;">PREVIEW EN TIEMPO REAL</span>
+                          <span style="font-size: 11.5px; font-weight: 600; color: #94a3b8;">· Contacto & Asesoramiento</span>
+                        </div>
+                        <span style="font-size: 10.5px; font-weight: 700; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); padding: 2px 8px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px;">
+                          <span style="width: 5px; height: 5px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981;"></span>
+                          En Vivo
+                        </span>
+                      </div>
+
+                      <div class="typo-section-preview-canvas" style="background: #070B14; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 22px 24px; position: relative; overflow: hidden; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); transition: background 0.2s ease;">
+                        <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none;"></div>
+                        <div style="position: relative; z-index: 2;">
+                          <span id="guide-contact-label" style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #2563EB; display: block; margin-bottom: 6px; transition: color 0.15s ease;">CONSULTANOS</span>
+                          <h4 id="guide-contact-title" style="font-family: var(--font-title); font-size: 20px; font-weight: 900; margin: 0 0 6px 0; color: #ffffff; text-transform: uppercase; letter-spacing: 0.02em; transition: color 0.15s ease;">¿TENÉS UNA CONSULTA?</h4>
+                          <p id="guide-contact-subtitle" style="font-size: 13.5px; line-height: 1.5; margin: 0; color: #9ca3af; max-width: 680px; transition: color 0.15s ease;">Respondemos al instante por WhatsApp. Escribinos y te asesoramos con el producto ideal para tu proyecto.</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <!-- ============================================== -->
@@ -3988,83 +4254,35 @@
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <!-- ============================================== -->
-                  <!-- SIMULADOR EN VIVO: TODAS LAS 5 SECCIONES       -->
-                  <!-- ============================================== -->
-                  <div style="background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 18px; padding: 22px; margin-bottom: 22px;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
-                      <div style="display: flex; align-items: center; gap: 8px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M20 12v8H4v-8"/><path d="m4 4 8 8 8-8"/></svg>
-                        <span style="font-size: 14px; font-weight: 700; color: #ffffff;">Simulador en Vivo: Jerarquía Completa del Sitio</span>
-                      </div>
-                      <span style="font-size: 11px; font-weight: 700; color: #38bdf8; background: rgba(56, 189, 248, 0.12); padding: 3px 10px; border-radius: 20px;">Reflejo Instantáneo</span>
-                    </div>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">Observa a continuación el reflejo en tiempo real de todos los textos y colores en el orden exacto del sitio web:</p>
-
-                    <!-- Preview Card Frame -->
-                    <div id="typo-guide-frame" style="background: #0a0a0a; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 20px; transition: background 0.3s ease;">
-                      
-                      <!-- 1. Marcas Preview -->
-                      <div style="border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 16px;">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                          <span style="font-size: 9.5px; font-weight: 800; color: #38bdf8; background: rgba(56,189,248,0.12); padding: 1px 6px; border-radius: 4px;">1. MARCAS</span>
+                    <!-- PREVIEW EN TIEMPO REAL: PIE DE PÁGINA -->
+                    <div class="interactive-simulator-box" style="margin-top: 20px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <span style="font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #a855f7;">PREVIEW EN TIEMPO REAL</span>
+                          <span style="font-size: 11.5px; font-weight: 600; color: #94a3b8;">· Pie de Página</span>
                         </div>
-                        <span id="guide-brands-label" style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #2563EB; display: block; margin-bottom: 6px; transition: color 0.2s ease;">NUESTRAS MARCAS</span>
-                        <h4 id="guide-brands-title" style="font-family: var(--font-title); font-size: 18px; font-weight: 900; margin: 0 0 6px 0; color: #ffffff; text-transform: uppercase; transition: color 0.2s ease;">MARCAS QUE RESPALDAMOS</h4>
-                        <p id="guide-brands-subtitle" style="font-size: 13px; line-height: 1.5; margin: 0 0 10px 0; color: #9ca3af; transition: color 0.2s ease;">Trabajamos con las marcas líderes del mercado</p>
-                        <div style="background: rgba(255,255,255,0.03); border-left: 3px solid #38bdf8; padding: 10px 14px; border-radius: 0 8px 8px 0;">
-                          <p id="guide-brands-intro" style="font-size: 12.5px; line-height: 1.6; margin: 0; color: #9ca3af; transition: color 0.2s ease;">Somos una empresa dedicada a la distribución mayorista de herramientas...</p>
-                        </div>
+                        <span style="font-size: 10.5px; font-weight: 700; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); padding: 2px 8px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px;">
+                          <span style="width: 5px; height: 5px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981;"></span>
+                          En Vivo
+                        </span>
                       </div>
 
-                      <!-- 2. Hero Preview -->
-                      <div style="border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 16px;">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                          <span style="font-size: 9.5px; font-weight: 800; color: #60a5fa; background: rgba(37,99,235,0.12); padding: 1px 6px; border-radius: 4px;">2. PORTADA / HERO</span>
+                      <div class="typo-section-preview-canvas" style="background: #070B14; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 18px 24px; position: relative; overflow: hidden; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; transition: background 0.2s ease;">
+                        <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none;"></div>
+                        <div style="position: relative; z-index: 2;">
+                          <p id="guide-footer-text" style="font-size: 12.5px; margin: 0; color: #94a3b8; transition: color 0.15s ease;">© 2025 ZolSea Import S.R.L. — Todos los derechos reservados.</p>
                         </div>
-                        <div style="display: inline-flex; align-items: center; gap: 6px; margin-bottom: 8px;">
-                          <span style="width: 7px; height: 7px; border-radius: 50%; background: #3b82f6;"></span>
-                          <span id="guide-hero-badge" style="font-size: 11.5px; font-weight: 600; color: #9ca3af; transition: color 0.2s ease;">MercadoLíder Platinum · +1.900 seguidores</span>
+                        <div style="position: relative; z-index: 2; display: flex; gap: 16px; font-size: 12px; color: #64748b;">
+                          <span>Términos y Condiciones</span>
+                          <span>Privacidad</span>
                         </div>
-                        <h4 id="guide-hero-title" style="font-family: var(--font-title); font-size: 20px; font-weight: 900; margin: 0 0 8px 0; color: #ffffff; transition: color 0.2s ease;">HERRAMIENTAS QUE CONSTRUYEN</h4>
-                        <p id="guide-hero-subtitle" style="font-size: 13px; line-height: 1.6; margin: 0; color: #9ca3af; transition: color 0.2s ease;">Somos distribuidores oficiales de las mejores marcas de herramientas en Argentina...</p>
                       </div>
-
-                      <!-- 3. Catálogo Preview -->
-                      <div style="border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 16px;">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                          <span style="font-size: 9.5px; font-weight: 800; color: #10b981; background: rgba(16,185,129,0.12); padding: 1px 6px; border-radius: 4px;">3. CATÁLOGO</span>
-                        </div>
-                        <span id="guide-catalog-label" style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #2563EB; display: block; margin-bottom: 6px; transition: color 0.2s ease;">CATÁLOGO DESTACADO</span>
-                        <h4 id="guide-catalog-title" style="font-family: var(--font-title); font-size: 18px; font-weight: 900; margin: 0 0 6px 0; color: #ffffff; text-transform: uppercase; transition: color 0.2s ease;">NUESTROS DESTACADOS</h4>
-                        <p id="guide-catalog-subtitle" style="font-size: 13px; margin: 0; color: #9ca3af; transition: color 0.2s ease;">Los productos más buscados por nuestros clientes</p>
-                      </div>
-
-                      <!-- 4. Contacto Preview -->
-                      <div style="border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 16px;">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                          <span style="font-size: 9.5px; font-weight: 800; color: #25D366; background: rgba(37,211,102,0.12); padding: 1px 6px; border-radius: 4px;">4. CONTACTO</span>
-                        </div>
-                        <span id="guide-contact-label" style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #2563EB; display: block; margin-bottom: 6px; transition: color 0.2s ease;">CONSULTANOS</span>
-                        <h4 id="guide-contact-title" style="font-family: var(--font-title); font-size: 18px; font-weight: 900; margin: 0 0 6px 0; color: #ffffff; text-transform: uppercase; transition: color 0.2s ease;">¿TENÉS UNA CONSULTA?</h4>
-                        <p id="guide-contact-subtitle" style="font-size: 13px; line-height: 1.5; margin: 0; color: #9ca3af; transition: color 0.2s ease;">Respondemos al instante por WhatsApp. Escribinos y te asesoramos con el producto ideal para tu proyecto.</p>
-                      </div>
-
-                      <!-- 5. Footer Preview -->
-                      <div>
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                          <span style="font-size: 9.5px; font-weight: 800; color: #a855f7; background: rgba(168,85,247,0.12); padding: 1px 6px; border-radius: 4px;">5. PIE DE PÁGINA</span>
-                        </div>
-                        <p id="guide-footer-text" style="font-size: 12px; margin: 0; color: #94a3b8; transition: color 0.2s ease;">© 2025 ZolSea Import S.R.L. — Todos los derechos reservados.</p>
-                      </div>
-
                     </div>
                   </div>
 
                   <!-- Botones de Acción / Guardar -->
-                  <div class="btn-save-container" style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px;">
+                  <div class="btn-save-container" style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 12px;">
                     <button type="button" class="btn-preview" onclick="resetTypographyColorsToDefault()">
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                       Restablecer Colores
@@ -4423,6 +4641,95 @@
                   </div>
                 </div>
 
+                <!-- SIMULADOR INTERACTIVO DE HALO / GLOW DEL MOUSE -->
+                <div class="interactive-simulator-box" style="margin-bottom: 28px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                      <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-light);">SIMULADOR EN VIVO</span>
+                      <h4 style="font-family: var(--font-title); font-size: 15px; color: var(--text-main); margin: 2px 0 0 0;">Simulación de Halo Lumínico (Mueve el mouse por dentro para probar)</h4>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span id="glow-sim-scope-badge" style="font-size: 11px; font-weight: 700; color: #38bdf8; background: rgba(56,189,248,0.12); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(56,189,248,0.2);">🌐 En Todo el Sitio</span>
+                      <span id="glow-sim-status" style="font-size: 11px; font-weight: 700; color: #10b981; background: rgba(16,185,129,0.1); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(16,185,129,0.25); display: inline-flex; align-items: center; gap: 6px;">
+                        <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+                        Luz Activa
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Canvas Sandbox Frame -->
+                  <div id="glow-simulator-canvas" style="position: relative; height: 270px; border-radius: 16px; overflow: hidden; background: #070B14; border: 1px solid rgba(255, 255, 255, 0.1); cursor: crosshair; user-select: none; box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.5);">
+                    
+                    <!-- Subtle Background Grid for Depth -->
+                    <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 24px 24px; pointer-events: none;"></div>
+
+                    <!-- Dynamic Glow Radial Element that follows mouse in sandbox -->
+                    <div id="sim-cursor-glow" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; transition: opacity 0.2s ease, width 0.15s ease, height 0.15s ease, filter 0.15s ease; will-change: left, top, width, height, filter, background;"></div>
+
+                    <!-- Mockup UI Elements over the glowing background -->
+                    <div style="position: relative; z-index: 3; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 18px 22px; pointer-events: none;">
+                      
+                      <!-- Top Mini Bar -->
+                      <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <div style="width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(135deg, #2563EB, #1D4ED8); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px rgba(37,99,235,0.5);">
+                            <span style="font-size: 11px; font-weight: 900; color: #fff; font-style: italic;">Z</span>
+                          </div>
+                          <span style="font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.05em;">ZOLSEA <span style="font-size: 10px; color: #60a5fa; font-weight: 600; text-transform: uppercase;">HERRAMIENTAS</span></span>
+                        </div>
+                        <div style="display: flex; gap: 6px;">
+                          <span style="font-size: 10px; padding: 3px 8px; border-radius: 6px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #94a3b8;">Catálogo Oficial</span>
+                          <span style="font-size: 10px; padding: 3px 8px; border-radius: 6px; background: rgba(37,99,235,0.15); border: 1px solid rgba(59,130,246,0.3); color: #93c5fd; font-weight: 600;">Mayorista</span>
+                        </div>
+                      </div>
+
+                      <!-- Center Mockup Content: Hero title + Bento preview cards -->
+                      <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; align-items: center; margin: 6px 0;">
+                        <div>
+                          <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 2px 9px; margin-bottom: 6px;">
+                            <span style="width: 5px; height: 5px; border-radius: 50%; background: #38bdf8;"></span>
+                            <span style="font-size: 10px; font-weight: 600; color: #e2e8f0;">MercadoLíder Platinum</span>
+                          </div>
+                          <h3 style="font-family: var(--font-title); font-size: 17px; font-weight: 900; color: #ffffff; line-height: 1.2; margin: 0 0 4px 0; text-transform: uppercase;">HERRAMIENTAS QUE CONSTRUYEN</h3>
+                          <p style="font-size: 11px; color: #94a3b8; margin: 0; line-height: 1.4; max-width: 290px;">Mueve el cursor por esta zona para apreciar cómo la luz interactúa en tiempo real con las tarjetas y el fondo.</p>
+                        </div>
+
+                        <!-- Sample floating cards reacting to lighting -->
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                          <div style="background: rgba(255,255,255,0.04); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 9px 12px; display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                              <span style="font-size: 11px; font-weight: 700; color: #fff; display: block;">Taladro Percutor 13mm</span>
+                              <span style="font-size: 9.5px; color: #60a5fa; font-weight: 600;">Gladiator PRO</span>
+                            </div>
+                            <span style="font-size: 9.5px; background: rgba(37,99,235,0.2); color: #93c5fd; padding: 2px 6px; border-radius: 4px; font-weight: 700;">PRO</span>
+                          </div>
+
+                          <div style="background: rgba(255,255,255,0.04); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 9px 12px; display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                              <span style="font-size: 11px; font-weight: 700; color: #fff; display: block;">Amoladora Angular 850W</span>
+                              <span style="font-size: 9.5px; color: #34d399; font-weight: 600;">Stock Inmediato</span>
+                            </div>
+                            <span style="font-size: 9.5px; background: rgba(16,185,129,0.15); color: #34d399; padding: 2px 6px; border-radius: 4px; font-weight: 700;">DISP</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Bottom Helper / Telemetry Bar -->
+                      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px;">
+                        <span style="font-size: 10.5px; color: #64748b; display: flex; align-items: center; gap: 5px;">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                          Mueve el cursor dentro del recuadro para desplazar la luz en vivo
+                        </span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <span id="glow-sim-coords" style="font-family: monospace; font-size: 10.5px; color: #60a5fa; background: rgba(37,99,235,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(59,130,246,0.2);">X: 50% · Y: 50%</span>
+                          <span id="glow-sim-telemetry" style="font-family: monospace; font-size: 10.5px; color: #94a3b8; background: rgba(0,0,0,0.4); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05);">Halo: 650px · Opacidad: 25%</span>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
                 <div style="display: flex; flex-direction: column; gap: 18px;">
                   <!-- Color del Glow -->
                   <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; background: rgba(255,255,255,0.02); padding: 14px 18px; border-radius: 14px; border: 1px solid var(--border);">
@@ -4431,8 +4738,8 @@
                       <span style="font-size: 12px; color: var(--text-muted);">Tono lumínico emitido por el halo del cursor.</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
-                      <input type="text" id="hex-cursor-glow" class="color-hex-input" style="width: 95px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 7px 10px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('cursor-glow')">
-                      <input type="color" id="picker-cursor-glow" class="color-input-picker" style="width: 38px; height: 38px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('cursor-glow')">
+                      <input type="text" id="hex-cursor-glow" class="color-hex-input" style="width: 95px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; padding: 7px 10px; border-radius: 6px; font-family: monospace; font-size: 12px; text-transform: uppercase;" oninput="syncColorPicker('cursor-glow'); updateGlowSimulator();">
+                      <input type="color" id="picker-cursor-glow" class="color-input-picker" style="width: 38px; height: 38px; border: none; padding: 0; background: transparent; cursor: pointer;" oninput="syncHexInput('cursor-glow'); updateGlowSimulator();">
                     </div>
                   </div>
 
@@ -4442,7 +4749,7 @@
                       <span style="font-size: 14px; font-weight: 600; display: block; color: var(--text-main);">Alcance del Efecto en la Web</span>
                       <span style="font-size: 12px; color: var(--text-muted);">Define si viaja por todo el sitio web o solo en la portada.</span>
                     </div>
-                    <select id="select-cursor-glow-scope" style="background: #18181b; border: 1px solid var(--border); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; outline: none;" onchange="updateThemePreview()">
+                    <select id="select-cursor-glow-scope" style="background: #18181b; border: 1px solid var(--border); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; outline: none;" onchange="updateThemePreview(); updateGlowSimulator();">
                       <option value="global">🌐 En todo el sitio web (Global)</option>
                       <option value="hero">🎯 Solo en el Banner Hero</option>
                     </select>
@@ -4454,7 +4761,7 @@
                       <span style="font-size: 13px; font-weight: 600; color: var(--text-main);">Potencia / Intensidad (<span id="val-glow-opacity" style="color: var(--accent);">25</span>%)</span>
                       <span style="font-size: 11px; color: var(--text-muted);">Suave (5%) — Intenso (80%)</span>
                     </div>
-                    <input type="range" id="range-cursor-glow-opacity" min="5" max="80" value="25" step="1" style="accent-color: var(--accent); cursor: pointer; width: 100%;" oninput="document.getElementById('val-glow-opacity').innerText = this.value; updateThemePreview();">
+                    <input type="range" id="range-cursor-glow-opacity" min="5" max="80" value="25" step="1" style="accent-color: var(--accent); cursor: pointer; width: 100%;" oninput="document.getElementById('val-glow-opacity').innerText = this.value; updateThemePreview(); updateGlowSimulator();">
                   </div>
 
                   <!-- Tamaño del Glow Slider -->
@@ -4463,7 +4770,7 @@
                       <span style="font-size: 13px; font-weight: 600; color: var(--text-main);">Tamaño del Halo (<span id="val-glow-size" style="color: var(--accent);">650</span>px)</span>
                       <span style="font-size: 11px; color: var(--text-muted);">Compacto (300px) — Expansivo (1000px)</span>
                     </div>
-                    <input type="range" id="range-cursor-glow-size" min="300" max="1000" value="650" step="25" style="accent-color: var(--accent); cursor: pointer; width: 100%;" oninput="document.getElementById('val-glow-size').innerText = this.value; updateThemePreview();">
+                    <input type="range" id="range-cursor-glow-size" min="300" max="1000" value="650" step="25" style="accent-color: var(--accent); cursor: pointer; width: 100%;" oninput="document.getElementById('val-glow-size').innerText = this.value; updateThemePreview(); updateGlowSimulator();">
                   </div>
 
                   <!-- Blur / Difuminado Slider -->
@@ -4472,7 +4779,7 @@
                       <span style="font-size: 13px; font-weight: 600; color: var(--text-main);">Difuminado / Suavidad (<span id="val-glow-blur" style="color: var(--accent);">50</span>px)</span>
                       <span style="font-size: 11px; color: var(--text-muted);">Enfocado (20px) — Ultra Suave (100px)</span>
                     </div>
-                    <input type="range" id="range-cursor-glow-blur" min="20" max="100" value="50" step="5" style="accent-color: var(--accent); cursor: pointer; width: 100%;" oninput="document.getElementById('val-glow-blur').innerText = this.value; updateThemePreview();">
+                    <input type="range" id="range-cursor-glow-blur" min="20" max="100" value="50" step="5" style="accent-color: var(--accent); cursor: pointer; width: 100%;" oninput="document.getElementById('val-glow-blur').innerText = this.value; updateThemePreview(); updateGlowSimulator();">
                   </div>
                 </div>
 

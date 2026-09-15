@@ -189,6 +189,12 @@ let siteConfig = {
     { name: "Makita", accent_color: "#0d9488" },
     { name: "DeWalt", accent_color: "#eab308" }
   ],
+  categories: [
+    { id: "battery", name: "A Batería" },
+    { id: "electric", name: "Eléctricas" },
+    { id: "welding", name: "Soldadoras" },
+    { id: "accessories", name: "Consumibles / Accesorios" }
+  ],
   colors: {
     bg: '#FFFFFF',
     surface: '#F8FAFC',
@@ -1193,20 +1199,36 @@ function initProductsGrid() {
     });
   });
 
-  // --- Category Tabs Logic ---
+  // --- Dynamic Category Tabs Logic ---
   const tabsContainer = document.getElementById('productsTabs');
-  const indicator = document.getElementById('tabIndicator');
   
-  if (tabsContainer && indicator) {
+  if (tabsContainer) {
+    const cats = (siteConfig && Array.isArray(siteConfig.categories) && siteConfig.categories.length > 0)
+      ? siteConfig.categories
+      : [
+          { id: 'battery', name: 'A Batería' },
+          { id: 'electric', name: 'Eléctricas' },
+          { id: 'welding', name: 'Soldadoras' },
+          { id: 'accessories', name: 'Consumibles / Accesorios' }
+        ];
+
+    // Reconstruir los botones de pestañas dinámicamente preservando el indicador deslizable
+    tabsContainer.innerHTML = `
+      <div class="tab-indicator" id="tabIndicator"></div>
+      <button class="tab-btn active" data-category="all">Todos</button>
+      ${cats.map(c => `<button class="tab-btn" data-category="${c.id}">${c.name}</button>`).join('')}
+    `;
+
+    const indicator = document.getElementById('tabIndicator');
     const tabs = tabsContainer.querySelectorAll('.tab-btn');
     
     const updateIndicator = (activeTab) => {
-      if (!activeTab || window.innerWidth <= 992) return;
+      if (!activeTab || !indicator || window.innerWidth <= 992) return;
       indicator.style.width = `${activeTab.offsetWidth}px`;
       indicator.style.left = `${activeTab.offsetLeft}px`;
     };
 
-    // Position initial indicator with a tiny delay to ensure stylesheet is fully rendered
+    // Posicionar indicador inicial
     const initialActive = tabsContainer.querySelector('.tab-btn.active');
     setTimeout(() => updateIndicator(initialActive), 150);
 

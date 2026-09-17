@@ -5857,21 +5857,12 @@
           <div class="form-group">
             <label for="prod-brand">Marca</label>
             <select id="prod-brand" required>
-              <option value="Gladiator PRO">Gladiator PRO</option>
-              <option value="KTO">KTO</option>
-              <option value="Bosch">Bosch</option>
-              <option value="Makita">Makita</option>
-              <option value="DeWalt">DeWalt</option>
             </select>
           </div>
 
           <div class="form-group">
             <label for="prod-category">Categoría</label>
             <select id="prod-category" required>
-              <option value="battery">Batería (battery)</option>
-              <option value="welding">Soldadura (welding)</option>
-              <option value="electric">Eléctricas (electric)</option>
-              <option value="accessories">Accesorios (accessories)</option>
             </select>
           </div>
 
@@ -6583,6 +6574,11 @@
       if (document.getElementById('input-btn-whatsapp-nav')) current.button_texts.whatsapp_nav = readVal('input-btn-whatsapp-nav');
       if (document.getElementById('input-btn-whatsapp-cta')) current.button_texts.whatsapp_cta = readVal('input-btn-whatsapp-cta');
 
+      // Preservar Catálogo Dinámico
+      if (activeConfig && activeConfig.categories) current.categories = JSON.parse(JSON.stringify(activeConfig.categories));
+      if (activeConfig && activeConfig.brands) current.brands = JSON.parse(JSON.stringify(activeConfig.brands));
+      if (activeConfig && activeConfig.products) current.products = JSON.parse(JSON.stringify(activeConfig.products));
+
       return current;
     }
 
@@ -6902,6 +6898,8 @@
         renderBrandsList();
       }
       if (tabId === 'products') {
+        populateBrandSelectOptions();
+        populateCategorySelectOptions();
         renderProductsTable();
         renderCategoriesList();
         updateCatalogSubnavCounts();
@@ -7100,20 +7098,30 @@
 
     // Drawer Management
     function openProductDrawer(index) {
-      populateBrandSelectOptions();
-      populateCategorySelectOptions();
       const overlay = document.getElementById('product-drawer-overlay');
       const drawerTitle = document.getElementById('drawer-title');
       const indexInput = document.getElementById('edit-product-index');
 
-      // Clear Form
+      // Clear Form first to prevent wiping dynamic options
       document.getElementById('product-form').reset();
       document.getElementById('specs-edit-tbody').innerHTML = '';
+
+      // Populate options freshly from current activeConfig
+      populateBrandSelectOptions();
+      populateCategorySelectOptions();
 
       if (index === null) {
         // Adding new product
         drawerTitle.textContent = 'Agregar Nuevo Producto';
         indexInput.value = '';
+
+        // Explicitly set default category and brand to first available
+        if (activeConfig && activeConfig.categories && activeConfig.categories.length > 0) {
+          document.getElementById('prod-category').value = activeConfig.categories[0].id;
+        }
+        if (activeConfig && activeConfig.brands && activeConfig.brands.length > 0) {
+          document.getElementById('prod-brand').value = activeConfig.brands[0].name;
+        }
         
         // Add default blueprints templates
         document.getElementById('blue-title-0').value = 'Detalle Técnico A';
@@ -7144,9 +7152,9 @@
         indexInput.value = index;
 
         const p = activeConfig.products[index];
-        document.getElementById('prod-name').value = p.name;
-        document.getElementById('prod-brand').value = p.brand;
-        document.getElementById('prod-category').value = p.category;
+        document.getElementById('prod-name').value = p.name || '';
+        document.getElementById('prod-brand').value = p.brand || (activeConfig.brands?.[0]?.name || '');
+        document.getElementById('prod-category').value = p.category || (activeConfig.categories?.[0]?.id || '');
         document.getElementById('prod-image').value = p.image || '';
         document.getElementById('prod-image2').value = p.image2 || '';
         document.getElementById('prod-image3').value = p.image3 || '';
@@ -8300,6 +8308,8 @@
         if (btnCategories) btnCategories.classList.remove('active');
         if (viewProducts) viewProducts.style.display = 'block';
         if (viewCategories) viewCategories.style.display = 'none';
+        populateBrandSelectOptions();
+        populateCategorySelectOptions();
         renderProductsTable();
       } else {
         if (btnProducts) btnProducts.classList.remove('active');
@@ -8331,6 +8341,8 @@
 
       if (activeConfig.categories.some(c => c.id === currentVal)) {
         select.value = currentVal;
+      } else if (activeConfig.categories.length > 0) {
+        select.value = activeConfig.categories[0].id;
       }
 
       if (window.syncCustomDropdown) {
@@ -8463,8 +8475,8 @@
       }
     }
 
-    function saveCategory(e) {
-      e.preventDefault();
+    async function saveCategory(e) {
+      if (e) e.preventDefault();
       const indexInput = document.getElementById('edit-category-index').value;
       const name = document.getElementById('category-name').value.trim();
       let id = document.getElementById('category-slug').value.trim().toLowerCase();
@@ -8524,6 +8536,13 @@
       populateCategorySelectOptions();
       renderProductsTable();
       updateDashboardStats();
+
+      // Persistir inmediatamente en Supabase
+      try {
+        await publishConfigToSupabase();
+      } catch (err) {
+        console.warn('Auto-publicación de categoría en Supabase:', err);
+      }
     }
 
     function deleteCategory(index) {
@@ -8544,7 +8563,7 @@
       showConfirmModal(
         '¿Eliminar Categoría?',
         `¿Estás seguro que deseas eliminar la categoría "${cat.name}"?`,
-        () => {
+        async () => {
           activeConfig.categories.splice(index, 1);
           saveToStorage();
           renderCategoriesList();
@@ -8552,6 +8571,13 @@
           renderProductsTable();
           updateDashboardStats();
           showToast('Categorías', `Categoría "${cat.name}" eliminada correctamente.`, 'success');
+
+          // Persistir inmediatamente en Supabase
+          try {
+            await publishConfigToSupabase();
+          } catch (err) {
+            console.warn('Auto-publicación de eliminación en Supabase:', err);
+          }
         }
       );
     }
@@ -10567,65 +10593,71 @@
       }
     }
 
+    function ensureCustomDropdownWrapper(selectId) {
+      const select = document.getElementById(selectId);
+      if (!select) return null;
+
+      // Hide native select
+      select.style.display = 'none';
+
+      // Check if wrapper already exists
+      let wrapper = select.parentElement.querySelector(`.custom-select-wrapper[data-select-id="${selectId}"]`);
+      if (!wrapper) {
+        wrapper = document.createElement('div');
+        wrapper.className = 'custom-select-wrapper';
+        wrapper.setAttribute('data-select-id', selectId);
+
+        const trigger = document.createElement('button');
+        trigger.type = 'button';
+        trigger.className = 'custom-select-trigger';
+        trigger.innerHTML = `
+          <span class="custom-select-value"></span>
+          <svg class="custom-select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        `;
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'custom-select-options';
+
+        wrapper.appendChild(trigger);
+        wrapper.appendChild(optionsContainer);
+        select.after(wrapper);
+
+        // Click trigger to toggle
+        trigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          // Close all other dropdowns
+          document.querySelectorAll('.custom-select-wrapper').forEach(w => {
+            if (w !== wrapper) w.classList.remove('open');
+          });
+          wrapper.classList.toggle('open');
+        });
+      }
+      return wrapper;
+    }
+
     function initCustomDropdowns() {
       const selectIds = ['prod-brand', 'prod-category', 'blue-type-0', 'blue-type-1'];
       selectIds.forEach(id => {
-        const select = document.getElementById(id);
-        if (!select) return;
-
-        // Hide native select
-        select.style.display = 'none';
-
-        // Check if wrapper already exists
-        let wrapper = select.parentElement.querySelector(`.custom-select-wrapper[data-select-id="${id}"]`);
-        if (!wrapper) {
-          wrapper = document.createElement('div');
-          wrapper.className = 'custom-select-wrapper';
-          wrapper.setAttribute('data-select-id', id);
-
-          const trigger = document.createElement('button');
-          trigger.type = 'button';
-          trigger.className = 'custom-select-trigger';
-          trigger.innerHTML = `
-            <span class="custom-select-value"></span>
-            <svg class="custom-select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          `;
-
-          const optionsContainer = document.createElement('div');
-          optionsContainer.className = 'custom-select-options';
-
-          wrapper.appendChild(trigger);
-          wrapper.appendChild(optionsContainer);
-          select.after(wrapper);
-
-          // Click trigger to toggle
-          trigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            // Close all other dropdowns
-            document.querySelectorAll('.custom-select-wrapper').forEach(w => {
-              if (w !== wrapper) w.classList.remove('open');
-            });
-            wrapper.classList.toggle('open');
-          });
-        }
-
-        // Populating and Syncing options
+        ensureCustomDropdownWrapper(id);
         syncCustomDropdown(id);
       });
 
       // Close dropdowns when clicking outside
-      document.addEventListener('click', () => {
-        document.querySelectorAll('.custom-select-wrapper').forEach(w => {
-          w.classList.remove('open');
+      if (!window._customDropdownClickListenerAttached) {
+        window._customDropdownClickListenerAttached = true;
+        document.addEventListener('click', () => {
+          document.querySelectorAll('.custom-select-wrapper').forEach(w => {
+            w.classList.remove('open');
+          });
         });
-      });
+      }
     }
 
     function syncCustomDropdown(selectId) {
       const select = document.getElementById(selectId);
       if (!select) return;
 
-      const wrapper = select.parentElement.querySelector(`.custom-select-wrapper[data-select-id="${selectId}"]`);
+      const wrapper = ensureCustomDropdownWrapper(selectId);
       if (!wrapper) return;
 
       const triggerValue = wrapper.querySelector('.custom-select-value');
@@ -10634,6 +10666,7 @@
       // Populate options
       optionsContainer.innerHTML = '';
       const options = Array.from(select.options);
+      let foundSelected = false;
       
       options.forEach(opt => {
         const optionEl = document.createElement('div');
@@ -10642,6 +10675,8 @@
         
         // Add text and checkmark icon if selected
         const isSelected = opt.value === select.value;
+        if (isSelected) foundSelected = true;
+
         optionEl.innerHTML = `
           <span>${opt.text}</span>
           ${isSelected ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
@@ -10667,13 +10702,24 @@
       });
 
       // Handle default placeholder if no selected value found
-      if (!select.value && options.length > 0) {
+      if (!foundSelected && options.length > 0) {
+        select.value = options[0].value;
         triggerValue.textContent = options[0].text;
+        const firstEl = optionsContainer.querySelector('.custom-select-option');
+        if (firstEl) {
+          firstEl.classList.add('selected');
+          if (!firstEl.querySelector('svg')) {
+            firstEl.insertAdjacentHTML('beforeend', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>');
+          }
+        }
       }
     }
 
     window.initCustomDropdowns = initCustomDropdowns;
     window.syncCustomDropdown = syncCustomDropdown;
+    window.getActiveConfig = () => activeConfig;
+    window.populateCategorySelectOptions = populateCategorySelectOptions;
+    window.populateBrandSelectOptions = populateBrandSelectOptions;
 
     // Init Page on Load
     if (document.readyState === 'loading') {

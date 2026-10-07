@@ -1496,6 +1496,7 @@ body.scope-global .hero-interactive-glow {
   height: 32px;
 }
 .footer-text { font-size: 0.8rem; color: var(--color-footer-text, var(--color-text-subtle)); }
+.footer-spacer { width: 180px; }
 .footer-links { display: flex; gap: 20px; }
 .footer-links a {
   font-size: 0.8rem;
@@ -1766,6 +1767,7 @@ body.scope-global .hero-interactive-glow {
   .contact-alt { flex-direction: column; gap: 24px; }
 
   .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+  .footer-spacer { display: none; }
 }
 
 @media (max-width: 576px) {

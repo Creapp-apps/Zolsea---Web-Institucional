@@ -1360,7 +1360,9 @@ function initWhatsApp() {
     if (message) text += message;
     else text += 'Me gustaría recibir asesoramiento sobre herramientas.';
 
-    window.open(`https://wa.me/${siteConfig.whatsapp_number}?text=${encodeURIComponent(text)}`, '_blank');
+    const rawNum = siteConfig.whatsapp_number || WHATSAPP_NUMBER;
+    const num = String(rawNum).replace(/[^0-9]/g, '');
+    window.open(`https://wa.me/${num}?text=${encodeURIComponent(text)}`, '_blank');
   });
 }
 
@@ -1801,25 +1803,35 @@ function openProductModal(index) {
           ${specRowsHtml}
         </div>
         <button class="modal-action-cta" id="modalCtaBtn" data-product="${p.name}">
-          Solicitar Asesoramiento
+          ${WA_ICON}
+          <span>Solicitar Asesoramiento</span>
         </button>
       </div>
     </div>
   `;
 
-  // Attach CTA inside modal (Close modal & smooth scroll to contact section)
+  // Attach CTA inside modal (Dispara contacto directo por WhatsApp para este producto específico)
   const ctaBtn = document.getElementById('modalCtaBtn');
   if (ctaBtn) {
     ctaBtn.addEventListener('click', () => {
-      closeProductModal();
+      const rawNum = siteConfig.whatsapp_number || WHATSAPP_NUMBER;
+      const num = String(rawNum).replace(/[^0-9]/g, '');
+      const nameInput = document.getElementById('contactName');
+      const name = nameInput?.value?.trim() || '';
+      const productName = p.name || 'este producto';
+      const brand = p.brand ? ` (${p.brand})` : '';
+
+      let text = 'Hola! ';
+      if (name) text += `Soy ${name}. `;
+      text += `Me gustaría recibir asesoramiento sobre el producto: ${productName}${brand}.`;
+
+      // Sincronizar también con el formulario de contacto inferior de la web
       const msgInput = document.getElementById('contactMessage');
       if (msgInput) {
-        msgInput.value = `Hola! Me interesa recibir más información sobre el producto: ${p.name}`;
+        msgInput.value = text;
       }
-      const contactSection = document.getElementById('contacto');
-      if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth' });
-      }
+
+      window.open(`https://wa.me/${num}?text=${encodeURIComponent(text)}`, '_blank');
     });
   }
 
@@ -2007,7 +2019,7 @@ function initMagneticButtons() {
 function initButtonGlowTracker() {
   // Delegación de eventos global para abarcar botones dinámicos y estáticos
   document.addEventListener('mousemove', (e) => {
-    const btn = e.target.closest('.btn-primary, .btn-secondary, #whatsappBtn, .product-action-btn');
+    const btn = e.target.closest('.btn-primary, .btn-secondary, #whatsappBtn, .product-action-btn, .modal-action-cta');
     if (!btn) return;
 
     const rect = btn.getBoundingClientRect();

@@ -5460,6 +5460,18 @@
                       <input type="text" id="input-whatsapp" required placeholder="5491100000000" oninput="updateWaPreviewLink()">
                       <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">Ingresa el número completo sin signos (+), guiones ni espacios. Ejemplo para Argentina: <strong>549</strong> seguido del código de área y número.</span>
                     </div>
+
+                    <div class="form-group full-width">
+                      <label for="input-mercadolibre">URL de MercadoLibre</label>
+                      <input type="text" id="input-mercadolibre" placeholder="https://www.mercadolibre.com.ar/tienda/zolsea">
+                      <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">Pegá el enlace a tu tienda oficial de MercadoLibre. El botón "MercadoLibre" del sitio redirige a esta dirección.</span>
+                    </div>
+
+                    <div class="form-group full-width">
+                      <label for="input-location">URL de Ubicación (Google Maps)</label>
+                      <input type="text" id="input-location" placeholder="https://maps.google.com/...">
+                      <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">Pegá el enlace de Google Maps de tu local. El botón "Ubicación" del sitio abre esta dirección en una pestaña nueva.</span>
+                    </div>
                   </div>
 
                   <!-- Live WhatsApp Link Tester -->
@@ -6536,6 +6548,8 @@
       if (document.getElementById('input-contact-title')) current.contact_title = readVal('input-contact-title');
       if (document.getElementById('input-contact-subtitle')) current.contact_subtitle = readVal('input-contact-subtitle');
       if (document.getElementById('input-whatsapp')) current.whatsapp_number = readVal('input-whatsapp');
+      if (document.getElementById('input-mercadolibre')) current.mercadolibre_url = readVal('input-mercadolibre');
+      if (document.getElementById('input-location')) current.location_url = readVal('input-location');
 
       // 5. Pie de Página
       if (document.getElementById('input-footer-text')) current.footer_text = readVal('input-footer-text');
@@ -7393,6 +7407,12 @@
       // Contacto / WhatsApp
       const waInput = document.getElementById('input-whatsapp');
       if (waInput) waInput.value = activeConfig.whatsapp_number || '';
+
+      const mlInput = document.getElementById('input-mercadolibre');
+      if (mlInput) mlInput.value = activeConfig.mercadolibre_url || '';
+
+      const locInput = document.getElementById('input-location');
+      if (locInput) locInput.value = activeConfig.location_url || '';
       
       // Populate Logo
       const logoUrl = activeConfig.logo_url || '';
@@ -7585,6 +7605,12 @@
       
       const waInput = document.getElementById('input-whatsapp');
       if (waInput) activeConfig.whatsapp_number = waInput.value.trim();
+
+      const mlInput = document.getElementById('input-mercadolibre');
+      if (mlInput) activeConfig.mercadolibre_url = mlInput.value.trim();
+
+      const locInput = document.getElementById('input-location');
+      if (locInput) activeConfig.location_url = locInput.value.trim();
 
       saveToStorage();
       updateDashboardStats();

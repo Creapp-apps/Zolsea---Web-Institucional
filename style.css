@@ -997,7 +997,19 @@ body.scope-global .hero-interactive-glow {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: default;
+  cursor: pointer;
+}
+
+/* Estado vacío del catálogo (marca sin productos destacados) */
+.catalog-empty-state {
+  display: none;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+.catalog-empty-state p {
+  margin: 0 0 1rem;
+  font-size: 1rem;
 }
 
 .brand-card:hover {

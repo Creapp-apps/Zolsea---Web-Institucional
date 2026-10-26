@@ -1893,9 +1893,7 @@ function openProductModal(index) {
     b2t: mt.badge2_title || 'Servicio Técnico Especializado',
     b2d: mt.badge2_desc || 'Taller post-venta oficial con repuestos originales.',
     b3t: mt.badge3_title || 'Stock y Entrega Inmediata',
-    b3d: mt.badge3_desc || 'Retiro al instante en nuestro showroom de ventas oficial.',
-    dt: mt.distributor_title || 'Distribuidor Oficial & Financiación',
-    dd: mt.distributor_text || 'Punto de venta oficial con repuestos legítimos. Ofrecemos facturación A y B, transferencias y planes de pago.'
+    b3d: mt.badge3_desc || 'Retiro al instante en nuestro showroom de ventas oficial.'
   };
 
   // Render content
@@ -1935,15 +1933,6 @@ function openProductModal(index) {
             <p class="trust-badge-desc">${trust.b3d}</p>
           </div>
         </div>
-      </div>
-
-      <!-- Sello de Distribuidor Oficial y Pagos -->
-      <div class="modal-extra-info-card">
-        <div class="extra-info-header">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 2 18 2 18 6 6 6"></polygon><rect x="3" y="6" width="18" height="16" rx="2"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
-          <span class="extra-info-title">${trust.dt}</span>
-        </div>
-        <p class="extra-info-text">${trust.dd}</p>
       </div>
     </div>
 

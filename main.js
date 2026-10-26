@@ -1816,14 +1816,8 @@ function openProductModal(index) {
     modalSlides.push({ type: 'image', content: p.image3 });
   }
   
-  if (p.blueprints && p.blueprints.length > 0) {
-    p.blueprints.forEach((bp) => {
-      if (bp && (bp.title.trim() !== '' || bp.subtitle.trim() !== '')) {
-        const svgContent = generateBlueprintSVG(bp.title, bp.subtitle, bp.type);
-        modalSlides.push({ type: 'blueprint', content: svgContent });
-      }
-    });
-  }
+  // Nota: el carrusel muestra SOLO imágenes subidas por el cliente.
+  // Los "blueprints" (fichas técnicas generadas) ya no se agregan como slides.
 
   // If no slides at all, fall back to a placeholder
   if (modalSlides.length === 0) {

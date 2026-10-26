@@ -1999,17 +1999,20 @@ body.scope-global .hero-interactive-glow {
   width: 100%;
   aspect-ratio: 1 / 1;
   height: auto;
-  background: #080808;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-md);
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  margin-bottom: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  transition: border-color var(--transition-fast);
+  margin-bottom: 14px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
+              0 18px 48px -24px rgba(15, 23, 42, 0.22);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .modal-carousel:hover {
-  border-color: rgba(245, 158, 11, 0.3);
+  border-color: rgba(37, 99, 235, 0.18);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
+              0 22px 56px -22px rgba(15, 23, 42, 0.26);
 }
 
 .modal-carousel-inner {
@@ -2052,12 +2055,12 @@ body.scope-global .hero-interactive-glow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  width: 42px;
+  height: 42px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
   color: var(--color-text);
   border-radius: 50%;
   display: flex;
@@ -2065,14 +2068,16 @@ body.scope-global .hero-interactive-glow {
   justify-content: center;
   cursor: pointer;
   z-index: 10;
+  box-shadow: 0 6px 18px -6px rgba(15, 23, 42, 0.22);
   transition: all var(--transition-fast);
 }
 
 .modal-carousel-arrow:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: var(--color-accent);
+  background: #ffffff;
+  border-color: rgba(37, 99, 235, 0.35);
   color: var(--color-accent);
-  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 10px 24px -8px rgba(37, 99, 235, 0.35);
+  transform: translateY(-50%) scale(1.06);
 }
 
 .modal-carousel-arrow.prev {
@@ -2086,31 +2091,33 @@ body.scope-global .hero-interactive-glow {
 /* Indicadores de diapositivas (Dots) */
 .modal-carousel-dots {
   position: absolute;
-  bottom: 14px;
+  bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 7px;
   z-index: 10;
-  background: rgba(0, 0, 0, 0.4);
-  padding: 6px 12px;
+  padding: 6px 10px;
   border-radius: var(--radius-full);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  box-shadow: 0 4px 14px -6px rgba(15, 23, 42, 0.18);
 }
 
 .modal-carousel-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(15, 23, 42, 0.2);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-carousel-dot:hover {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(15, 23, 42, 0.4);
 }
 
 .modal-carousel-dot.active {

@@ -1281,69 +1281,34 @@ function initProductsGrid() {
   }
 }
 
-// ── Products Category Filtering (GSAP-powered) ──
-function filterProducts(category) {
-  const cards = document.querySelectorAll('.product-card');
-  if (!cards.length) return;
+// ── Estado de filtros del catálogo (marca + categoría se combinan) ──
+let currentCategory = 'all';   // id de categoría o 'all'
+let currentBrand = null;       // slug de marca o null (todas las marcas)
+let currentBrandName = '';     // nombre legible para el estado vacío
 
-  // Stagger out currently visible cards
-  gsap.to(cards, {
-    opacity: 0,
-    scale: 0.92,
-    y: 20,
-    duration: 0.25,
-    stagger: 0.03,
-    ease: 'power2.in',
-    onComplete: () => {
-      // Toggle display
-      cards.forEach(card => {
-        const cardCat = card.dataset.category;
-        const matchCat = (category === 'all' || cardCat === category);
-        card.style.display = (isBaseVisible(card) && matchCat) ? 'block' : 'none';
-      });
-
-      // Filter visible cards and stagger them back in beautifully!
-      const visibleCards = Array.from(cards).filter(card => card.style.display !== 'none');
-      
-      gsap.fromTo(visibleCards, {
-        opacity: 0,
-        scale: 0.92,
-        y: 20
-      }, {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.45,
-        stagger: 0.05,
-        ease: 'power3.out',
-        clearProps: 'transform,opacity' // Clear animation style props to avoid collision with CSS hovers
-      });
+// Marca visualmente activa la pestaña de categoría indicada
+function setActiveCategoryTab(category) {
+  const tabsContainer = document.getElementById('productsTabs');
+  if (!tabsContainer) return;
+  tabsContainer.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+  const target = tabsContainer.querySelector(`.tab-btn[data-category="${category}"]`)
+    || tabsContainer.querySelector('.tab-btn[data-category="all"]');
+  if (target) {
+    target.classList.add('active');
+    const indicator = document.getElementById('tabIndicator');
+    if (indicator && window.innerWidth > 992) {
+      indicator.style.width = `${target.offsetWidth}px`;
+      indicator.style.left = `${target.offsetLeft}px`;
     }
-  });
+  }
 }
 
-// ── Filtro de catálogo por MARCA (click en tarjeta de marca) ──
-function filterProductsByBrand(slug, brandName) {
+// ── Filtro unificado del catálogo: destacados + marca + categoría, juntos ──
+function applyCatalogFilter() {
   const grid = document.getElementById('productsGrid');
   const cards = document.querySelectorAll('.product-card');
   if (!cards.length) return;
 
-  // Resetear pestañas de categoría: dejar "Todos" activo visualmente
-  const tabsContainer = document.getElementById('productsTabs');
-  if (tabsContainer) {
-    const tabs = tabsContainer.querySelectorAll('.tab-btn');
-    tabs.forEach(t => t.classList.remove('active'));
-    const allTab = tabsContainer.querySelector('.tab-btn[data-category="all"]');
-    if (allTab) {
-      allTab.classList.add('active');
-      const indicator = document.getElementById('tabIndicator');
-      if (indicator && window.innerWidth > 992) {
-        indicator.style.width = `${allTab.offsetWidth}px`;
-        indicator.style.left = `${allTab.offsetLeft}px`;
-      }
-    }
-  }
-
   gsap.to(cards, {
     opacity: 0,
     scale: 0.92,
@@ -1353,12 +1318,14 @@ function filterProductsByBrand(slug, brandName) {
     ease: 'power2.in',
     onComplete: () => {
       cards.forEach(card => {
-        card.style.display = (isBaseVisible(card) && card.dataset.brand === slug) ? 'block' : 'none';
+        const matchCat = (currentCategory === 'all' || card.dataset.category === currentCategory);
+        const matchBrand = (!currentBrand || card.dataset.brand === currentBrand);
+        card.style.display = (isBaseVisible(card) && matchCat && matchBrand) ? 'block' : 'none';
       });
 
       const visibleCards = Array.from(cards).filter(card => card.style.display !== 'none');
 
-      // Estado vacío: marca sin productos destacados cargados
+      // Estado vacío (según el filtro combinado activo)
       let emptyEl = document.getElementById('catalogEmptyState');
       if (visibleCards.length === 0) {
         if (!emptyEl && grid) {
@@ -1368,15 +1335,18 @@ function filterProductsByBrand(slug, brandName) {
           grid.insertAdjacentElement('afterend', emptyEl);
         }
         if (emptyEl) {
+          const msg = currentBrand
+            ? `No hay productos destacados de <strong>${currentBrandName || 'esta marca'}</strong> en esta selección.`
+            : `No hay productos destacados en esta categoría.`;
           emptyEl.innerHTML = `
-            <p>No hay productos destacados de <strong>${brandName || 'esta marca'}</strong> por ahora.</p>
+            <p>${msg}</p>
             <button class="product-action-btn" id="catalogEmptyReset">Ver todos los productos</button>
           `;
           emptyEl.style.display = 'block';
           const resetBtn = document.getElementById('catalogEmptyReset');
           if (resetBtn) resetBtn.addEventListener('click', () => {
             emptyEl.style.display = 'none';
-            filterProducts('all');
+            resetCatalogFilter();
           });
         }
       } else if (emptyEl) {
@@ -1394,10 +1364,61 @@ function filterProductsByBrand(slug, brandName) {
         duration: 0.45,
         stagger: 0.05,
         ease: 'power3.out',
-        clearProps: 'transform,opacity'
+        clearProps: 'transform,opacity' // Evita colisión con hovers de CSS
       });
     }
   });
+}
+
+// Click en pestaña de categoría: cambia la categoría MANTENIENDO la marca activa
+function filterProducts(category) {
+  currentCategory = category;
+  applyCatalogFilter();
+}
+
+// Click en tarjeta de marca: fija la marca y vuelve a la categoría "Todos"
+function filterProductsByBrand(slug, brandName) {
+  currentBrand = slug;
+  currentBrandName = brandName || '';
+  currentCategory = 'all';
+  setActiveCategoryTab('all');
+  updateBrandChip();
+  applyCatalogFilter();
+}
+
+// Limpia marca y categoría (ver todo)
+function resetCatalogFilter() {
+  currentBrand = null;
+  currentBrandName = '';
+  currentCategory = 'all';
+  setActiveCategoryTab('all');
+  updateBrandChip();
+  applyCatalogFilter();
+}
+
+// Chip visible cuando hay un filtro de marca activo, con opción de quitarlo
+function updateBrandChip() {
+  let chip = document.getElementById('brandFilterChip');
+  const tabsWrapper = document.querySelector('.products-tabs-wrapper');
+  if (currentBrand && currentBrandName) {
+    if (!chip && tabsWrapper) {
+      chip = document.createElement('div');
+      chip.id = 'brandFilterChip';
+      chip.className = 'brand-filter-chip';
+      tabsWrapper.insertAdjacentElement('afterend', chip);
+    }
+    if (chip) {
+      chip.innerHTML = `
+        <span>Mostrando: <strong>${currentBrandName}</strong></span>
+        <button type="button" id="brandChipClear" aria-label="Quitar filtro de marca">Ver todas las marcas ✕</button>
+      `;
+      chip.style.display = 'flex';
+      const clr = document.getElementById('brandChipClear');
+      if (clr) clr.addEventListener('click', resetCatalogFilter);
+    }
+  } else if (chip) {
+    chip.style.display = 'none';
+  }
 }
 
 // ── Click en tarjeta de marca → scroll al catálogo + filtrar por esa marca ──

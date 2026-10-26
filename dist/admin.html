@@ -1894,6 +1894,65 @@
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    /* Estrella de destacado (toggle en tabla) */
+    .btn-feature-star {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.35);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-feature-star:hover {
+      border-color: rgba(234, 179, 8, 0.45);
+      color: #eab308;
+      background: rgba(234, 179, 8, 0.08);
+      transform: scale(1.08);
+    }
+    .btn-feature-star.is-featured {
+      color: #eab308;
+      border-color: rgba(234, 179, 8, 0.4);
+      background: rgba(234, 179, 8, 0.12);
+      box-shadow: 0 2px 10px rgba(234, 179, 8, 0.18);
+    }
+
+    /* Switch de destacado (form de producto) */
+    .featured-toggle-row:hover { border-color: rgba(234, 179, 8, 0.35) !important; }
+    .featured-switch {
+      appearance: none;
+      -webkit-appearance: none;
+      position: relative;
+      width: 46px;
+      height: 26px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s ease;
+    }
+    .featured-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .featured-switch:checked {
+      background: #eab308;
+      border-color: #eab308;
+    }
+    .featured-switch:checked::after { transform: translateX(20px); }
+
     .btn-action.edit:hover {
       border-color: rgba(59, 130, 246, 0.35);
       color: #60a5fa;
@@ -2789,7 +2848,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" crossorigin src="/assets/admin-dQOw_VJ9.js"></script>
+  <script type="module" crossorigin src="/assets/admin-B5IJsAmJ.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 <body>
@@ -3485,6 +3544,10 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               <input type="text" id="product-search" placeholder="Buscar producto por nombre o marca..." oninput="renderProductsTable()">
             </div>
+            <span id="featured-count-badge" title="Productos que se muestran en 'Nuestros Destacados' de la home" style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #eab308; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.3); padding: 8px 14px; border-radius: 10px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span id="featured-count-num">0</span> destacados
+            </span>
             <button type="button" class="btn-add" onclick="openProductDrawer(null)">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               Agregar Nuevo Producto
@@ -3495,10 +3558,11 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th style="width: 44%;">Herramienta / Detalle</th>
-                  <th style="width: 18%;">Marca Oficial</th>
-                  <th style="width: 16%;">Categoría</th>
-                  <th style="width: 22%; text-align: right;">Acciones</th>
+                  <th style="width: 38%;">Herramienta / Detalle</th>
+                  <th style="width: 15%;">Marca Oficial</th>
+                  <th style="width: 15%;">Categoría</th>
+                  <th style="width: 12%; text-align: center;">Destacado</th>
+                  <th style="width: 20%; text-align: right;">Acciones</th>
                 </tr>
               </thead>
               <tbody id="products-table-body">
@@ -5878,6 +5942,19 @@
             <label for="prod-category">Categoría</label>
             <select id="prod-category" required>
             </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="featured-toggle-row" for="prod-featured" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius-md); background: rgba(234, 179, 8, 0.04); cursor: pointer; margin-bottom: 0;">
+              <span style="display: flex; align-items: center; gap: 10px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#eab308" stroke="#eab308" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span style="display: flex; flex-direction: column; gap: 2px;">
+                  <strong style="font-size: 13px; color: var(--text-main);">Destacar en la Home</strong>
+                  <span style="font-size: 11px; color: var(--text-muted);">Aparece en la sección "Nuestros Destacados" del sitio.</span>
+                </span>
+              </span>
+              <input type="checkbox" id="prod-featured" class="featured-switch">
+            </label>
           </div>
 
           <div class="form-group full-width">

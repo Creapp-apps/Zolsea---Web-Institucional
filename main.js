@@ -1175,6 +1175,16 @@ function brandSlug(name) {
   return (name || '').toLowerCase().trim().replace(/\s+/g, '-');
 }
 
+// ── Destacados ──────────────────────────────────
+// ¿Hay al menos un producto marcado como destacado?
+function hasFeatured() {
+  return !!(siteConfig && Array.isArray(siteConfig.products) && siteConfig.products.some(p => p.featured));
+}
+// Set base de "Nuestros Destacados": si hay destacados, solo esos; si no, todos (fallback).
+function isBaseVisible(card) {
+  return hasFeatured() ? card.dataset.featured === 'true' : true;
+}
+
 // ── Products Grid ─────────────────────────────
 // ── Products Grid ─────────────────────────────
 function initProductsGrid() {
@@ -1182,7 +1192,7 @@ function initProductsGrid() {
   if (!grid) return;
 
   grid.innerHTML = siteConfig.products.map((p, i) => `
-    <article class="product-card reveal reveal-delay-${(i % 3) + 1}" data-category="${p.category}" data-brand="${brandSlug(p.brand)}" data-index="${i}">
+    <article class="product-card reveal reveal-delay-${(i % 3) + 1}" data-category="${p.category}" data-brand="${brandSlug(p.brand)}" data-featured="${p.featured ? 'true' : 'false'}" data-index="${i}">
       <div class="product-image-wrapper">
         <img src="${p.image}" alt="${p.name}" loading="lazy" />
       </div>
@@ -1197,6 +1207,11 @@ function initProductsGrid() {
       </div>
     </article>
   `).join('');
+
+  // Visibilidad inicial: mostrar solo destacados (si hay al menos uno)
+  grid.querySelectorAll('.product-card').forEach((card) => {
+    card.style.display = isBaseVisible(card) ? 'block' : 'none';
+  });
 
   // Click en la tarjeta completa (Modal Toast)
   grid.querySelectorAll('.product-card').forEach((card) => {
@@ -1283,11 +1298,8 @@ function filterProducts(category) {
       // Toggle display
       cards.forEach(card => {
         const cardCat = card.dataset.category;
-        if (category === 'all' || cardCat === category) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
+        const matchCat = (category === 'all' || cardCat === category);
+        card.style.display = (isBaseVisible(card) && matchCat) ? 'block' : 'none';
       });
 
       // Filter visible cards and stagger them back in beautifully!
@@ -1341,7 +1353,7 @@ function filterProductsByBrand(slug, brandName) {
     ease: 'power2.in',
     onComplete: () => {
       cards.forEach(card => {
-        card.style.display = (card.dataset.brand === slug) ? 'block' : 'none';
+        card.style.display = (isBaseVisible(card) && card.dataset.brand === slug) ? 'block' : 'none';
       });
 
       const visibleCards = Array.from(cards).filter(card => card.style.display !== 'none');

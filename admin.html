@@ -6144,67 +6144,6 @@
           </div>
         </div>
 
-        <!-- BLUEPRINTS SECTION -->
-        <div class="drawer-section-title">
-          <span>Esquemas Técnicos (Blueprints)</span>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
-          <!-- Blueprint 1 -->
-          <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-md);">
-            <h5 style="font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 12px;">Esquema 1</h5>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-              <div class="form-group">
-                <label style="font-size: 10px;">Título</label>
-                <input type="text" id="blue-title-0" required placeholder="Ej: Panel de Control">
-              </div>
-              <div class="form-group">
-                <label style="font-size: 10px;">Subtítulo</label>
-                <input type="text" id="blue-subtitle-0" required placeholder="Ej: Ajuste de Precisión">
-              </div>
-              <div class="form-group">
-                <label style="font-size: 10px;">Icono Técnico</label>
-                <select id="blue-type-0">
-                  <option value="dial">Perilla / Regulador (dial)</option>
-                  <option value="igbt">Onda IGBT (igbt)</option>
-                  <option value="battery">Batería Litio (battery)</option>
-                  <option value="motor">Motor Brushless (motor)</option>
-                  <option value="blade">Espada / Cuchilla (blade)</option>
-                  <option value="gears">Engranajes / Resistencia (gears)</option>
-                  <option value="ratchet">Llave de Ajuste (ratchet)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- Blueprint 2 -->
-          <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-md);">
-            <h5 style="font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 12px;">Esquema 2</h5>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-              <div class="form-group">
-                <label style="font-size: 10px;">Título</label>
-                <input type="text" id="blue-title-1" required placeholder="Ej: Tecnología Inverter">
-              </div>
-              <div class="form-group">
-                <label style="font-size: 10px;">Subtítulo</label>
-                <input type="text" id="blue-subtitle-1" required placeholder="Ej: Estabilidad del Arco">
-              </div>
-              <div class="form-group">
-                <label style="font-size: 10px;">Icono Técnico</label>
-                <select id="blue-type-1">
-                  <option value="dial">Perilla / Regulador (dial)</option>
-                  <option value="igbt">Onda IGBT (igbt)</option>
-                  <option value="battery">Batería Litio (battery)</option>
-                  <option value="motor">Motor Brushless (motor)</option>
-                  <option value="blade">Espada / Cuchilla (blade)</option>
-                  <option value="gears">Engranajes / Resistencia (gears)</option>
-                  <option value="ratchet">Llave de Ajuste (ratchet)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- SPECS SECTION -->
         <div class="drawer-section-title">
           <span>Especificaciones Técnicas</span>
@@ -7341,15 +7280,6 @@
           document.getElementById('prod-brand').value = activeConfig.brands[0].name;
         }
         
-        // Add default blueprints templates
-        document.getElementById('blue-title-0').value = 'Detalle Técnico A';
-        document.getElementById('blue-subtitle-0').value = 'Alto Rendimiento';
-        document.getElementById('blue-type-0').value = 'dial';
-
-        document.getElementById('blue-title-1').value = 'Detalle Técnico B';
-        document.getElementById('blue-subtitle-1').value = 'Máxima Calidad';
-        document.getElementById('blue-type-1').value = 'battery';
-
         // Add 2 empty specs rows
         addSpecRow('', '');
         addSpecRow('', '');
@@ -7405,17 +7335,6 @@
           document.getElementById('prod-image-3-url-manual').value = '';
         }
 
-        // Populate Blueprints
-        if (p.blueprints && p.blueprints.length >= 2) {
-          document.getElementById('blue-title-0').value = p.blueprints[0].title;
-          document.getElementById('blue-subtitle-0').value = p.blueprints[0].subtitle;
-          document.getElementById('blue-type-0').value = p.blueprints[0].type;
-
-          document.getElementById('blue-title-1').value = p.blueprints[1].title;
-          document.getElementById('blue-subtitle-1').value = p.blueprints[1].subtitle;
-          document.getElementById('blue-type-1').value = p.blueprints[1].type;
-        }
-
         // Populate Specs
         if (p.specs) {
           Object.entries(p.specs).forEach(([k, v]) => {
@@ -7426,8 +7345,6 @@
 
       syncCustomDropdown('prod-brand');
       syncCustomDropdown('prod-category');
-      syncCustomDropdown('blue-type-0');
-      syncCustomDropdown('blue-type-1');
 
       overlay.classList.add('active');
     }
@@ -7517,20 +7434,6 @@
       const desc = document.getElementById('prod-desc').value.trim();
       const longDesc = document.getElementById('prod-longdesc').value.trim();
 
-      // Read Blueprints
-      const blueprints = [
-        {
-          title: document.getElementById('blue-title-0').value.trim(),
-          subtitle: document.getElementById('blue-subtitle-0').value.trim(),
-          type: document.getElementById('blue-type-0').value
-        },
-        {
-          title: document.getElementById('blue-title-1').value.trim(),
-          subtitle: document.getElementById('blue-subtitle-1').value.trim(),
-          type: document.getElementById('blue-type-1').value
-        }
-      ];
-
       // Read Specs
       const specs = {};
       const rows = document.querySelectorAll('#specs-edit-tbody tr');
@@ -7553,7 +7456,6 @@
         image,
         image2,
         image3,
-        blueprints,
         specs,
         longDesc
       };
@@ -10935,7 +10837,7 @@
     }
 
     function initCustomDropdowns() {
-      const selectIds = ['prod-brand', 'prod-category', 'blue-type-0', 'blue-type-1'];
+      const selectIds = ['prod-brand', 'prod-category'];
       selectIds.forEach(id => {
         ensureCustomDropdownWrapper(id);
         syncCustomDropdown(id);

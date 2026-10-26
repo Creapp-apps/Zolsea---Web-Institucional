@@ -1923,20 +1923,31 @@
 
     /* Switch de destacado (form de producto) */
     .featured-toggle-row:hover { border-color: rgba(234, 179, 8, 0.35) !important; }
-    .featured-switch {
+    /* Resetear el text-transform/letter-spacing que hereda de .form-group label */
+    .featured-toggle-row,
+    .featured-toggle-row strong,
+    .featured-toggle-row span {
+      text-transform: none;
+      letter-spacing: normal;
+    }
+    /* Alta especificidad para ganarle a `.form-group input { width:100% ... }` */
+    .form-group .featured-switch {
       appearance: none;
       -webkit-appearance: none;
       position: relative;
       width: 46px;
+      min-width: 46px;
       height: 26px;
+      padding: 0;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.12);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: none;
       cursor: pointer;
-      flex-shrink: 0;
+      flex: 0 0 auto;
       transition: background 0.2s ease;
     }
-    .featured-switch::after {
+    .form-group .featured-switch::after {
       content: '';
       position: absolute;
       top: 2px;
@@ -1947,11 +1958,15 @@
       background: #fff;
       transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .featured-switch:checked {
+    .form-group .featured-switch:checked {
       background: #eab308;
       border-color: #eab308;
     }
-    .featured-switch:checked::after { transform: translateX(20px); }
+    .form-group .featured-switch:checked::after { transform: translateX(20px); }
+    .form-group .featured-switch:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.2);
+    }
 
     .btn-action.edit:hover {
       border-color: rgba(59, 130, 246, 0.35);

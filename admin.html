@@ -4565,6 +4565,55 @@
                     </div>
                   </div>
 
+                  <!-- 6. Modal de Producto · Bloques de Confianza -->
+                  <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+                      <div>
+                        <h3 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Modal de Producto · Garantía y Confianza</h3>
+                        <p style="font-size: 12px; color: var(--text-muted); margin: 4px 0 0;">Textos que aparecen al abrir un producto (garantía, servicio técnico, stock y distribuidor oficial).</p>
+                      </div>
+                      <span style="font-size: 11px; font-weight: 700; color: #f59e0b; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.25); padding: 2px 10px; border-radius: 20px; text-transform: uppercase;">En el modal</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                      <div class="form-group" style="margin: 0;">
+                        <label for="input-trust-badge1-title">Bloque 1 · Título</label>
+                        <input type="text" id="input-trust-badge1-title" placeholder="Garantía Oficial">
+                      </div>
+                      <div class="form-group" style="margin: 0;">
+                        <label for="input-trust-badge1-desc">Bloque 1 · Descripción</label>
+                        <input type="text" id="input-trust-badge1-desc" placeholder="1 año de respaldo directo en todas nuestras herramientas.">
+                      </div>
+
+                      <div class="form-group" style="margin: 0;">
+                        <label for="input-trust-badge2-title">Bloque 2 · Título</label>
+                        <input type="text" id="input-trust-badge2-title" placeholder="Servicio Técnico Especializado">
+                      </div>
+                      <div class="form-group" style="margin: 0;">
+                        <label for="input-trust-badge2-desc">Bloque 2 · Descripción</label>
+                        <input type="text" id="input-trust-badge2-desc" placeholder="Taller post-venta oficial con repuestos originales.">
+                      </div>
+
+                      <div class="form-group" style="margin: 0;">
+                        <label for="input-trust-badge3-title">Bloque 3 · Título</label>
+                        <input type="text" id="input-trust-badge3-title" placeholder="Stock y Entrega Inmediata">
+                      </div>
+                      <div class="form-group" style="margin: 0;">
+                        <label for="input-trust-badge3-desc">Bloque 3 · Descripción</label>
+                        <input type="text" id="input-trust-badge3-desc" placeholder="Retiro al instante en nuestro showroom de ventas oficial.">
+                      </div>
+
+                      <div class="form-group" style="margin: 0;">
+                        <label for="input-trust-distributor-title">Distribuidor · Título</label>
+                        <input type="text" id="input-trust-distributor-title" placeholder="Distribuidor Oficial & Financiación">
+                      </div>
+                      <div class="form-group full-width" style="margin: 0; grid-column: 1 / -1;">
+                        <label for="input-trust-distributor-text">Distribuidor · Texto</label>
+                        <textarea id="input-trust-distributor-text" rows="2" placeholder="Punto de venta oficial con repuestos legítimos. Ofrecemos facturación A y B, transferencias y planes de pago."></textarea>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Botones de Acción / Guardar -->
                   <div class="btn-save-container" style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 12px;">
                     <button type="button" class="btn-preview" onclick="resetTypographyColorsToDefault()">
@@ -6646,6 +6695,22 @@
       // 5. Pie de Página
       if (document.getElementById('input-footer-text')) current.footer_text = readVal('input-footer-text');
 
+      // Modal de Producto · Bloques de Confianza
+      if (document.getElementById('input-trust-badge1-title')) {
+        current.modal_trust = {
+          badge1_title: readVal('input-trust-badge1-title'),
+          badge1_desc: readVal('input-trust-badge1-desc'),
+          badge2_title: readVal('input-trust-badge2-title'),
+          badge2_desc: readVal('input-trust-badge2-desc'),
+          badge3_title: readVal('input-trust-badge3-title'),
+          badge3_desc: readVal('input-trust-badge3-desc'),
+          distributor_title: readVal('input-trust-distributor-title'),
+          distributor_text: readVal('input-trust-distributor-text')
+        };
+      } else if (activeConfig && activeConfig.modal_trust) {
+        current.modal_trust = JSON.parse(JSON.stringify(activeConfig.modal_trust));
+      }
+
       // Identidad / Medios
       if (document.getElementById('input-logo-url')) current.logo_url = readVal('input-logo-url');
       if (document.getElementById('input-hero-image-url')) current.hero_image_url = readVal('input-hero-image-url');
@@ -7528,6 +7593,18 @@
       const footerTextEl = document.getElementById('input-footer-text');
       if (footerTextEl) footerTextEl.value = activeConfig.footer_text || '© 2025 ZolSea Import S.R.L. — Todos los derechos reservados.';
 
+      // 6. Modal de Producto · Bloques de Confianza
+      const mt = activeConfig.modal_trust || {};
+      const setTrust = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+      setTrust('input-trust-badge1-title', mt.badge1_title || 'Garantía Oficial');
+      setTrust('input-trust-badge1-desc', mt.badge1_desc || '1 año de respaldo directo en todas nuestras herramientas.');
+      setTrust('input-trust-badge2-title', mt.badge2_title || 'Servicio Técnico Especializado');
+      setTrust('input-trust-badge2-desc', mt.badge2_desc || 'Taller post-venta oficial con repuestos originales.');
+      setTrust('input-trust-badge3-title', mt.badge3_title || 'Stock y Entrega Inmediata');
+      setTrust('input-trust-badge3-desc', mt.badge3_desc || 'Retiro al instante en nuestro showroom de ventas oficial.');
+      setTrust('input-trust-distributor-title', mt.distributor_title || 'Distribuidor Oficial & Financiación');
+      setTrust('input-trust-distributor-text', mt.distributor_text || 'Punto de venta oficial con repuestos legítimos. Ofrecemos facturación A y B, transferencias y planes de pago.');
+
       // Contacto / WhatsApp
       const waInput = document.getElementById('input-whatsapp');
       if (waInput) waInput.value = activeConfig.whatsapp_number || '';
@@ -7655,6 +7732,21 @@
       // 5. Pie de Página
       const footerTextInput = document.getElementById('input-footer-text');
       if (footerTextInput) activeConfig.footer_text = footerTextInput.value.trim();
+
+      // 6. Modal de Producto · Bloques de Confianza
+      if (document.getElementById('input-trust-badge1-title')) {
+        const mt = activeConfig.modal_trust || {};
+        const tv = (id) => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+        mt.badge1_title = tv('input-trust-badge1-title');
+        mt.badge1_desc = tv('input-trust-badge1-desc');
+        mt.badge2_title = tv('input-trust-badge2-title');
+        mt.badge2_desc = tv('input-trust-badge2-desc');
+        mt.badge3_title = tv('input-trust-badge3-title');
+        mt.badge3_desc = tv('input-trust-badge3-desc');
+        mt.distributor_title = tv('input-trust-distributor-title');
+        mt.distributor_text = tv('input-trust-distributor-text');
+        activeConfig.modal_trust = mt;
+      }
 
       saveToStorage();
       updateDashboardStats();

@@ -1847,7 +1847,7 @@ function openProductModal(index) {
       <div class="modal-carousel" id="modalCarousel">
         <div class="modal-carousel-inner" id="carouselInner">
           ${modalSlides.map(slide => `
-            <div class="modal-carousel-slide">
+            <div class="modal-carousel-slide ${slide.type === 'image' ? 'is-image' : 'is-blueprint'}">
               ${slide.type === 'image'
                 ? `<img src="${slide.content}" alt="${p.name} - Imagen Principal" />`
                 : `<img src="${slide.content}" alt="${p.name} - Ficha Técnica" />`
@@ -1877,13 +1877,26 @@ function openProductModal(index) {
     carouselHtml = `
       <div class="modal-carousel single-slide">
         <div class="modal-carousel-inner">
-          <div class="modal-carousel-slide">
+          <div class="modal-carousel-slide ${modalSlides[0].type === 'image' ? 'is-image' : 'is-blueprint'}">
             <img src="${modalSlides[0].content}" alt="${p.name} - Imagen Principal" />
           </div>
         </div>
       </div>
     `;
   }
+
+  // Textos de confianza del modal (editables desde el admin, con fallback a los por defecto)
+  const mt = (siteConfig && siteConfig.modal_trust) || {};
+  const trust = {
+    b1t: mt.badge1_title || 'Garantía Oficial',
+    b1d: mt.badge1_desc || '1 año de respaldo directo en todas nuestras herramientas.',
+    b2t: mt.badge2_title || 'Servicio Técnico Especializado',
+    b2d: mt.badge2_desc || 'Taller post-venta oficial con repuestos originales.',
+    b3t: mt.badge3_title || 'Stock y Entrega Inmediata',
+    b3d: mt.badge3_desc || 'Retiro al instante en nuestro showroom de ventas oficial.',
+    dt: mt.distributor_title || 'Distribuidor Oficial & Financiación',
+    dd: mt.distributor_text || 'Punto de venta oficial con repuestos legítimos. Ofrecemos facturación A y B, transferencias y planes de pago.'
+  };
 
   // Render content
   modalBody.innerHTML = `
@@ -1898,8 +1911,8 @@ function openProductModal(index) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
           </div>
           <div class="trust-badge-info">
-            <h5 class="trust-badge-title">Garantía Oficial</h5>
-            <p class="trust-badge-desc">1 año de respaldo directo en todas nuestras herramientas.</p>
+            <h5 class="trust-badge-title">${trust.b1t}</h5>
+            <p class="trust-badge-desc">${trust.b1d}</p>
           </div>
         </div>
         
@@ -1908,8 +1921,8 @@ function openProductModal(index) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
           </div>
           <div class="trust-badge-info">
-            <h5 class="trust-badge-title">Servicio Técnico Especializado</h5>
-            <p class="trust-badge-desc">Taller post-venta oficial con repuestos originales.</p>
+            <h5 class="trust-badge-title">${trust.b2t}</h5>
+            <p class="trust-badge-desc">${trust.b2d}</p>
           </div>
         </div>
 
@@ -1918,8 +1931,8 @@ function openProductModal(index) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
           </div>
           <div class="trust-badge-info">
-            <h5 class="trust-badge-title">Stock y Entrega Inmediata</h5>
-            <p class="trust-badge-desc">Retiro al instante en nuestro showroom de ventas oficial.</p>
+            <h5 class="trust-badge-title">${trust.b3t}</h5>
+            <p class="trust-badge-desc">${trust.b3d}</p>
           </div>
         </div>
       </div>
@@ -1928,9 +1941,9 @@ function openProductModal(index) {
       <div class="modal-extra-info-card">
         <div class="extra-info-header">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 2 18 2 18 6 6 6"></polygon><rect x="3" y="6" width="18" height="16" rx="2"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
-          <span class="extra-info-title">Distribuidor Oficial & Financiación</span>
+          <span class="extra-info-title">${trust.dt}</span>
         </div>
-        <p class="extra-info-text">Punto de venta oficial con repuestos legítimos. Ofrecemos facturación A y B, transferencias y planes de pago.</p>
+        <p class="extra-info-text">${trust.dd}</p>
       </div>
     </div>
 
